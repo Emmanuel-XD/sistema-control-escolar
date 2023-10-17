@@ -125,6 +125,7 @@ if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
                         <a class="collapse-item" href="../views/grados.php">Grados</a>
                         <a class="collapse-item" href="../views/especialidades.php">Especialidades</a>
                         <a class="collapse-item" href="../views/periodos.php">Periodos</a>
+                        <a class="collapse-item" href="../views/calendario.php">Calendario</a>
                     </div>
                 </div>
             </li>
