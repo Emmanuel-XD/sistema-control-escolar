@@ -1,57 +1,105 @@
-    var calendar;
-    var Calendar = FullCalendar.Calendar;
-    var events = [];
-    $(function() {
-        if (!!fila) {
-            Object.keys(fila).map(k => {
-                var row = fila[k]
-                events.push({ id: row.id, title: row.fecha, start: row.fecha, end: row.hora });
-            })
-        }
-        var date = new Date()
-        var d = date.getDate(),
-            m = date.getMonth(),
-            y = date.getFullYear()
+document.addEventListener('DOMContentLoaded', function () {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-            calendar = new Calendar(document.getElementById('calendar'), {
-                initialView: 'dayGridMonth',
-                locale: 'es', //Idioma Español FullCalendar
-                headerToolbar: {
-                    left: 'prev,next today',
-                    right: 'dayGridMonth,dayGridWeek,list',
-                    center: 'title',
-                },
-            selectable: true,
-            themeSystem: 'bootstrap',
-           
-            events: events,
-            eventClick: function(info) {
-                var _details = $('#event-details-modal')
-                var id = info.event.id
-                if (!!fila[id]) {
-                    _details.find('#fecha').text(fila[id].fecha)
-                    _details.find('#nombre').text(fila[id].nombre)
-                    _details.find('#name').text(fila[id].name)
-                    _details.find('#estado').text(fila[id].estado)
-                    _details.find('#hora').text(fila[id].hora)
-                    _details.modal('show')
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,dayGridWeek,list',
+        },
+        selectable: true,
+        themeSystem: 'bootstrap',
+        select: function (info) {
+            var modalRegistro = $('#modal-registro');
+            modalRegistro.modal('show');
+
+            var fechaInicio = info.start;
+            var fechaFin = info.end;
+
+            fechaFin.setDate(fechaFin.getDate() - 1);
+
+            var fechaInicioStr = fechaInicio.toISOString().split('T')[0];
+            var fechaFinStr = fechaFin.toISOString().split('T')[0];
+
+            $('#fecha_slt').val(fechaInicioStr);
+            $('#fecha_fin').val(fechaFinStr);
+        },
+        eventClick: function (info) {
+            var _details = $('#modal-form');
+            var id = info.event.id;
+            if (!!fila[id]) {
+                _details.find('#fecha_slt').text(fila[id].fecha_slt);
+                _details.find('#fecha_fin').text(fila[id].fecha_fin);
+                var nombreCompleto = fila[id].nombres + ' ' + fila[id].apellidos;
+                _details.find('#nombres').text(nombreCompleto);
+                _details.find('#materia').text(fila[id].materia);
+                _details.find('#descripcion').text(fila[id].descripcion);
+                _details.find('#apellidos').text(fila[id].apellidos);
+                _details.find('#hora_in').text(fila[id].hora_in);
+                _details.find('#hora_fin').text(fila[id].hora_fin);
+                _details.find('#status').text(fila[id].status);
+                _details.modal('show');
+            } else {
+                alert("Event is undefined");
+            }
+        },
+        eventDidMount: function (info) {
+            // Puedes agregar lógica adicional para personalizar la apariencia de los eventos aquí
+        },
+        editable: true,
+        events: [],
+        validRange: {
+            start: today,
+        },
+    });
+
+    var events = [];
+    if (!!fila) {
+        Object.keys(fila).map(k => {
+            var row = fila[k];
+            events.push({
+                id: row.id,
+                title: row.materia + ' - ' + row.descripcion,
+                start: row.fecha_slt,
+                end: row.fecha_fin,
+            });
+        });
+    }
+
+    calendar.addEventSource(events);
+
+    calendar.render();
+
+    $('#schedule-form').on('reset', function () {
+        $(this).find('input:hidden').val('');
+        $(this).find('input:visible').first().focus();
+    });
+});
+
+$(document).ready(function () {
+    $('#prestForm').submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: '../includes/functions.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                if (response.status === 'success') {
+                    alert('Éxito: Los datos se guardaron correctamente');
+                    window.location = "calendario.php";
                 } else {
-                    alert("Event is undefined");
+                    alert('Error: Ocurrió un error inesperado');
                 }
             },
-            eventDidMount: function(info) {
-           
-            },
-            editable: true
+            error: function (xhr, status, error) {
+                alert('Error: Ocurrió un error inesperado');
+            }
         });
-
-        calendar.render();
-
-       
-        $('#schedule-form').on('reset', function() {
-            $(this).find('input:hidden').val('')
-            $(this).find('input:visible').first().focus()
-        })
-
-
-    })
+    });
+});
