@@ -72,6 +72,9 @@ if (isset($_POST['accion'])) {
             editar_per();
             break;
 
+        case 'editar_prest':
+            editar_prest();
+            break;
 
         case 'editar_user':
             editar_user();
@@ -347,6 +350,25 @@ function editar_alum()
 
     $consulta = "UPDATE alumnos SET nombre = '$nombre', apellido = '$apellido', correo = '$correo', telefono = '$telefono',
     curp = '$curp', edad='$edad', birthdate = '$birthdate',id_grado = '$id_grado' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_prest()
+{
+    require_once("db.php");
+
+    extract($_POST);
+
+
+    $consulta = "UPDATE prestamos SET fecha_slt = '$fecha_slt', fecha_fin = '$fecha_fin', id_profesor = '$id_profesor', 
+    id_material = '$id_material', id_materia = '$id_materia', hora_in='$hora_in', hora_fin = '$hora_fin',cant = '$cant',
+    status = '$status' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {

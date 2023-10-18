@@ -112,24 +112,39 @@ if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
             </li>
 
 
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOts" aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Otros</span>
+                    <span>Accesos Escolares</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseOts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Ver Modulos</h6>
                         <a class="collapse-item" href="../views/grados.php">Grados</a>
                         <a class="collapse-item" href="../views/especialidades.php">Especialidades</a>
                         <a class="collapse-item" href="../views/periodos.php">Periodos</a>
-                        <a class="collapse-item" href="../views/calendario.php">Calendario</a>
-                        <a class="collapse-item" href="../views/inventario.php">Inventario</a>
                     </div>
                 </div>
             </li>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Prestamos & Almacen</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Ver Modulos</h6>
+                        <a class="collapse-item" href="../views/inventario.php">Inventario</a>
+                        <a class="collapse-item" href="../views/prestamos.php">Historial de Prestamos</a>
+                        <a class="collapse-item" href="../views/calendario.php">Calendario de Eventos</a>
+
+                    </div>
+                </div>
+            </li>
+
 
             <!-- Divider -->
             <hr class="sidebar-divider">
