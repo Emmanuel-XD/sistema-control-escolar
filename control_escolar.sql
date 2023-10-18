@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-10-2023 a las 19:12:51
+-- Tiempo de generación: 18-10-2023 a las 19:18:59
 -- Versión del servidor: 10.4.20-MariaDB
 -- Versión de PHP: 8.0.8
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `alumnos` (
   `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellido` varchar(100) NOT NULL,
   `correo` varchar(50) NOT NULL,
@@ -44,10 +45,10 @@ CREATE TABLE `alumnos` (
 -- Volcado de datos para la tabla `alumnos`
 --
 
-INSERT INTO `alumnos` (`id`, `nombre`, `apellido`, `correo`, `telefono`, `curp`, `edad`, `birthdate`, `id_grado`, `fecha`) VALUES
-(4, 'Hector', 'Gomez Chavez', 'campos12@gmail.com', '99111656701', 'WDSGDFSGN', '21', '2023-08-20', 1, '2023-08-28 23:56:22'),
-(6, 'Danna', 'Cardenas Argaez', 'dia@gmai.com', '99111656701', 'MATY000319MYNRMNA9', '21', '2023-10-16', 1, '2023-10-16 14:21:14'),
-(7, 'Jafet ', 'Munoz Medina', 'example@gmail.com', '99111656701', 'MATY000319MYNRMNA9', '21', '2023-10-27', 2, '2023-10-16 15:33:04');
+INSERT INTO `alumnos` (`id`, `id_user`, `nombre`, `apellido`, `correo`, `telefono`, `curp`, `edad`, `birthdate`, `id_grado`, `fecha`) VALUES
+(4, 0, 'Hector', 'Gomez Chavez', 'campos12@gmail.com', '99111656701', 'WDSGDFSGN', '21', '2023-08-20', 1, '2023-08-28 23:56:22'),
+(6, 0, 'Danna', 'Cardenas Argaez', 'dia@gmai.com', '99111656701', 'MATY000319MYNRMNA9', '21', '2023-10-16', 1, '2023-10-16 14:21:14'),
+(7, 23, 'Jafet ', 'Munoz Medina', 'ejemplo@gmail.com', '99111656701', 'MATY000319MYNRMNA9', '21', '2023-10-27', 2, '2023-10-16 20:57:53');
 
 -- --------------------------------------------------------
 
@@ -89,6 +90,27 @@ CREATE TABLE `calificacion_eval` (
 
 INSERT INTO `calificacion_eval` (`id`, `id_calificacion`, `id_alumno`, `id_materia`, `id_evaluacion`, `id_periodo`) VALUES
 (1, 1, 6, 24, 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categorias`
+--
+
+CREATE TABLE `categorias` (
+  `id` int(11) NOT NULL,
+  `categoria` varchar(100) NOT NULL,
+  `registro` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`id`, `categoria`, `registro`) VALUES
+(1, 'COMPUTACION', '2023-10-17 21:38:05'),
+(2, 'LABORATORIO', '2023-10-17 21:38:28'),
+(3, 'LIMPIEZA', '2023-10-17 21:38:41');
 
 -- --------------------------------------------------------
 
@@ -154,6 +176,30 @@ CREATE TABLE `grados` (
 INSERT INTO `grados` (`id`, `descripcion`, `duracion`, `fecha`) VALUES
 (1, '1A', '6 meses', '2023-08-28 23:34:18'),
 (2, '1B', '3 meses', '2023-08-19 23:41:26');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario`
+--
+
+CREATE TABLE `inventario` (
+  `id` int(11) NOT NULL,
+  `codigo` varchar(50) NOT NULL,
+  `descripcion` varchar(150) NOT NULL,
+  `cantidad` int(50) NOT NULL,
+  `unidad` varchar(150) NOT NULL,
+  `id_profesor` int(11) NOT NULL,
+  `id_categoria` int(11) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `inventario`
+--
+
+INSERT INTO `inventario` (`id`, `codigo`, `descripcion`, `cantidad`, `unidad`, `id_profesor`, `id_categoria`, `fecha`) VALUES
+(1, '01', 'Proyector Epson', 5, 'PAQUETES', 2, 1, '2023-10-17 21:39:51');
 
 -- --------------------------------------------------------
 
@@ -230,6 +276,35 @@ INSERT INTO `permisos` (`id`, `rol`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `prestamos`
+--
+
+CREATE TABLE `prestamos` (
+  `id` int(11) NOT NULL,
+  `id_profesor` int(11) NOT NULL,
+  `id_materia` int(11) NOT NULL,
+  `id_material` int(11) NOT NULL,
+  `fecha_slt` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  `hora_in` time NOT NULL,
+  `hora_fin` time NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `fecha_registrado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `prestamos`
+--
+
+INSERT INTO `prestamos` (`id`, `id_profesor`, `id_materia`, `id_material`, `fecha_slt`, `fecha_fin`, `hora_in`, `hora_fin`, `status`, `fecha_registrado`) VALUES
+(6, 2, 9, 1, '2023-10-18', '2023-10-21', '10:46:00', '01:46:00', 'Aprobado', '2023-10-18 15:46:21'),
+(7, 2, 15, 1, '2023-10-10', '2023-10-14', '10:00:00', '11:00:00', 'Aprobado', '2023-10-18 15:57:52'),
+(8, 1, 18, 1, '2023-10-18', '2023-10-25', '11:00:00', '11:30:00', 'Pendiente', '2023-10-18 16:01:30'),
+(9, 2, 24, 1, '2023-10-26', '2023-10-28', '12:00:00', '12:30:00', 'Solicitar', '2023-10-18 17:01:11');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `profesores`
 --
 
@@ -276,7 +351,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `usuario`, `correo`, `password`, `fecha`, `id_rol`, `imagen`) VALUES
 (5, 'Administrador', 'admin@gmail.com', '$2y$05$rSGStdVtYXAeIMxNwVR1suYBn4LT7zwImjLKvEMTT7Rxx1kKlCA8W', '2023-08-19 22:40:13', 1, ''),
-(20, 'Emanuel', 'saul@gmail.com', '$2y$05$4rVBmwaaBu2Auh.XH87jFeNmrPdsgDL9JFL680q/QwKIeLpNpu7BW', '2023-08-29 00:37:24', 1, '');
+(20, 'Emanuel', 'saul@gmail.com', '$2y$05$4rVBmwaaBu2Auh.XH87jFeNmrPdsgDL9JFL680q/QwKIeLpNpu7BW', '2023-08-29 00:37:24', 1, ''),
+(23, 'Ejemplo', 'ejemplo@gmail.com ', '$2y$05$VGeHmc3z9KnnwF8lALF4mezwN.MOURssoB8wM.INCwBxfJDphazba', '2023-10-16 20:40:09', 3, '');
 
 --
 -- Índices para tablas volcadas
@@ -301,6 +377,12 @@ ALTER TABLE `calificacion_eval`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `especialidades`
 --
 ALTER TABLE `especialidades`
@@ -319,6 +401,12 @@ ALTER TABLE `grados`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `inventario`
+--
+ALTER TABLE `inventario`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `materias`
 --
 ALTER TABLE `materias`
@@ -334,6 +422,12 @@ ALTER TABLE `periodos`
 -- Indices de la tabla `permisos`
 --
 ALTER TABLE `permisos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `prestamos`
+--
+ALTER TABLE `prestamos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -371,6 +465,12 @@ ALTER TABLE `calificacion_eval`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de la tabla `especialidades`
 --
 ALTER TABLE `especialidades`
@@ -387,6 +487,12 @@ ALTER TABLE `evaluacion`
 --
 ALTER TABLE `grados`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `inventario`
+--
+ALTER TABLE `inventario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -407,6 +513,12 @@ ALTER TABLE `permisos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `prestamos`
+--
+ALTER TABLE `prestamos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT de la tabla `profesores`
 --
 ALTER TABLE `profesores`
@@ -416,7 +528,7 @@ ALTER TABLE `profesores`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
