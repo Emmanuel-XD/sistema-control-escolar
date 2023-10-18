@@ -126,6 +126,7 @@ if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
                         <a class="collapse-item" href="../views/especialidades.php">Especialidades</a>
                         <a class="collapse-item" href="../views/periodos.php">Periodos</a>
                         <a class="collapse-item" href="../views/calendario.php">Calendario</a>
+                        <a class="collapse-item" href="../views/inventario.php">Inventario</a>
                     </div>
                 </div>
             </li>
@@ -138,7 +139,12 @@ if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
                 Addons
             </div>
 
-
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="../views/categorias.php">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Categorias</span></a>
+            </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">

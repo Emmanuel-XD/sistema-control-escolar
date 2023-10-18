@@ -14,12 +14,24 @@ if (isset($_POST['accion'])) {
             insert_per();
             break;
 
+        case 'insert_inv':
+            insert_inv();
+            break;
+
         case 'insert_esp':
             insert_esp();
             break;
 
+        case 'insert_cat':
+            insert_cat();
+            break;
+
         case 'insert_prof':
             insert_prof();
+            break;
+
+        case 'insert_prest':
+            insert_prest();
             break;
 
         case 'insert_alumno':
@@ -42,9 +54,18 @@ if (isset($_POST['accion'])) {
             editar_grado();
             break;
 
+        case 'editar_inv':
+            editar_inv();
+            break;
+
 
         case 'editar_esp':
             editar_esp();
+            break;
+
+
+        case 'editar_cat':
+            editar_cat();
             break;
 
         case 'editar_per':
@@ -55,7 +76,6 @@ if (isset($_POST['accion'])) {
         case 'editar_user':
             editar_user();
             break;
-
     }
 }
 
@@ -83,6 +103,29 @@ function insert_esp()
     echo json_encode($response);
 }
 
+function insert_cat()
+{
+    require_once("db.php");
+    extract($_POST);
+
+    $consulta = "INSERT INTO categorias (categoria) VALUES ('$categoria')";
+
+    $resultado = mysqli_query($conexion, $consulta);
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
+    } else {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+
+    echo json_encode($response);
+}
+
 function insert_mat()
 {
     global $conexion;
@@ -91,6 +134,31 @@ function insert_mat()
 
     $consulta = "INSERT INTO materias (materia,id_profesor, id_periodo ,id_grado) VALUES ('$materia','$id_profesor',
     '$id_periodo','$id_grado')";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
+    } else {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+
+    echo json_encode($response);
+}
+
+function insert_prest()
+{
+    global $conexion;
+    extract($_POST);
+    include "db.php";
+
+    $consulta = "INSERT INTO prestamos (id_profesor,id_materia,id_material,fecha_slt,fecha_fin,hora_in, hora_fin,status) 
+    VALUES ('$id_profesor','$id_materia','$id_material','$fecha_slt', '$fecha_fin','$hora_in','$hora_fin','$status')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -157,7 +225,30 @@ function insert_grado()
     echo json_encode($response);
 }
 
+function insert_inv()
+{
+    global $conexion;
+    extract($_POST);
+    include "db.php";
 
+    $consulta = "INSERT INTO inventario (codigo, descripcion, cantidad,unidad,id_profesor,id_categoria) 
+    VALUES ('$codigo', '$descripcion','$cantidad','$unidad','$id_profesor','$id_categoria')";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
+    } else {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+
+    echo json_encode($response);
+}
 
 
 function insert_prof()
@@ -220,6 +311,24 @@ function editar_profe()
 
     $consulta = "UPDATE profesores SET cedula = '$cedula', nombres = '$nombres', apellidos = '$apellidos', correo = '$correo',
     curp = '$curp', edad='$edad', fecha_na = '$fecha_na',id_especialidad = '$id_especialidad' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_inv()
+{
+    require_once("db.php");
+
+    extract($_POST);
+
+
+    $consulta = "UPDATE inventario SET codigo = '$codigo', descripcion = '$descripcion', cantidad = '$cantidad', unidad = '$unidad',
+    id_profesor = '$id_profesor', id_categoria='$id_categoria' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -309,6 +418,23 @@ function editar_esp()
 
 
     $consulta = "UPDATE especialidades SET especialidad = '$especialidad' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_cat()
+{
+    require_once("db.php");
+
+    extract($_POST);
+
+
+    $consulta = "UPDATE categorias SET categoria = '$categoria' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
