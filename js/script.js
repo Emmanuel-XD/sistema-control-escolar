@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 _details.find('#apellidos').text(fila[id].apellidos);
                 _details.find('#hora_in').text(fila[id].hora_in);
                 _details.find('#hora_fin').text(fila[id].hora_fin);
+                var cantidadUnd = fila[id].cant + ' - ' + fila[id].unidad;
+                _details.find('#cant').text(cantidadUnd);
+                _details.find('#unidad').text(fila[id].unidad);
                 _details.find('#status').text(fila[id].status);
                 _details.modal('show');
             } else {
