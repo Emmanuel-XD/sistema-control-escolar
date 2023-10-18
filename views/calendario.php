@@ -1,9 +1,12 @@
 <?php
+error_reporting(0);
 session_start();
-$typeUser = $_SESSION['type'];
-if ($typeUser === '2' || $typeUser === '1') {
+include "../includes/header.php";
 
-    error_reporting(0);
+$typeUser = $_SESSION['type'];
+if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
+
+
     $varsesion = $_SESSION['usuario'];
 
     if ($varsesion == null || $varsesion = '') {
@@ -11,10 +14,11 @@ if ($typeUser === '2' || $typeUser === '1') {
         header("Location: ../includes/sesion/login.php");
         die();
     }
-?>
-    <?php include "../includes/header.php"; ?>
 
-    <?php require_once('../includes/db.php') ?>
+?>
+
+
+
     <!DOCTYPE html>
     <html lang="es">
 
@@ -28,157 +32,259 @@ if ($typeUser === '2' || $typeUser === '1') {
         <script src="../js/fullcalendar/lib/main.min.js"></script>
 
     </head>
+    <style>
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .two-columns>div {
+            flex: 1;
+            padding: 10px;
+        }
+
+        .fc-day.fc-day-disabled {
+            background-color: transparent;
+            color: #333;
+
+        }
+
+        #calendar {
+            max-width: 1000px;
+        }
+
+        .col-centered {
+            float: none;
+            margin: 0 auto;
+        }
+    </style>
 
     <body class="bg-light">
 
-        <div class="container py-5" id="page-container">
-
+        <div class="container " id="page-container">
             <div class="row">
-
-                <div class="col-md-9">
-
-
-                    <div id="calendar"></div>
+                <div class="col-md-12 text-center">
+                    <h3>CALENDARIO DE PRESTAMOS</h3>
+                    <p class="lead">¡Agrega los eventos que quieres guardar! Seleciona los dias con el cursor.</p>
+                    <div id="calendar" class="col-centered"></div>
                 </div>
-                <div class="col-md-3">
-                    <div class="cardt rounded-0 shadow">
-                        <div class="card-header bg-gradient bg-primary text-light">
-                            <h5 class="card-title">Formulario De Prestamo</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="container-fluid">
-                                <form action="../includes/save_cita.php" method="post" id="schedule-form">
-                                    <input type="hidden" name="id" value="">
+                <div class="modal fade" id="modal-registro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h3 class="modal-title" id="exampleModalLabel">Formulario De Prestamo</h3>
 
-                                    <div class="form-group mb-2">
-                                        <label for="start_datetime" class="control-label">Fecha Solicitada</label>
-                                        <input type="date" class="form-control form-control-sm rounded-0" name="fecha" id="fecha" required>
+                            </div>
+                            <div class="modal-body">
+                                <form id="prestForm">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime" class="control-label">Fecha Solicitada</label>
+                                                <input type="date" class="form-control form-control-sm rounded-0" name="fecha_slt" id="fecha_slt" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime" class="control-label">Fecha De Devolucion</label>
+                                                <input type="date" class="form-control form-control-sm rounded-0" name="fecha_fin" id="fecha_fin" required>
+                                            </div>
+                                        </div>
+
+
                                     </div>
 
-                                    <div class="form-group mb-2">
-                                        <label for="start_datetime" class="control-label">Hora De Inicio</label>
-                                        <input type="time" class="form-control form-control-sm rounded-0" name="hora" id="hora" required>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime" class="control-label">Hora De Inicio</label>
+                                                <input type="time" class="form-control form-control-sm rounded-0" name="hora_in" id="hora_in" required>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime" class="control-label">Hora De Regreso</label>
+                                                <input type="time" class="form-control form-control-sm rounded-0" name="hora_fin" id="hora_fin" required>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group mb-2">
-                                        <label for="start_datetime" class="control-label">Hora De Regreso</label>
-                                        <input type="time" class="form-control form-control-sm rounded-0" name="hora" id="hora" required>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime" class="control-label">Personal Solicita:</label>
+                                                <select class="form-control" id="id_profesor" name="id_profesor">
+                                                    <option value="0">--Selecciona una opcion--</option>
+                                                    <?php
+
+                                                    include("../includes/db.php");
+                                                    //Codigo para mostrar categorias desde otra tabla
+                                                    $sql = "SELECT * FROM profesores ";
+                                                    $resultado = mysqli_query($conexion, $sql);
+                                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['nombres'] . ' ' . $consulta['apellidos'] . '</option>';
+                                                    }
+
+                                                    ?>
+
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime" class="control-label">Materia Asignada</label>
+                                                <select class="form-control" id="id_materia" name="id_materia">
+                                                    <option value="0">--Selecciona una opcion--</option>
+                                                    <?php
+
+                                                    include("../includes/db.php");
+                                                    //Codigo para mostrar categorias desde otra tabla
+                                                    $sql = "SELECT * FROM materias ";
+                                                    $resultado = mysqli_query($conexion, $sql);
+                                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['materia'] . '</option>';
+                                                    }
+
+                                                    ?>
+
+
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group mb-2">
-                                        <label for="start_datetime" class="control-label">Personal Solicita:</label>
-                                        <select class="form-control" id="id_paciente" name="id_paciente">
-                                            <option value="0">--Selecciona una opcion--</option>
-                                            <?php
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime" class="control-label">Material</label>
+                                                <select class="form-control" id="id_material" name="id_material">
+                                                    <option value="0">--Selecciona una opcion--</option>
+                                                    <?php
 
-                                            include("../includes/db.php");
-                                            //Codigo para mostrar categorias desde otra tabla
-                                            $sql = "SELECT * FROM alumnos ";
-                                            $resultado = mysqli_query($conexion, $sql);
-                                            while ($consulta = mysqli_fetch_array($resultado)) {
-                                                echo '<option value="' . $consulta['id'] . '">' . $consulta['nombre'] . '</option>';
-                                            }
+                                                    include("../includes/db.php");
+                                                    //Codigo para mostrar categorias desde otra tabla
+                                                    $sql = "SELECT * FROM inventario ";
+                                                    $resultado = mysqli_query($conexion, $sql);
+                                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['descripcion'] . '</option>';
+                                                    }
 
-                                            ?>
+                                                    ?>
 
 
-                                        </select>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime" class="control-label">Estado</label>
+                                                <select name="status" id="status" class="form-control" required>
+                                                    <option value="">--Selecciona una opcion--</option>
+                                                    <option value="Solicitar">Solicitar</option>
+                                                    <?php if ($_SESSION["type"] == 1) { ?>
+                                                        <option value="Aprobado">Aprobado</option>
+                                                        <option value="Pendiente">Pendiente</option>
+                                                        <option value="Rechazado">Rechazado</option>
+                                                        <option value="Agotado">Agotado</option>
+                                                        <option value="Devuelto">Devuelto</option>
+                                                        <option value="No Devuelto">No Devuelto</option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
 
-
-                                    <div class="form-group mb-2">
-                                        <label for="start_datetime" class="control-label">Materia Asignada</label>
-                                        <select class="form-control" id="id_doctor" name="id_doctor">
-                                            <option value="0">--Selecciona una opcion--</option>
-                                            <?php
-
-                                            include("../includes/db.php");
-                                            //Codigo para mostrar categorias desde otra tabla
-                                            $sql = "SELECT * FROM profesores ";
-                                            $resultado = mysqli_query($conexion, $sql);
-                                            while ($consulta = mysqli_fetch_array($resultado)) {
-                                                echo '<option value="' . $consulta['id'] . '">' . $consulta['nombres'] . '</option>';
-                                            }
-
-                                            ?>
-
-
-                                        </select>
+                                    <input type="hidden" name="accion" value="insert_prest">
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" id="register" name="registrar">Guardar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                     </div>
-
-                                    <div class="form-group mb-2">
-                                        <label for="start_datetime" class="control-label">Estado</label>
-                                        <select name="estado" id="estado" class="form-control" required>
-                                            <option value="">--Selecciona una opcion--</option>
-                                            <option value="1">Aprobado</option>
-                                            <option value="2">Pendiente</option>
-                                            <option value="3">Rechazado</option>
-                                        </select>
-                                    </div>
-
                                 </form>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <div class="text-center">
-                                <button class="btn btn-primary " type="submit" form="schedule-form">Guardar</button>
-                                <button class="btn btn-danger " type="reset" form="schedule-form"> Cancelar</button>
+
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h3 class="modal-title" id="exampleModalLabel">Datos De Solicitud</h3>
+
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <dl class="two-columns">
+                                        <div>
+                                            <dt class="text-muted">Material Solicitado:</dt>
+                                            <dd id="descripcion" class=""></dd>
+
+                                            <dt class="text-muted">Fecha De Prestamo:</dt>
+                                            <dd id="fecha_slt" class=""></dd>
+
+                                            <dt class="text-muted">Fecha De Devolucion:</dt>
+                                            <dd id="fecha_fin" class=""></dd>
+
+                                            <dt class="text-muted">Clase En Uso:</dt>
+                                            <dd id="materia" class=""></dd>
+
+                                        </div>
+
+                                        <div>
+                                            <dt class="text-muted">Hora De Inicio:</dt>
+                                            <dd id="hora_in" class=""></dd>
+
+                                            <dt class="text-muted">Hora De Regreso:</dt>
+                                            <dd id="hora_fin" class=""></dd>
+
+                                            <dt class="text-muted">Pesonal Escolar:</dt>
+                                            <dd id="nombres" class=""></dd>
+
+                                            <dt class="text-muted">Estado:</dt>
+                                            <dd id="status" class=""></dd>
+
+                                        </div>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Event Details Modal -->
-        <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="event-details-modal">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header rounded-0">
-                        <h5 class="modal-title">Detalles de cita</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body rounded-0">
-                        <div class="container-fluid">
-                            <dl>
-                                <dt class="text-muted">Fecha de cita</dt>
-                                <dd id="fecha" class=""></dd>
-                                <dt class="text-muted">Hora de cita</dt>
-                                <dd id="hora" class=""></dd>
-                                <dt class="text-muted">Paciente</dt>
-                                <dd id="nombre" class=""></dd>
-                                <dt class="text-muted">Doctor</dt>
-                                <dd id="name" class=""></dd>
-                                <dt class="text-muted">Estado</dt>
-                                <dd id="estado" class=""></dd>
 
-                            </dl>
-                        </div>
-                    </div>
-                    <div class="modal-footer rounded-0">
-                        <div class="text-end">
 
-                            <button type="button" class="btn btn-secondary btn-sm rounded-0" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Event Details Modal -->
+                <!-- Event Details Modal -->
 
-        <?php
-        // $consulta = $conexion->query("SELECT ct.id, ct.fecha, ct.hora, ct.estado, ct.fecha_registro, 
-        //p.nombre, d.name, est.estado FROM citas ct INNER JOIN pacientes p ON ct.id_paciente = p.id 
-        //INNER JOIN doctor d ON ct.id_doctor = d.id LEFT JOIN estado est ON ct.estado = est.id");
-        //$array = [];
-        //foreach($consulta->fetch_all(MYSQLI_ASSOC) as $fila){
-        //** $fila['sdate'] = date("F d, Y h:i A",strtotime($fila['hora']));
-        //$fila['edate'] = date("F d, Y h:i A",strtotime($fila['fecha']));
-        //$array[$fila['id']] = $fila;
-        //}
-        ?>
-        <?php
-        if (isset($conexion)) $conexion->close();
-        ?>
+                <?php
+                $consulta = $conexion->query("SELECT pr.id, pr.id_profesor, pr.id_materia, pr.id_material, pr.fecha_slt, pr.fecha_fin,
+        pr.hora_in, pr.hora_fin, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, m.materia, i.descripcion FROM 
+        prestamos pr INNER JOIN profesores p ON pr.id_profesor = p.id INNER JOIN materias m ON pr.id_materia = m.id 
+        INNER JOIN inventario i ON pr.id_material = i.id");
+                $array = [];
+                foreach ($consulta->fetch_all(MYSQLI_ASSOC) as $fila) {
+                    $fila['sdate'] = date("F d, Y h:i A", strtotime($fila['fecha_slt']));
+                    $fila['edate'] = date("F d, Y h:i A", strtotime($fila['fecha_fin']));
+                    $array[$fila['id']] = $fila;
+                }
+                ?>
+                <?php
+                if (isset($conexion)) $conexion->close();
+                ?>
     </body>
     <script>
         var fila = $.parseJSON('<?= json_encode($array) ?>')
