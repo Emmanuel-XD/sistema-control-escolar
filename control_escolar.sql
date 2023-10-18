@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-10-2023 a las 19:18:59
+-- Tiempo de generación: 19-10-2023 a las 01:04:20
 -- Versión del servidor: 10.4.20-MariaDB
 -- Versión de PHP: 8.0.8
 
@@ -199,7 +199,7 @@ CREATE TABLE `inventario` (
 --
 
 INSERT INTO `inventario` (`id`, `codigo`, `descripcion`, `cantidad`, `unidad`, `id_profesor`, `id_categoria`, `fecha`) VALUES
-(1, '01', 'Proyector Epson', 5, 'PAQUETES', 2, 1, '2023-10-17 21:39:51');
+(1, '01', 'Proyector Epson', 5, 'UND', 2, 1, '2023-10-17 21:39:51');
 
 -- --------------------------------------------------------
 
@@ -288,6 +288,7 @@ CREATE TABLE `prestamos` (
   `fecha_fin` date NOT NULL,
   `hora_in` time NOT NULL,
   `hora_fin` time NOT NULL,
+  `cant` int(50) NOT NULL,
   `status` varchar(50) NOT NULL,
   `fecha_registrado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -296,11 +297,11 @@ CREATE TABLE `prestamos` (
 -- Volcado de datos para la tabla `prestamos`
 --
 
-INSERT INTO `prestamos` (`id`, `id_profesor`, `id_materia`, `id_material`, `fecha_slt`, `fecha_fin`, `hora_in`, `hora_fin`, `status`, `fecha_registrado`) VALUES
-(6, 2, 9, 1, '2023-10-18', '2023-10-21', '10:46:00', '01:46:00', 'Aprobado', '2023-10-18 15:46:21'),
-(7, 2, 15, 1, '2023-10-10', '2023-10-14', '10:00:00', '11:00:00', 'Aprobado', '2023-10-18 15:57:52'),
-(8, 1, 18, 1, '2023-10-18', '2023-10-25', '11:00:00', '11:30:00', 'Pendiente', '2023-10-18 16:01:30'),
-(9, 2, 24, 1, '2023-10-26', '2023-10-28', '12:00:00', '12:30:00', 'Solicitar', '2023-10-18 17:01:11');
+INSERT INTO `prestamos` (`id`, `id_profesor`, `id_materia`, `id_material`, `fecha_slt`, `fecha_fin`, `hora_in`, `hora_fin`, `cant`, `status`, `fecha_registrado`) VALUES
+(6, 2, 9, 1, '2023-10-18', '2023-10-21', '10:46:00', '01:46:00', 1, 'No Devuelto', '2023-10-18 22:59:59'),
+(7, 2, 15, 1, '2023-10-10', '2023-10-14', '10:00:00', '11:00:00', 1, 'Aprobado', '2023-10-18 21:58:57'),
+(8, 1, 18, 1, '2023-10-18', '2023-10-25', '11:00:00', '11:30:00', 1, 'Rechazado', '2023-10-18 22:59:36'),
+(9, 2, 24, 1, '2023-10-26', '2023-10-28', '12:00:00', '12:30:00', 1, 'Aprobado', '2023-10-18 22:59:25');
 
 -- --------------------------------------------------------
 
