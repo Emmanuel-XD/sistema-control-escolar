@@ -165,23 +165,8 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="start_datetime" class="control-label">Material</label>
-                                                <select class="form-control" id="id_material" name="id_material">
-                                                    <option value="0">--Selecciona una opcion--</option>
-                                                    <?php
-
-                                                    include("../includes/db.php");
-                                                    //Codigo para mostrar categorias desde otra tabla
-                                                    $sql = "SELECT * FROM inventario ";
-                                                    $resultado = mysqli_query($conexion, $sql);
-                                                    while ($consulta = mysqli_fetch_array($resultado)) {
-                                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['descripcion'] . '</option>';
-                                                    }
-
-                                                    ?>
-
-
-                                                </select>
+                                                <label for="start_datetime" class="control-label">Cantidad a Prestar</label>
+                                                <input type="number" name="cant" id="cant" class="form-control">
                                             </div>
                                         </div>
 
@@ -189,7 +174,7 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
 
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="start_datetime" class="control-label">Estado</label>
+                                                <label for="start_datetime" class="control-label">Estado De Solicitud</label>
                                                 <select name="status" id="status" class="form-control" required>
                                                     <option value="">--Selecciona una opcion--</option>
                                                     <option value="Solicitar">Solicitar</option>
@@ -204,6 +189,26 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="start_datetime" class="control-label">Material Solicitado</label>
+                                        <select class="form-control" id="id_material" name="id_material">
+                                            <option value="0">--Selecciona una opcion--</option>
+                                            <?php
+
+                                            include("../includes/db.php");
+                                            //Codigo para mostrar categorias desde otra tabla
+                                            $sql = "SELECT * FROM inventario ";
+                                            $resultado = mysqli_query($conexion, $sql);
+                                            while ($consulta = mysqli_fetch_array($resultado)) {
+                                                echo '<option value="' . $consulta['id'] . '">' . $consulta['descripcion'] . '</option>';
+                                            }
+
+                                            ?>
+
+
+                                        </select>
                                     </div>
 
                                     <input type="hidden" name="accion" value="insert_prest">
@@ -231,6 +236,9 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                                         <div>
                                             <dt class="text-muted">Material Solicitado:</dt>
                                             <dd id="descripcion" class=""></dd>
+
+                                            <dt class="text-muted">Cantidad:</dt>
+                                            <dd id="cant" class=""></dd>
 
                                             <dt class="text-muted">Fecha De Prestamo:</dt>
                                             <dd id="fecha_slt" class=""></dd>
@@ -272,9 +280,9 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
 
                 <?php
                 $consulta = $conexion->query("SELECT pr.id, pr.id_profesor, pr.id_materia, pr.id_material, pr.fecha_slt, pr.fecha_fin,
-        pr.hora_in, pr.hora_fin, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, m.materia, i.descripcion FROM 
-        prestamos pr INNER JOIN profesores p ON pr.id_profesor = p.id INNER JOIN materias m ON pr.id_materia = m.id 
-        INNER JOIN inventario i ON pr.id_material = i.id");
+                pr.hora_in, pr.hora_fin, pr.cant, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, m.materia, i.descripcion, i.unidad 
+                FROM prestamos pr INNER JOIN profesores p ON pr.id_profesor = p.id INNER JOIN materias m ON pr.id_materia = m.id 
+                INNER JOIN inventario i ON pr.id_material = i.id");
                 $array = [];
                 foreach ($consulta->fetch_all(MYSQLI_ASSOC) as $fila) {
                     $fila['sdate'] = date("F d, Y h:i A", strtotime($fila['fecha_slt']));
