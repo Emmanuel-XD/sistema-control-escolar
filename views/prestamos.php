@@ -62,19 +62,25 @@ session_start();
                                     <td><?php echo $fila['fecha_slt']; ?></td>
                                     <td><?php echo $fila['fecha_fin']; ?></td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" name="devolver" id="devolver">
-                                            <i class="fa fa-chevron-circle-left"></i>
+                                        <form id="dev<?php echo $fila['id']; ?>" method="POST">
 
-                                        </button>
-                                        <a href="../includes/fichaPDF.php?id=<?php echo $fila['id'] ?>" class="btn btn-danger btn-del">
-                                            <i class="fa fa-file" aria-hidden="true"></i>
+                                            <input type="hidden" name="accion" value="devolver_cant">
+                                            <input type="hidden" name="id" value="<?php echo $fila['id']; ?>">
 
+                                            <button type="button" class="btn btn-primary devolver-material" onclick="confirmarDevolucion(<?php echo $fila['id']; ?>)">
+                                                <i class="fa fa-chevron-circle-left"></i>
+                                            </button>
+
+                                            <a href="../includes/fichaPDF.php?id=<?php echo $fila['id']; ?>" class="btn btn-danger">
+                                                <i class="fa fa-file" aria-hidden="true"></i>
+                                        </form>
                                     </td>
+
                                     <td>
                                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editar<?php echo $fila['id']; ?>">
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                        <a href="../includes/eliminar_prestamo.php?id=<?php echo $fila['id'] ?>" class="btn btn-danger btn-del">
+                                        <a href="../includes/eliminar_prestamo.php?id=<?php echo $fila['id']; ?>" class="btn btn-danger btn-del">
                                             <i class="fa fa-trash "></i></a>
                                     </td>
                                 </tr>
@@ -82,7 +88,6 @@ session_start();
                             <?php endwhile; ?>
                         </tbody>
                     </table>
-
 
                 </div>
             </div>
@@ -95,10 +100,6 @@ session_start();
     <!-- End of Main Content -->
 
 
-
-
-
-
     </div>
     <!-- End of Content Wrapper -->
 
@@ -106,9 +107,62 @@ session_start();
     <!-- End of Page Wrapper -->
 
 
-
-
 </body>
+<script>
+    function confirmarDevolucion(id) {
+        swal.fire({
+            title: 'Confirmar Devolución',
+            text: '¿Estás seguro de que deseas devolver este material?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, devolver',
+            cancelButtonText: 'Cancelar',
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                devolverMaterial(id);
+            }
+        });
+    }
+
+    function devolverMaterial(id) {
+        var datosFormulario = $("#dev" + id).serialize() + '&confirmacion=confirmado';
+
+        $.ajax({
+            url: "../includes/functions.php",
+            type: "POST",
+            data: datosFormulario,
+            dataType: "json",
+            success: function(response) {
+                if (response.status === 'success') {
+                    swal.fire({
+                        title: 'Éxito',
+                        text: response.message,
+                        icon: 'success',
+                    }).then(function() {
+                        location.reload();
+                    });
+                } else if (response.status === 'confirmacion') {
+
+                } else {
+                    swal.fire({
+                        title: 'Error',
+                        text: response.message,
+                        icon: 'error',
+                    });
+                }
+            },
+            error: function() {
+                swal.fire({
+                    title: 'Error',
+                    text: 'Error de comunicación con el servidor',
+                    icon: 'error',
+                });
+            }
+        });
+    }
+</script>
+
+
 <script>
     // Función para exportar la tabla a un archivo Excel
     function exportTableToExcel() {
@@ -146,7 +200,7 @@ session_start();
 
         const downloadLink = document.getElementById('download-link');
         downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = 'recursos.xlsx';
+        downloadLink.download = 'datos_inventario.xlsx';
 
         downloadLink.click();
     }
