@@ -165,14 +165,14 @@ function insert_prest()
             'message' => 'La cantidad que solicitas no puede ser 0 tiene que ser mayor o igual a la existencia en el inventario'
         );
         echo json_encode($response);
-        return;
+        return; // No continúes con la verificación del inventario
     }
 
-    $consult = "SELECT cantidad FROM inventario WHERE id = $id_material";
+    $consult = "SELECT existencia FROM inventario WHERE id = $id_material";
     $results = mysqli_query($conexion, $consult);
 
     if ($row_cantidad = mysqli_fetch_assoc($results)) {
-        $cantDisponible = $row_cantidad['cantidad'];
+        $cantDisponible = $row_cantidad['existencia'];
 
         if ($cantDisponible >= $cant) {
             $consulta = "INSERT INTO prestamos (id_profesor, id_materia, id_material, fecha_slt, fecha_fin, hora_in, hora_fin, cant, status) 
@@ -183,7 +183,7 @@ function insert_prest()
             if ($resultado) {
                 // Update al campo cantidad en el inventario
                 $nueva_cantidad = $cantDisponible - $cant;
-                $sql = "UPDATE inventario SET cantidad = $nueva_cantidad WHERE id = $id_material";
+                $sql = "UPDATE inventario SET existencia = $nueva_cantidad WHERE id = $id_material";
                 mysqli_query($conexion, $sql);
                 $response = array(
                     'status' => 'success',
@@ -276,8 +276,8 @@ function insert_inv()
     extract($_POST);
     include "db.php";
 
-    $consulta = "INSERT INTO inventario (codigo, descripcion, cantidad,unidad,id_profesor,id_categoria) 
-    VALUES ('$codigo', '$descripcion','$cantidad','$unidad','$id_profesor','$id_categoria')";
+    $consulta = "INSERT INTO inventario (codigo, descripcion, cantidad, existencia, unidad,id_profesor,id_categoria, status) 
+    VALUES ('$codigo', '$descripcion','$cantidad', '$existencia','$unidad','$id_profesor','$id_categoria','$status')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -372,8 +372,8 @@ function editar_inv()
     extract($_POST);
 
 
-    $consulta = "UPDATE inventario SET codigo = '$codigo', descripcion = '$descripcion', cantidad = '$cantidad', unidad = '$unidad',
-    id_profesor = '$id_profesor', id_categoria='$id_categoria' WHERE id = '$id' ";
+    $consulta = "UPDATE inventario SET codigo = '$codigo', descripcion = '$descripcion', cantidad = '$cantidad', existencia = '$existencia',
+    unidad = '$unidad', id_profesor = '$id_profesor', id_categoria='$id_categoria', status='$status' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
