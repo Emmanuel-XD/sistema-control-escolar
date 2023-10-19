@@ -159,6 +159,15 @@ function insert_prest()
     extract($_POST);
     include "db.php";
 
+    if ($cant == 0) {
+        $response = array(
+            'status' => 'error',
+            'message' => 'La cantidad que solicitas no puede ser 0 tiene que ser mayor o igual a la existencia en el inventario'
+        );
+        echo json_encode($response);
+        return;
+    }
+
     $consult = "SELECT cantidad FROM inventario WHERE id = $id_material";
     $results = mysqli_query($conexion, $consult);
 
@@ -172,7 +181,7 @@ function insert_prest()
             $resultado = mysqli_query($conexion, $consulta);
 
             if ($resultado) {
-                // update al campo cantidad en el invenatrio
+                // Update al campo cantidad en el inventario
                 $nueva_cantidad = $cantDisponible - $cant;
                 $sql = "UPDATE inventario SET cantidad = $nueva_cantidad WHERE id = $id_material";
                 mysqli_query($conexion, $sql);
@@ -190,7 +199,7 @@ function insert_prest()
             if ($cantDisponible == 0) {
                 $response = array(
                     'status' => 'stock_agotado',
-                    'message' => 'El material que solicitas para el préstamo se encuentra agotado en el inventario '
+                    'message' => 'El material que solicitas para el préstamo se encuentra agotado en el inventario'
                 );
             } else {
                 $response = array(
@@ -208,6 +217,7 @@ function insert_prest()
 
     echo json_encode($response);
 }
+
 
 
 
