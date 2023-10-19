@@ -38,6 +38,15 @@
 
                         <div class="col-sm-6">
                             <div class="mb-3">
+                                <label for="">Existencia</label>
+                                <input type="number" name="existencia" id="existencia" class="form-control" required></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
                                 <label for="password">Unidad</label><br>
                                 <select name="unidad" id="unidad" class="form-control">
                                     <option value="">Selecciona una opcion</option>
@@ -47,11 +56,10 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
+                      
                                 <label for="password">Personal Responsable</label><br>
                                 <select name="id_profesor" id="id_profesor" class="form-control" required>
                                     <option value="">Selecciona una opcion</option>
@@ -69,7 +77,9 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="password">Categoria</label><br>
@@ -86,6 +96,18 @@
                                     }
 
                                     ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="password">Estado</label><br>
+                                <select name="status" id="status" class="form-control">
+                                    <option value="">Selecciona una opcion</option>
+                                    <option value="Disponible">Disponible</option>
+                                    <option value="No Disponible">No Disponible</option>
+                                    <option value="Prestados">Prestados</option>
                                 </select>
                             </div>
                         </div>

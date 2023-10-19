@@ -38,9 +38,11 @@ session_start();
                                 <th>Codigo</th>
                                 <th>Material</th>
                                 <th>Cant</th>
+                                <th>Existencia</th>
                                 <th>Unidad</th>
                                 <th>Responsable</th>
                                 <th>Categoria</th>
+                                <th>Status</th>
                                 <th>Fecha</th>
                                 <th>Acciones.</th>
                             </tr>
@@ -56,9 +58,11 @@ session_start();
                                     <td><?php echo $fila['codigo']; ?></td>
                                     <td><?php echo $fila['descripcion']; ?></td>
                                     <td><?php echo $fila['cantidad']; ?></td>
+                                    <td><?php echo $fila['existencia']; ?></td>
                                     <td><?php echo $fila['unidad']; ?></td>
                                     <td><?php echo $fila['id_profesor']; ?></td>
                                     <td><?php echo $fila['id_categoria']; ?></td>
+                                    <td><?php echo $fila['status']; ?></td>
                                     <td><?php echo $fila['fecha']; ?></td>
                                     <td>
                                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editar<?php echo $fila['id']; ?>">

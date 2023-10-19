@@ -38,6 +38,15 @@
 
                         <div class="col-sm-6">
                             <div class="mb-3">
+                                <label for="">Existencia</label>
+                                <input type="number" name="existencia" id="existencia" class="form-control" value="<?php echo $fila['existencia']; ?>" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
                                 <label for="password">Unidad</label><br>
                                 <select name="unidad" id="unidad" class="form-control">
 
@@ -48,9 +57,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="password">Personal Responsable</label><br>
@@ -70,7 +77,9 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="password">Categoria</label><br>
@@ -87,6 +96,20 @@
                                     }
 
                                     ?>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                            <label for="password">Status</label><br>
+                                <select name="status" id="status" class="form-control">
+
+                                    <option <?php echo $fila['status'] === 'Disponible' ? "selected='selected' " : "" ?> value="Disponible">Disponible</option>
+                                    <option <?php echo $fila['status'] === 'No Disponible' ? "selected='selected' " : "" ?> value="No Disponible">No Disponible</option>
+                                    <option <?php echo $fila['status'] === 'Prestados' ? "selected='selected' " : "" ?> value="Prestados">Prestados</option>
+
                                 </select>
                             </div>
                         </div>
