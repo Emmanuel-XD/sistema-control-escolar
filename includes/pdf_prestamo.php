@@ -88,8 +88,9 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'B', 8);
         $this->SetX(12);
 
+        $this->Cell(14, 10, '#ID', 0, 0, 'L', 0);
         $this->Cell(43, 10, 'Material Solicitado', 0, 0, 'L', 0);
-        $this->Cell(12, 10, 'Cant', 0, 0, 'L', 0);
+        $this->Cell(20, 10, 'Cant', 0, 0, 'L', 0);
         $this->Cell(25, 10, 'Fecha Solicitada', 0, 0, 'L', 0);
         $this->Cell(25, 10, 'Fecha Devuelta', 0, 0, 'L', 0);
         $this->Cell(25, 10, 'Hora Inicio', 0, 0, 'L', 0);
@@ -181,8 +182,10 @@ while ($row = $resultado->fetch_assoc()) {
 
     $pdf->SetX(12);
 
+    
+    $pdf->Cell(14, 10, $row['id'], 0, 0, 'L', 0);
     $pdf->Cell(43, 10, $row['descripcion'], 0, 0, 'L', 0);
-    $pdf->Cell(12, 10, $row['cant'], 0, 0, 'L', 0);
+    $pdf->Cell(20, 10, $row['cant'].'-'.$row['unidad'], 0, 0, 'L', 0);
     $pdf->Cell(25, 10, $row['fecha_slt'], 0, 0, 'L', 0);
     $pdf->Cell(25, 10, $row['fecha_fin'], 0, 0, 'L', 0);
     $pdf->Cell(25, 10, $row['hora_in'], 0, 0, 'L', 0);
