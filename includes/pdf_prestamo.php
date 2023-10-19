@@ -6,7 +6,7 @@ error_reporting(0);
 date_default_timezone_set('America/Mexico_City');
 $fecha = date("Y-m-d ");
 include "db.php";
-extract($_POST);
+extract($_GET);
 
 
 require('../fpdf/fpdf.php');
@@ -141,7 +141,8 @@ include "db.php";
 
 
 
-extract($_POST);
+extract($_GET);
+$id = $_GET['id'];
 $consulta = "SELECT pr.id, pr.id_profesor, pr.id_materia, pr.id_material, pr.fecha_slt, pr.fecha_fin,
 pr.hora_in, pr.hora_fin, pr.cant, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, m.materia, i.descripcion, i.unidad 
 FROM prestamos pr INNER JOIN profesores p ON pr.id_profesor = p.id INNER JOIN materias m ON pr.id_materia = m.id 
