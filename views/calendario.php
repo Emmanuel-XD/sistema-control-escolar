@@ -166,7 +166,7 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                                         <div class="col-sm-6">
                                             <div class="mb-3">
                                                 <label for="start_datetime" class="control-label">Cantidad a Prestar</label>
-                                                <input type="number" name="cant" id="cant" class="form-control">
+                                                <input type="number" name="cant" id="cant" class="form-control" required>
                                             </div>
                                         </div>
 
