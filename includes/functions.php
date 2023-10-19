@@ -161,6 +161,7 @@ function insert_prest()
 {
     global $conexion;
     extract($_POST);
+    $hora_fin = $_POST['hora_fin'];
     include "db.php";
 
     if ($cant == 0) {
