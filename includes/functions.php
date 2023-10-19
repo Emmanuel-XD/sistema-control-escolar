@@ -153,31 +153,63 @@ function insert_mat()
 
     echo json_encode($response);
 }
-
 function insert_prest()
 {
     global $conexion;
     extract($_POST);
     include "db.php";
 
-    $consulta = "INSERT INTO prestamos (id_profesor,id_materia,id_material,fecha_slt,fecha_fin,hora_in, hora_fin,status) 
-    VALUES ('$id_profesor','$id_materia','$id_material','$fecha_slt', '$fecha_fin','$hora_in','$hora_fin','$status')";
-    $resultado = mysqli_query($conexion, $consulta);
+    $consult = "SELECT cantidad FROM inventario WHERE id = $id_material";
+    $results = mysqli_query($conexion, $consult);
 
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
+    if ($row_cantidad = mysqli_fetch_assoc($results)) {
+        $cantDisponible = $row_cantidad['cantidad'];
+
+        if ($cantDisponible >= $cant) {
+            $consulta = "INSERT INTO prestamos (id_profesor, id_materia, id_material, fecha_slt, fecha_fin, hora_in, hora_fin, cant, status) 
+                VALUES ('$id_profesor', '$id_materia', '$id_material', '$fecha_slt', '$fecha_fin', '$hora_in', '$hora_fin', '$cant', '$status')";
+
+            $resultado = mysqli_query($conexion, $consulta);
+
+            if ($resultado) {
+                // update al campo cantidad en el invenatrio
+                $nueva_cantidad = $cantDisponible - $cant;
+                $sql = "UPDATE inventario SET cantidad = $nueva_cantidad WHERE id = $id_material";
+                mysqli_query($conexion, $sql);
+                $response = array(
+                    'status' => 'success',
+                    'message' => 'El préstamo se realizó con éxito'
+                );
+            } else {
+                $response = array(
+                    'status' => 'error',
+                    'message' => 'Ocurrió un error al guardar el préstamo'
+                );
+            }
+        } else {
+            if ($cantDisponible == 0) {
+                $response = array(
+                    'status' => 'stock_agotado',
+                    'message' => 'El material que solicitas para el préstamo se encuentra agotado en el inventario '
+                );
+            } else {
+                $response = array(
+                    'status' => 'cantidad_superada',
+                    'message' => 'La cantidad que solicitas es mayor a la existencia en el inventario'
+                );
+            }
+        }
     } else {
         $response = array(
             'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
+            'message' => 'Error al verificar la cantidad en el inventario'
         );
     }
 
     echo json_encode($response);
 }
+
+
 
 function insert_per()
 {
