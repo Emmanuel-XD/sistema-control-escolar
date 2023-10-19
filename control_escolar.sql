@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-10-2023 a las 01:04:20
+-- Tiempo de generación: 19-10-2023 a las 18:30:53
 -- Versión del servidor: 10.4.20-MariaDB
 -- Versión de PHP: 8.0.8
 
@@ -188,9 +188,11 @@ CREATE TABLE `inventario` (
   `codigo` varchar(50) NOT NULL,
   `descripcion` varchar(150) NOT NULL,
   `cantidad` int(50) NOT NULL,
+  `existencia` int(50) NOT NULL,
   `unidad` varchar(150) NOT NULL,
   `id_profesor` int(11) NOT NULL,
   `id_categoria` int(11) NOT NULL,
+  `status` varchar(100) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -198,8 +200,9 @@ CREATE TABLE `inventario` (
 -- Volcado de datos para la tabla `inventario`
 --
 
-INSERT INTO `inventario` (`id`, `codigo`, `descripcion`, `cantidad`, `unidad`, `id_profesor`, `id_categoria`, `fecha`) VALUES
-(1, '01', 'Proyector Epson', 5, 'UND', 2, 1, '2023-10-17 21:39:51');
+INSERT INTO `inventario` (`id`, `codigo`, `descripcion`, `cantidad`, `existencia`, `unidad`, `id_profesor`, `id_categoria`, `status`, `fecha`) VALUES
+(1, '01', 'Proyector Epson', 5, 4, 'UND', 2, 1, 'Disponible', '2023-10-17 21:39:51'),
+(2, '02', 'Cable HDMI', 5, 4, 'PZA', 1, 1, 'Disponible', '2023-10-19 15:45:11');
 
 -- --------------------------------------------------------
 
@@ -298,10 +301,8 @@ CREATE TABLE `prestamos` (
 --
 
 INSERT INTO `prestamos` (`id`, `id_profesor`, `id_materia`, `id_material`, `fecha_slt`, `fecha_fin`, `hora_in`, `hora_fin`, `cant`, `status`, `fecha_registrado`) VALUES
-(6, 2, 9, 1, '2023-10-18', '2023-10-21', '10:46:00', '01:46:00', 1, 'No Devuelto', '2023-10-18 22:59:59'),
-(7, 2, 15, 1, '2023-10-10', '2023-10-14', '10:00:00', '11:00:00', 1, 'Aprobado', '2023-10-18 21:58:57'),
-(8, 1, 18, 1, '2023-10-18', '2023-10-25', '11:00:00', '11:30:00', 1, 'Rechazado', '2023-10-18 22:59:36'),
-(9, 2, 24, 1, '2023-10-26', '2023-10-28', '12:00:00', '12:30:00', 1, 'Aprobado', '2023-10-18 22:59:25');
+(30, 2, 18, 2, '2023-10-23', '2023-10-27', '11:20:00', '00:20:00', 1, 'Solicitar', '2023-10-19 16:19:13'),
+(33, 1, 1, 1, '2023-10-19', '2023-10-21', '00:27:00', '03:27:00', 1, 'Aprobado', '2023-10-19 16:27:23');
 
 -- --------------------------------------------------------
 
@@ -493,7 +494,7 @@ ALTER TABLE `grados`
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -517,7 +518,7 @@ ALTER TABLE `permisos`
 -- AUTO_INCREMENT de la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `profesores`
