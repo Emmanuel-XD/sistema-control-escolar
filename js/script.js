@@ -112,10 +112,10 @@ $(document).ready(function () {
                         text: response.message,
                         icon: 'warning',
                     });
-                } else {
+                } else if (response.status === 'error') { // Maneja el caso de cantidad igual a 0
                     swal.fire({
                         title: 'Error',
-                        text: 'Ocurrió un error inesperado',
+                        text: response.message,
                         icon: 'error',
                     });
                 }
