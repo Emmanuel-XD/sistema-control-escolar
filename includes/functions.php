@@ -373,36 +373,34 @@ function devolver_cant()
     require_once("db.php");
     extract($_POST);
 
-    // Verifica si la variable de confirmación está presente en los datos POST
     if (isset($_POST['confirmacion']) && $_POST['confirmacion'] === 'confirmado') {
-        // Primero, obtén la cantidad que se va a devolver
-        $consulta_prestamo = "SELECT * FROM prestamos WHERE id = $id";
-        $resultado_prestamo = mysqli_query($conexion, $consulta_prestamo);
-        $row_prestamo = mysqli_fetch_assoc($resultado_prestamo);
 
-        $cantidad_a_devolver = $row_prestamo['cant'];
+        $consulta = "SELECT * FROM prestamos WHERE id = $id";
+        $resultado = mysqli_query($conexion, $consulta);
+        $row_prestamo = mysqli_fetch_assoc($resultado);
+
+        $cant_dev = $row_prestamo['cant'];
         $id_material = $row_prestamo['id_material'];
 
-        // Obtén la cantidad actual en el inventario
-        $consulta_inventario = "SELECT existencia FROM inventario WHERE id = $id_material";
-        $resultado_inventario = mysqli_query($conexion, $consulta_inventario);
-        $row_inventario = mysqli_fetch_assoc($resultado_inventario);
+        $consult = "SELECT existencia FROM inventario WHERE id = $id_material";
+        $result = mysqli_query($conexion, $consult);
+        $row_inventario = mysqli_fetch_assoc($result);
         $cantDisponible = $row_inventario['existencia'];
 
-        // Verifica si hay suficiente cantidad en el inventario
-        if ($cantDisponible >= $cantidad_a_devolver) {
-            // Realiza la actualización y eliminación en el servidor dentro de una transacción
+
+        if ($cantDisponible >= $cant_dev) {
+
             mysqli_begin_transaction($conexion);
 
-            $nueva_cantidad_inventario = $cantDisponible + $cantidad_a_devolver;
-            $actualizar_inventario = "UPDATE inventario SET existencia = $nueva_cantidad_inventario WHERE id = $id_material";
-            $resultado_actualizar_inventario = mysqli_query($conexion, $actualizar_inventario);
+            $newCantDev = $cantDisponible + $cant_dev;
+            $sql = "UPDATE inventario SET existencia = $newCantDev WHERE id = $id_material";
+            $resultados = mysqli_query($conexion, $sql);
 
-            $eliminar_registro = "DELETE FROM prestamos WHERE id = $id";
-            $resultado_eliminar_registro = mysqli_query($conexion, $eliminar_registro);
+            $SQL = "DELETE FROM prestamos WHERE id = $id";
+            $respuesta = mysqli_query($conexion, $SQL);
 
-            if ($resultado_actualizar_inventario && $resultado_eliminar_registro) {
-                // Si ambas consultas fueron exitosas, confirma la transacción
+            if ($resultados && $respuesta) {
+
                 mysqli_commit($conexion);
 
                 $response = array(
@@ -410,7 +408,7 @@ function devolver_cant()
                     'message' => 'El material fue devuelto y borrado del historial'
                 );
             } else {
-                // Si hubo un error en alguna de las consultas, revierte la transacción
+
                 mysqli_rollback($conexion);
 
                 $response = array(
@@ -425,7 +423,7 @@ function devolver_cant()
             );
         }
     } else {
-        // El usuario no confirmó la devolución
+
         $response = array(
             'status' => 'confirmacion',
             'message' => 'Confirmar la devolución'
