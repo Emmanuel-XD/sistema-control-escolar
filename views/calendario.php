@@ -58,7 +58,12 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
             float: none;
             margin: 0 auto;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
+
 
     <body class="bg-light">
 
@@ -223,9 +228,6 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                     </div>
                 </div>
 
-
-                <!-- Event Details Modal -->
-
                 <?php
                 $consulta = $conexion->query("SELECT pr.id, pr.id_profesor, pr.id_materia, pr.id_material, pr.fecha_slt, pr.fecha_fin,
                 pr.hora_in, pr.hora_fin, pr.cant, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, m.materia, i.descripcion, i.unidad 
@@ -242,12 +244,12 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                 if (isset($conexion)) $conexion->close();
                 ?>
 
+                <!-- Event Details Modal -->
                 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header bg-primary text-white">
                                 <h3 class="modal-title" id="exampleModalLabel">Datos De Solicitud</h3>
-
                             </div>
                             <div class="modal-body">
                                 <div class="container-fluid">
@@ -277,63 +279,42 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                                             <dt class="text-muted">Hora De Regreso:</dt>
                                             <dd id="hora_fin" class=""></dd>
 
-                                            <dt class="text-muted">Pesonal Escolar:</dt>
+                                            <dt class="text-muted">Personal Escolar:</dt>
                                             <dd id="nombres" class=""></dd>
 
                                             <dt class="text-muted">Estado:</dt>
                                             <dd id="status" class=""></dd>
 
+                                            <dt class="text-muted hidden">NumSolicitud#:</dt>
+                                            <dd id="id" class="hidden"><?php echo $fila['id']; ?></dd>
 
                                         </div>
                                     </dl>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                            <input type="hidden" id="id" value="<?php echo $fila['id']; ?>">
 
-                                <button type="button" class="btn btn-danger" onclick="generarPDF()">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-id="<?php echo $fila['id']; ?>" onclick="generarPDF(this)">
                                     PDF <i class="fa fa-file"></i>
                                 </button>
 
-
-
-
-
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-
                             </div>
                         </div>
                     </div>
                 </div>
 
+
     </body>
     <script>
         function generarPDF() {
-   
-            var id = $("#id").val();
-
-        
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '../includes/pdf_prestamo.php';
-            form.target = '_blank'; 
-
-        
-            var idInput = document.createElement('input');
-            idInput.type = 'hidden';
-            idInput.name = 'id';
-            idInput.value = id;
-            form.appendChild(idInput);
-
-            document.body.appendChild(form);
-
-   
-            form.submit();
-
-     
-            document.body.removeChild(form);
+            var id = $('#id').text(); // Obtén el id del elemento en el modal
+            var url = `../includes/pdf_prestamo.php?id=${id}`;
+            window.open(url, '_blank');
         }
     </script>
+
+
     <script>
         var fila = $.parseJSON('<?= json_encode($array) ?>')
     </script>
