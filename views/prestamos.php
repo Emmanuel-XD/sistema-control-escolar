@@ -71,7 +71,7 @@ session_start();
                                                 <i class="fa fa-chevron-circle-left"></i>
                                             </button>
 
-                                            <a href="../includes/fichaPDF.php?id=<?php echo $fila['id']; ?>" class="btn btn-danger">
+                                            <a href="../includes/pdf_prestamo.php?id=<?php echo $fila['id']; ?>" target="_blank" class="btn btn-danger">
                                                 <i class="fa fa-file" aria-hidden="true"></i>
                                         </form>
                                     </td>
