@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var _details = $('#modal-form');
             var id = info.event.id;
             if (!!fila[id]) {
+                _details.find('#id').text(fila[id].id);
                 _details.find('#fecha_slt').text(fila[id].fecha_slt);
                 _details.find('#fecha_fin').text(fila[id].fecha_fin);
                 var nombreCompleto = fila[id].nombres + ' ' + fila[id].apellidos;
@@ -130,3 +131,4 @@ $(document).ready(function () {
         });
     });
 });
+
