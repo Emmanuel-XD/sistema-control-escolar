@@ -79,6 +79,10 @@ if (isset($_POST['accion'])) {
         case 'editar_user':
             editar_user();
             break;
+
+        case 'devolver_cant':
+            devolver_cant();
+            break;
     }
 }
 
@@ -346,7 +350,6 @@ function insert_alumno()
     echo json_encode($response);
 }
 
-
 function editar_profe()
 {
     require_once("db.php");
@@ -364,6 +367,75 @@ function editar_profe()
         echo json_encode("error");
     }
 }
+
+function devolver_cant()
+{
+    require_once("db.php");
+    extract($_POST);
+
+    // Verifica si la variable de confirmación está presente en los datos POST
+    if (isset($_POST['confirmacion']) && $_POST['confirmacion'] === 'confirmado') {
+        // Primero, obtén la cantidad que se va a devolver
+        $consulta_prestamo = "SELECT * FROM prestamos WHERE id = $id";
+        $resultado_prestamo = mysqli_query($conexion, $consulta_prestamo);
+        $row_prestamo = mysqli_fetch_assoc($resultado_prestamo);
+
+        $cantidad_a_devolver = $row_prestamo['cant'];
+        $id_material = $row_prestamo['id_material'];
+
+        // Obtén la cantidad actual en el inventario
+        $consulta_inventario = "SELECT existencia FROM inventario WHERE id = $id_material";
+        $resultado_inventario = mysqli_query($conexion, $consulta_inventario);
+        $row_inventario = mysqli_fetch_assoc($resultado_inventario);
+        $cantDisponible = $row_inventario['existencia'];
+
+        // Verifica si hay suficiente cantidad en el inventario
+        if ($cantDisponible >= $cantidad_a_devolver) {
+            // Realiza la actualización y eliminación en el servidor dentro de una transacción
+            mysqli_begin_transaction($conexion);
+
+            $nueva_cantidad_inventario = $cantDisponible + $cantidad_a_devolver;
+            $actualizar_inventario = "UPDATE inventario SET existencia = $nueva_cantidad_inventario WHERE id = $id_material";
+            $resultado_actualizar_inventario = mysqli_query($conexion, $actualizar_inventario);
+
+            $eliminar_registro = "DELETE FROM prestamos WHERE id = $id";
+            $resultado_eliminar_registro = mysqli_query($conexion, $eliminar_registro);
+
+            if ($resultado_actualizar_inventario && $resultado_eliminar_registro) {
+                // Si ambas consultas fueron exitosas, confirma la transacción
+                mysqli_commit($conexion);
+
+                $response = array(
+                    'status' => 'success',
+                    'message' => 'El material fue devuelto y borrado del historial'
+                );
+            } else {
+                // Si hubo un error en alguna de las consultas, revierte la transacción
+                mysqli_rollback($conexion);
+
+                $response = array(
+                    'status' => 'error',
+                    'message' => 'Ocurrió un error al devolver el material'
+                );
+            }
+        } else {
+            $response = array(
+                'status' => 'error',
+                'message' => 'Error al verificar la cantidad en el inventario'
+            );
+        }
+    } else {
+        // El usuario no confirmó la devolución
+        $response = array(
+            'status' => 'confirmacion',
+            'message' => 'Confirmar la devolución'
+        );
+    }
+
+    echo json_encode($response);
+}
+
+
 
 function editar_inv()
 {
