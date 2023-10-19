@@ -223,6 +223,25 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                     </div>
                 </div>
 
+
+                <!-- Event Details Modal -->
+
+                <?php
+                $consulta = $conexion->query("SELECT pr.id, pr.id_profesor, pr.id_materia, pr.id_material, pr.fecha_slt, pr.fecha_fin,
+                pr.hora_in, pr.hora_fin, pr.cant, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, m.materia, i.descripcion, i.unidad 
+                FROM prestamos pr INNER JOIN profesores p ON pr.id_profesor = p.id INNER JOIN materias m ON pr.id_materia = m.id 
+                INNER JOIN inventario i ON pr.id_material = i.id");
+                $array = [];
+                foreach ($consulta->fetch_all(MYSQLI_ASSOC) as $fila) {
+                    $fila['sdate'] = date("F d, Y h:i A", strtotime($fila['fecha_slt']));
+                    $fila['edate'] = date("F d, Y h:i A", strtotime($fila['fecha_fin']));
+                    $array[$fila['id']] = $fila;
+                }
+                ?>
+                <?php
+                if (isset($conexion)) $conexion->close();
+                ?>
+
                 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -264,36 +283,57 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
                                             <dt class="text-muted">Estado:</dt>
                                             <dd id="status" class=""></dd>
 
+
                                         </div>
                                     </dl>
                                 </div>
                             </div>
                             <div class="modal-footer">
+                            <input type="hidden" id="id" value="<?php echo $fila['id']; ?>">
+
+                                <button type="button" class="btn btn-danger" onclick="generarPDF()">
+                                    PDF <i class="fa fa-file"></i>
+                                </button>
+
+
+
+
+
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
-
-                <!-- Event Details Modal -->
-
-                <?php
-                $consulta = $conexion->query("SELECT pr.id, pr.id_profesor, pr.id_materia, pr.id_material, pr.fecha_slt, pr.fecha_fin,
-                pr.hora_in, pr.hora_fin, pr.cant, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, m.materia, i.descripcion, i.unidad 
-                FROM prestamos pr INNER JOIN profesores p ON pr.id_profesor = p.id INNER JOIN materias m ON pr.id_materia = m.id 
-                INNER JOIN inventario i ON pr.id_material = i.id");
-                $array = [];
-                foreach ($consulta->fetch_all(MYSQLI_ASSOC) as $fila) {
-                    $fila['sdate'] = date("F d, Y h:i A", strtotime($fila['fecha_slt']));
-                    $fila['edate'] = date("F d, Y h:i A", strtotime($fila['fecha_fin']));
-                    $array[$fila['id']] = $fila;
-                }
-                ?>
-                <?php
-                if (isset($conexion)) $conexion->close();
-                ?>
     </body>
+    <script>
+        function generarPDF() {
+   
+            var id = $("#id").val();
+
+        
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '../includes/pdf_prestamo.php';
+            form.target = '_blank'; 
+
+        
+            var idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'id';
+            idInput.value = id;
+            form.appendChild(idInput);
+
+            document.body.appendChild(form);
+
+   
+            form.submit();
+
+     
+            document.body.removeChild(form);
+        }
+    </script>
     <script>
         var fila = $.parseJSON('<?= json_encode($array) ?>')
     </script>
