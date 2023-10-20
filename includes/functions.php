@@ -461,20 +461,30 @@ function editar_inv()
 function editar_datos()
 {
     require_once("db.php");
-
     extract($_POST);
 
-    $consulta = "UPDATE settings SET instituto = '$instituto', direccion = '$direccion', clave = '$clave', 
-    tema = '$tema' WHERE id = '$id' ";
+    // Verificar si se ha seleccionado una nueva imagen
+    if (!empty($_FILES['imagen']['name'])) {
+        $imagen_tmp = $_FILES['imagen']['tmp_name'];
+        $imagen_ruta = 'images/' . $_FILES['imagen']['name'];
+        move_uploaded_file($imagen_tmp, $imagen_ruta);
+
+        // Actualizar la ruta de la imagen en la base de datos
+        $consulta = "UPDATE settings SET instituto = '$instituto', direccion = '$direccion', clave = '$clave', tema = '$tema',
+         imagen = '$imagen_ruta' WHERE id = '$id' ";
+    } else {
+        // No se ha seleccionado una nueva imagen, actualizar solo los datos sin cambiar la imagen
+        $consulta = "UPDATE settings SET instituto = '$instituto', direccion = '$direccion', clave = '$clave', tema = '$tema' WHERE id = '$id' ";
+    }
+
     $resultado = mysqli_query($conexion, $consulta);
-
-
-    if ($resultado) {
-        echo json_encode("correcto");
+    if ($resultado === true) {
+        echo json_encode("updated");
     } else {
         echo json_encode("error");
     }
 }
+
 
 function editar_alum()
 {

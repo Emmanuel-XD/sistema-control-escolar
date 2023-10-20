@@ -54,7 +54,7 @@ require_once "db.php";
     <div id="wrapper">
 
         <?php
-       
+
         $consulta = mysqli_query($conexion, "SELECT * FROM settings ");
 
         while ($fila = mysqli_fetch_array($consulta)) {
@@ -90,7 +90,7 @@ require_once "db.php";
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fa fa-graduation-cap"></i>
                     <span>Alumnos</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -109,7 +109,7 @@ require_once "db.php";
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class=" nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
+                <i class="fa fa-user" aria-hidden="true"></i>
                     <span>Profesores</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
@@ -188,7 +188,7 @@ require_once "db.php";
                 <!-- Nav Item - Tables -->
                 <li class="nav-item">
                     <a class="nav-link" href="../views/usuarios.php">
-                        <i class="fas fa-fw fa-table"></i>
+                        <i class="fa fa-users" aria-hidden="true"></i>
                         <span>Usuarios</span></a>
                 </li>
             <?php }

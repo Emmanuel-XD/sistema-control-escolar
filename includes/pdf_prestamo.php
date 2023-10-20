@@ -5,7 +5,7 @@ error_reporting(0);
 
 date_default_timezone_set('America/Mexico_City');
 $fecha = date("Y-m-d ");
-include "db.php";
+
 extract($_GET);
 
 
@@ -28,18 +28,17 @@ class PDF extends FPDF
         // Título
         $this->setY(10);
         $this->setX(45);
-
-
-        $this->SetFont('Arial', 'B', 14);
-        $this->setY(10);
-        $this->SetX(75);
-
-        // $this->image('./img/logo.jpg', 5, 4, 35);  // X, Y, Tamaño
-        // $this->image('./img/sistemas.png', 170, 0, 50);  // X, Y, Tamaño
         include("db.php");
         $consulta = mysqli_query($conexion, "SELECT * FROM settings ");
 
         while ($fila = mysqli_fetch_array($consulta)) {
+            $this->SetFont('Arial', 'B', 14);
+            $this->setY(10);
+            $this->SetX(75);
+
+            $this->image($fila['imagen'], 5, 4, 40);  // X, Y, Tamaño
+            // $this->image('./img/sistemas.png', 170, 0, 50);  // X, Y, Tamaño
+
             $this->Cell(70, 10,  utf8_decode($fila['instituto']), 0, 1, 'C');
 
             $this->SetFont('Arial', '', 10);
