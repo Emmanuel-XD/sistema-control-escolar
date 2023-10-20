@@ -80,6 +80,10 @@ if (isset($_POST['accion'])) {
             editar_user();
             break;
 
+        case 'editar_datos':
+            editar_datos();
+            break;
+
         case 'devolver_cant':
             devolver_cant();
             break;
@@ -446,6 +450,24 @@ function editar_inv()
     $consulta = "UPDATE inventario SET codigo = '$codigo', descripcion = '$descripcion', cantidad = '$cantidad', existencia = '$existencia',
     unidad = '$unidad', id_profesor = '$id_profesor', id_categoria='$id_categoria', status='$status' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_datos()
+{
+    require_once("db.php");
+
+    extract($_POST);
+
+    $consulta = "UPDATE settings SET instituto = '$instituto', direccion = '$direccion', clave = '$clave', 
+    tema = '$tema' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
 
     if ($resultado) {
         echo json_encode("correcto");

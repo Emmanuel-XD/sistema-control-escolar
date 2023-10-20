@@ -36,15 +36,18 @@ class PDF extends FPDF
 
         // $this->image('./img/logo.jpg', 5, 4, 35);  // X, Y, Tamaño
         // $this->image('./img/sistemas.png', 170, 0, 50);  // X, Y, Tamaño
+        include("db.php");
+        $consulta = mysqli_query($conexion, "SELECT * FROM settings ");
 
-        $this->Cell(70, 10, 'NOMBRE DE INSTITUCION', 0, 1, 'C');
+        while ($fila = mysqli_fetch_array($consulta)) {
+            $this->Cell(70, 10,  utf8_decode($fila['instituto']), 0, 1, 'C');
 
-        $this->SetFont('Arial', 'B', 12);
-        $this->setY(20);
-        $this->setX(80);
+            $this->SetFont('Arial', '', 10);
+            $this->setY(20);
+            $this->setX(80);
 
-        //$this->Cell(60, 4, 'CLASE SOLICITADA', 0, 1, 'C');
-
+            $this->Cell(60, 4,  utf8_decode($fila['direccion']), 0, 1, 'C');
+        }
         $this->SetFont('Arial', 'B', 12);
         $this->setY(35);
         $this->setX(80);
@@ -95,7 +98,7 @@ class PDF extends FPDF
         $this->Cell(25, 10, 'Fecha Devuelta', 0, 0, 'L', 0);
         $this->Cell(25, 10, 'Hora Inicio', 0, 0, 'L', 0);
         $this->Cell(20, 10, 'Hora Fin', 0, 0, 'L', 0);
-        $this->Cell(30, 10, 'Estado', 0,1, 'L', 0);
+        $this->Cell(30, 10, 'Estado', 0, 1, 'L', 0);
     }
 
     // Pie de página
@@ -182,10 +185,10 @@ while ($row = $resultado->fetch_assoc()) {
 
     $pdf->SetX(12);
 
-    
+
     $pdf->Cell(14, 10, $row['id'], 0, 0, 'L', 0);
     $pdf->Cell(43, 10, $row['descripcion'], 0, 0, 'L', 0);
-    $pdf->Cell(20, 10, $row['cant'].'-'.$row['unidad'], 0, 0, 'L', 0);
+    $pdf->Cell(20, 10, $row['cant'] . '-' . $row['unidad'], 0, 0, 'L', 0);
     $pdf->Cell(25, 10, $row['fecha_slt'], 0, 0, 'L', 0);
     $pdf->Cell(25, 10, $row['fecha_fin'], 0, 0, 'L', 0);
     $pdf->Cell(25, 10, $row['hora_in'], 0, 0, 'L', 0);
