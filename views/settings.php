@@ -1,11 +1,19 @@
 <?php
 
 include "../includes/header.php";
-include "../includes/db.php";
+//include "../includes/db.php";
 $id = $_GET['id'];
 $consulta = "SELECT * FROM settings WHERE id = $id";
 $resultado = mysqli_query($conexion, $consulta);
-$filas = mysqli_fetch_assoc($resultado);
+if ($resultado->num_rows > 0) {
+    foreach ($resultado as $key => $filas) {
+        $ruta_imagen = $filas["imagen"];
+
+?>
+
+<?php
+    }
+}
 ?>
 
 
@@ -23,7 +31,7 @@ $filas = mysqli_fetch_assoc($resultado);
             </div>
 
             <div class="card-body">
-                <form id="editForm<?php echo $filas['id']; ?>" method="POST">
+                <form id="form" enctype="multipart/form-data">
 
                     <div class="form-group">
                         <label for="">Nombre del Sistema</label>
@@ -32,7 +40,7 @@ $filas = mysqli_fetch_assoc($resultado);
 
                     <div class="form-group">
                         <label for="">Nombre de la Institucion</label>
-                        <input type="text" class="form-control" id="instituto" name="instituto" value="<?php echo $filas['instituto']; ?>" required>
+                        <input name="instituto" type="text" data-id="<?php echo $filas['id']; ?>" class="form-control" id="instituto" value="<?php echo $filas['instituto']; ?>">
                     </div>
 
                     <div class="form-group">
@@ -62,6 +70,18 @@ $filas = mysqli_fetch_assoc($resultado);
                     </div>
 
                     <div class="form-group">
+                        <label for="logoImg" class="col-md-4 col-lg-3 col-form-label">Logo de Institucion</label>
+                        <div class="col-md-8 col-lg-9">
+                            <img src="../includes/<?php echo $ruta_imagen; ?>" width="100px" alt="logo">
+                            <div class="pt-2">
+                                <input type="file" class="form-control" name="imagen" id="imagen">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
                         <label for="">Modalidad</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="4">
@@ -81,13 +101,14 @@ $filas = mysqli_fetch_assoc($resultado);
                                 Año Completo
                             </label>
                         </div>
+
+
                     </div>
                     <br>
-                    <input type="hidden" name="accion" value="editar_datos">
-                    <input type="hidden" name="id" value="<?php echo $filas['id']; ?>">
+
                     <center>
                         <div class="form-group">
-                            <button type="button" class="btn btn-primary" onclick="editForm(<?php echo $filas['id']; ?>)">Guardar</button>
+                            <button type="button" id="submitedit" class="btn btn-primary">Guardar</button>
                         </div>
                     </center>
             </div>
@@ -97,54 +118,69 @@ $filas = mysqli_fetch_assoc($resultado);
         </div>
     </div>
     <script>
-        function editForm(id) {
-            var datosFormulario = $("#editForm" + id).serialize();
+        $("#submitedit").click(function(e) {
+            e.preventDefault();
 
-            $.ajax({
-                url: "../includes/functions.php",
-                type: "POST",
-                data: datosFormulario,
-                dataType: "json",
-                success: function(response) {
-                    if (response === "correcto") {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Datos Guardados',
-                            html: 'El registro se ha actualizado correctamente, los datos se estan guardando en <b></b> milliseconds.',
-                            timer: 2000,
-                            timerProgressBar: true,
-                            didOpen: () => {
-                                Swal.showLoading()
-                                const b = Swal.getHtmlContainer().querySelector('b')
-                                timerInterval = setInterval(() => {
-                                    b.textContent = Swal.getTimerLeft()
-                                }, 100)
-                            },
-                            willClose: () => {
-                                clearInterval(timerInterval)
-                            }
-                        }).then((result) => {
-                            /* Read more about handling dismissals below */
-                            if (result.dismiss === Swal.DismissReason.timer) {
-                                location.assign('index.php');
-                            }
-                        })
-                    } else {
-                        Swal.fire({
-                            title: "Error",
-                            text: "Ha ocurrido un error al actualizar el registro",
-                            icon: "error"
-                        });
+            var datos = new FormData();
+            datos.append('accion', 'editar_datos');
+            datos.append('id', $("#instituto").data("id"));
+            datos.append('instituto', $("#instituto").val());
+            datos.append('direccion', $("#direccion").val());
+            datos.append('clave', $("#clave").val());
+            datos.append('tema', $("#tema").val());
+            datos.append('imagen', $("#imagen")[0].files[0]);
+
+            fetch('../includes/functions.php', {
+                    method: 'POST',
+                    body: datos
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud: ' + response.statusText);
                     }
-                },
-                error: function() {
+                    return response.json();
+                })
+                .then(response => {
+                    confirmation(response);
+                })
+                .catch(error => {
+                    console.error(error);
+
+                });
+        });
+
+        function confirmation(r) {
+            if (r) {
+                if (r === "updated") {
+                    let timerInterval;
                     Swal.fire({
-                        title: "Error",
-                        text: "Ha ocurrido un error al comunicarse con el servidor",
-                        icon: "error"
+                        title: 'Datos Guardados',
+                        html: 'La informacion esta siendo guardada en la base de datos en <b></b> segundos...',
+                        timer: 3000,
+                        icon: 'success',
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const b = Swal.getHtmlContainer().querySelector('b');
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft();
+                            }, 100);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    }).then((result) => {
+
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('I was closed by the timer');
+                        }
                     });
+                    setTimeout(function() {
+                        url = "index.php";
+                        $(location).attr('href', url);
+                    }, 3000);
                 }
-            });
+            }
         }
     </script>
 
@@ -159,9 +195,6 @@ $filas = mysqli_fetch_assoc($resultado);
 
     </div>
     <!-- End of Page Wrapper -->
-
-
-
 
 </body>
 
