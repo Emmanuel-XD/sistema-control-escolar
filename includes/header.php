@@ -109,7 +109,7 @@ require_once "db.php";
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class=" nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fa fa-user" aria-hidden="true"></i>
+                    <i class="fa fa-user" aria-hidden="true"></i>
                     <span>Profesores</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
@@ -273,11 +273,12 @@ require_once "db.php";
                             include "db.php";
 
                             $id = $_GET['id'];
-                            $sql = "SELECT  u.id, u.usuario, u.correo, u.password, u.fecha, p.rol FROM users u
+                            $sql = "SELECT  u.id, u.usuario, u.correo, u.password, u.fecha, u.imagen, p.rol FROM users u
                         LEFT JOIN permisos p ON u.id_rol= p.id  WHERE usuario ='$usuario'";
                             $usuarios = mysqli_query($conexion, $sql);
                             if ($usuarios->num_rows > 0) {
                                 foreach ($usuarios as $key => $fila) {
+                                    $ruta_imagen = $fila["imagen"];
                                 }
                             }
                             ?>
@@ -287,11 +288,11 @@ require_once "db.php";
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $_SESSION['usuario']; ?></span>
-                                    <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
+                                    <img class="img-profile rounded-circle" src="<?php echo $ruta_imagen; ?>">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="../views/profile.php">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
                                     </a>

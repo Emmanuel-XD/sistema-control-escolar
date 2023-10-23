@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json');
+
 if (isset($_POST['accion'])) {
     switch ($_POST['accion']) {
 
@@ -82,6 +84,10 @@ if (isset($_POST['accion'])) {
 
         case 'editar_datos':
             editar_datos();
+            break;
+
+        case 'editar_perfil':
+            editar_perfil();
             break;
 
         case 'devolver_cant':
@@ -624,6 +630,34 @@ function editar_user()
         echo json_encode("error");
     }
 }
+
+function editar_perfil()
+{
+    require_once("db.php");
+    extract($_POST);
+
+    // Verificar si se ha seleccionado una nueva imagen
+    if (!empty($_FILES['imagen']['name'])) {
+        $imagen_tmp = $_FILES['imagen']['tmp_name'];
+        $imagen_ruta = '../views/imagen/' . $_FILES['imagen']['name'];
+        move_uploaded_file($imagen_tmp, $imagen_ruta);
+
+        // Actualizar la ruta de la imagen en la base de datos
+        $consulta = "UPDATE users SET usuario = '$usuario', correo = '$correo', imagen = '$imagen_ruta' WHERE id = '$id' ";
+    } else {
+        // No se ha seleccionado una nueva imagen, actualizar solo los datos sin cambiar la imagen
+        $consulta = "UPDATE users SET usuario = '$usuario', correo = '$correo' WHERE id = '$id' ";
+    }
+
+    $resultado = mysqli_query($conexion, $consulta);
+    if ($resultado === true) {
+        echo json_encode("updated");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+
 /*function delete()
 {
     $id = $_POST['id'];
