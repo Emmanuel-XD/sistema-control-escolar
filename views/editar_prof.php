@@ -73,7 +73,7 @@
                             <div class="mb-3">
                                 <label for="password">Especialidad</label><br>
                                 <select name="id_especialidad" id="id_especialidad" class="form-control">
-                                    <option <?php echo $fila['id_especialidad'] === 'id_especialidad' ? 'selected' : ''; ?> value="<?php echo $fila['id_especialidad']; ?>"><?php echo $fila['id_especialidad']; ?></option>
+                                    <option <?php echo $fila['id_especialidad'] === 'id_especialidad' ? 'selected' : ''; ?> value="<?php echo $fila['id_especialidad']; ?>"><?php echo $fila['especialidad']; ?></option>
                                     <?php
 
                                     include("db.php");

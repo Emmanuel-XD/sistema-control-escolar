@@ -38,7 +38,9 @@
                         <tbody>
                             <?php
                             require_once("../includes/db.php");
-                            $result = mysqli_query($conexion, "SELECT * FROM profesores ");
+                            $result = mysqli_query($conexion, "SELECT p.id, p.cedula, p.nombres, p.apellidos, p.correo, p.curp, 
+                            p.edad, p.fecha_na, p.id_especialidad, p.fecha, e.especialidad FROM profesores p INNER JOIN especialidades e 
+                            ON p.id_especialidad = e.id");
                             while ($fila = mysqli_fetch_assoc($result)) :
 
                             ?>
@@ -50,7 +52,7 @@
                                     <td><?php echo $fila['curp']; ?></td>
                                     <td><?php echo $fila['edad']; ?></td>
                                     <td><?php echo $fila['fecha_na']; ?></td>
-                                    <td><?php echo $fila['id_especialidad']; ?></td>
+                                    <td><?php echo $fila['especialidad']; ?></td>
                                     <td><?php echo $fila['fecha']; ?></td>
 
                                     <td>
@@ -66,7 +68,7 @@
                         </tbody>
                     </table>
 
-            
+
 
 
                 </div>
