@@ -72,7 +72,7 @@
                             <div class="mb-3">
                                 <label for="password">Grado</label><br>
                                 <select name="id_grado" id="id_grado" class="form-control" required>
-                                    <option <?php echo $fila['id_grado'] === 'id_grado' ? 'selected' : ''; ?> value="<?php echo $fila['id_grado']; ?>"><?php echo $fila['id_grado']; ?></option>
+                                    <option <?php echo $fila['id_grado'] === 'id_grado' ? 'selected' : ''; ?> value="<?php echo $fila['id_grado']; ?>"><?php echo $fila['descripcion']; ?></option>
                                     <?php
 
                                     include("db.php");
