@@ -49,11 +49,15 @@
                                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editar<?php echo $fila['id']; ?>">
                                             <i class="fa fa-edit "></i>
                                         </button>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#change<?php echo $fila['id']; ?>">
+                                            <i class="fa fa-key"></i>
+                                        </button>
                                         <a href="../includes/eliminar_user.php?id=<?php echo $fila['id'] ?>" class="btn btn-danger btn-del">
                                             <i class="fa fa-trash "></i></a>
                                     </td>
                                 </tr>
                                 <?php include "editar_user.php"; ?>
+                                <?php include "change_password.php"; ?>
                             <?php endwhile; ?>
                         </tbody>
                     </table>
