@@ -93,6 +93,10 @@ if (isset($_POST['accion'])) {
         case 'devolver_cant':
             devolver_cant();
             break;
+
+        case 'change_password':
+            change_password();
+            break;
     }
 }
 
@@ -652,6 +656,22 @@ function editar_perfil()
     $resultado = mysqli_query($conexion, $consulta);
     if ($resultado === true) {
         echo json_encode("updated");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function change_password()
+{
+    require_once("db.php");
+    extract($_POST);
+    $password = trim($_POST['password']);
+    $password = password_hash($password, PASSWORD_DEFAULT, ['cost' => 5]);
+    $consulta = "UPDATE users SET password = '$password' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
     } else {
         echo json_encode("error");
     }
