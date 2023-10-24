@@ -62,7 +62,7 @@
                             <div class="mb-3">
                                 <label for="password">Personal Responsable</label><br>
                                 <select name="id_profesor" id="id_profesor" class="form-control">
-                                    <option <?php echo $fila['id_profesor'] === 'id_profesor' ? 'selected' : ''; ?> value="<?php echo $fila['id_profesor']; ?>"><?php echo $fila['id_profesor']; ?></option>
+                                    <option <?php echo $fila['id_profesor'] === 'id_profesor' ? 'selected' : ''; ?> value="<?php echo $fila['id_profesor']; ?>"><?php echo $fila['nombres'] . ' ' . $fila['apellidos']; ?></option>
                                     <?php
 
                                     include("db.php");
@@ -84,7 +84,7 @@
                             <div class="mb-3">
                                 <label for="password">Categoria</label><br>
                                 <select name="id_categoria" id="id_categoria" class="form-control" required>
-                                    <option <?php echo $fila['id_categoria'] === 'id_categoria' ? 'selected' : ''; ?> value="<?php echo $fila['id_categoria']; ?>"><?php echo $fila['id_categoria']; ?></option>
+                                    <option <?php echo $fila['id_categoria'] === 'id_categoria' ? 'selected' : ''; ?> value="<?php echo $fila['id_categoria']; ?>"><?php echo $fila['categoria']; ?></option>
                                     <?php
 
                                     include("db.php");

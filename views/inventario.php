@@ -51,7 +51,10 @@ session_start();
                         <tbody>
                             <?php
                             require_once("../includes/db.php");
-                            $result = mysqli_query($conexion, "SELECT * FROM inventario ");
+                            $result = mysqli_query($conexion, "SELECT i.id, i.codigo, i.descripcion, i.cantidad, i.existencia, 
+                            i.unidad, i.id_profesor, i.id_categoria, i.status, i.fecha, p.nombres, p.apellidos, c.categoria 
+                            FROM inventario i INNER JOIN profesores p ON i.id_profesor = p.id INNER JOIN categorias c 
+                            ON i.id_categoria = c.id");
                             while ($fila = mysqli_fetch_assoc($result)) :
                             ?>
                                 <tr>
@@ -60,8 +63,8 @@ session_start();
                                     <td><?php echo $fila['cantidad']; ?></td>
                                     <td><?php echo $fila['existencia']; ?></td>
                                     <td><?php echo $fila['unidad']; ?></td>
-                                    <td><?php echo $fila['id_profesor']; ?></td>
-                                    <td><?php echo $fila['id_categoria']; ?></td>
+                                    <td><?php echo $fila['nombres'] . ' ' . $fila['apellidos']; ?></td>
+                                    <td><?php echo $fila['categoria']; ?></td>
                                     <td><?php echo $fila['status']; ?></td>
                                     <td><?php echo $fila['fecha']; ?></td>
                                     <td>
@@ -76,7 +79,7 @@ session_start();
                             <?php endwhile; ?>
                         </tbody>
                     </table>
-                  
+
 
                 </div>
             </div>
