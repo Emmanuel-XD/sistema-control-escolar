@@ -27,22 +27,25 @@
                                 <th>Periodo</th>
                                 <th>Grado</th>
                                 <th>Fecha_registro</th>
-                                <th>Acciones</th>
+                                <th>Acciones.</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <?php
                             require_once("../includes/db.php");
-                            $result = mysqli_query($conexion, "SELECT * FROM materias ");
+                            $result = mysqli_query($conexion, "SELECT m.id, m.materia, m.id_profesor, m.id_periodo, m.id_grado, 
+                            m.fecha, p.nombres, p.apellidos, pe.periodo, pe.date_in, pe.date_fin, g.descripcion FROM materias m 
+                            INNER JOIN profesores p ON m.id_profesor = p.id INNER JOIN periodos pe ON m.id_periodo = pe.id 
+                            INNER JOIN grados g ON m.id_grado = g.id");
                             while ($fila = mysqli_fetch_assoc($result)) :
 
                             ?>
                                 <tr>
                                     <td><?php echo $fila['materia']; ?></td>
-                                    <td><?php echo $fila['id_profesor']; ?></td>
-                                    <td><?php echo $fila['id_periodo']; ?></td>
-                                    <td><?php echo $fila['id_grado']; ?></td>
+                                    <td><?php echo $fila['nombres'] . ' '.$fila['apellidos']; ?></td>
+                                    <td><b><?php echo $fila['periodo']. '</b> ( ' . $fila['date_in'] . ' - ' . $fila['date_fin'] . ')'; ?></td>
+                                    <td><?php echo $fila['descripcion']; ?></td>
                                     <td><?php echo $fila['fecha']; ?></td>
 
                                     <td>

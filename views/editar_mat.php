@@ -24,7 +24,7 @@
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Profesor Asignado</label>
                                 <select name="id_profesor" id="id_profesor" class="form-control">
-                                    <option <?php echo $fila['id_profesor'] === 'id_profesor' ? 'selected' : ''; ?> value="<?php echo $fila['id_profesor']; ?>"><?php echo $fila['id_profesor']; ?></option>
+                                    <option <?php echo $fila['id_profesor'] === 'id_profesor' ? 'selected' : ''; ?> value="<?php echo $fila['id_profesor']; ?>"><?php echo $fila['nombres'] . ' '.$fila['apellidos']; ?></option>
                                     <?php
 
                                     include("db.php");
@@ -46,7 +46,7 @@
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Periodo</label>
                                 <select name="id_periodo" id="id_periodo" class="form-control">
-                                    <option <?php echo $fila['id_periodo'] === 'id_periodo' ? 'selected' : ''; ?> value="<?php echo $fila['id_periodo']; ?>"><?php echo $fila['id_periodo']; ?></option>
+                                    <option <?php echo $fila['id_periodo'] === 'id_periodo' ? 'selected' : ''; ?> value="<?php echo $fila['id_periodo']; ?>"><?php echo $fila['periodo']. '( ' . $fila['date_in'] . ' - ' . $fila['date_fin'] . ')'; ?></option>
                                     <?php
 
                                     include("db.php");
@@ -66,7 +66,7 @@
                             <div class="mb-3">
                                 <label for="username">Grado Asignado</label><br>
                                 <select name="id_grado" id="id_grado" class="form-control" required>
-                                    <option <?php echo $fila['id_grado'] === 'id_grado' ? 'selected' : ''; ?> value="<?php echo $fila['id_grado']; ?>"><?php echo $fila['id_grado']; ?></option>
+                                    <option <?php echo $fila['id_grado'] === 'id_grado' ? 'selected' : ''; ?> value="<?php echo $fila['id_grado']; ?>"><?php echo $fila['descripcion']; ?></option>
                                     <?php
 
                                     include("db.php");
