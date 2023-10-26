@@ -259,7 +259,7 @@ require_once "db.php";
                                     <div id="notificationContent">
                                         <!-- notificaciones -->
                                     </div>
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                    <a class="dropdown-item text-center small text-gray-500" href="../views/prestamos.php">Show All Notifications</a>
                                 </div>
                             </li>
 
