@@ -244,7 +244,6 @@ require_once "db.php";
                                     </form>
                                 </div>
                             </li>
-
                             <!-- Nav Item - Alerts -->
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -255,19 +254,63 @@ require_once "db.php";
                                 <!-- Dropdown - Alerts -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                                     <h6 class="dropdown-header">
-                                        Alerts Center
+                                        CENTRO DE NOTIFICACIONES
                                     </h6>
                                     <div id="notificationContent">
-
+                                        <!-- notificaciones -->
                                     </div>
-
-
-
-
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                 </div>
                             </li>
 
+
+                            <script>
+                                $(document).ready(function() {
+                                    function loadNotifications() {
+                                        $.ajax({
+                                            url: '../includes/verificar.php',
+                                            method: 'POST',
+                                            success: function(response) {
+                                                $('#notificationContent').html(response);
+                                            }
+                                        });
+                                    }
+
+                                    function updateNotificationCount() {
+                                        $.ajax({
+                                            url: '../includes/contar.php',
+                                            type: 'GET',
+                                            success: function(response) {
+                                                $('#count-label').text(response);
+                                                if (response === '0') {
+                                                    $('#count-label').hide();
+                                                } else {
+                                                    $('#count-label').show();
+                                                }
+                                            },
+                                            error: function() {
+                                                Swal.fire({
+                                                    title: 'Error de conexión',
+                                                    text: 'No se pudo cargar las notificaciones. Por favor, verifica tu conexión a internet.',
+                                                    icon: 'info'
+                                                });
+                                            }
+                                        });
+                                    }
+
+                                    loadNotifications();
+                                    updateNotificationCount();
+
+                                    setInterval(function() {
+                                        loadNotifications();
+                                        updateNotificationCount();
+                                    }, 5000);
+                                });
+                            </script>
+
+
+
+                            <!-- End Notificaciones-->
 
                             <?php
                             include "db.php";
