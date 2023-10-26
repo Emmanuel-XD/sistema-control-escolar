@@ -18,7 +18,7 @@ if (mysqli_num_rows($SQL) > 0) {
 
         $notification = array(
             'responsable' => $result['nombres'] . ' ' . $result['apellidos'],
-            'descripcion' => '<br> Realizó el préstamo de <b>' . $result['descripcion'] . '</b> llevándose <b>' . $result['cant'] .  $result['unidad'] . ' </b> con fecha de devolución <b>' . $result['fecha_fin'].'</b>'
+            'descripcion' => '<br> Realizó el préstamo de <i>' . $result['descripcion'] . '</i> llevándose <i>' . $result['cant'] .  $result['unidad'] . ' </i> con fecha de devolución <b>' . $result['fecha_fin'].'</b>'
         );
 
         echo '<a class="dropdown-item d-flex align-items-center" href="#">
