@@ -36,10 +36,6 @@
             </div>
 
             <div class="card-body">
-                <div id="materias-disponibles">
-                    <!-- Aquí se mostrarán los botones de las materias relacionadas con el grado -->
-                </div>
-
 
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -121,7 +117,7 @@
                 }
             });
             const idDayInput = document.getElementById('id_day');
-            idDayInput.value = selectedDays.join(','); // Guarda los IDs de los días como una lista separada por comas
+            idDayInput.value = selectedDays.join(',');
         }
     </script>
 
