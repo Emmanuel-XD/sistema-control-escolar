@@ -185,10 +185,7 @@ function insert_hor()
     global $conexion;
     include "db.php";
 
-    // Obtén los valores del formulario
     $id_grado = $_POST['id_grado'];
-
-    // Verifica que se hayan seleccionado días
     if (isset($_POST['selected_days']) && is_array($_POST['selected_days'])) {
         foreach ($_POST['selected_days'] as $selected_day) {
             if (isset($_POST['id_materia']) && is_array($_POST['id_materia'])) {
@@ -201,7 +198,7 @@ function insert_hor()
                 }
             }
         }
-        echo "Inserción exitosa";
+        echo "Datos insertadosz";
     } else {
         echo "No se han seleccionado días.";
     }
