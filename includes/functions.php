@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 header('Content-Type: application/json');
 
 if (isset($_POST['accion'])) {
@@ -6,6 +9,11 @@ if (isset($_POST['accion'])) {
 
         case 'insert_mat':
             insert_mat();
+            break;
+
+
+        case 'insert_hor':
+            insert_hor();
             break;
 
         case 'insert_grado':
@@ -171,6 +179,36 @@ function insert_mat()
 
     echo json_encode($response);
 }
+
+function insert_hor()
+{
+    global $conexion;
+    include "db.php";
+
+    // Obtén los valores del formulario
+    $id_grado = $_POST['id_grado'];
+
+    // Verifica que se hayan seleccionado días
+    if (isset($_POST['selected_days']) && is_array($_POST['selected_days'])) {
+        foreach ($_POST['selected_days'] as $selected_day) {
+            if (isset($_POST['id_materia']) && is_array($_POST['id_materia'])) {
+                foreach ($_POST['id_materia'] as $id_hour => $id_materia) {
+                    $consulta = "INSERT INTO alumno_horario (id_grado, id_materia, id_hour, id_day) VALUES ('$id_grado', '$id_materia', '$id_hour', '$selected_day')";
+                    $resultado = mysqli_query($conexion, $consulta);
+                    if (!$resultado) {
+                        echo "Error en la consulta: " . mysqli_error($conexion);
+                    }
+                }
+            }
+        }
+        echo "Inserción exitosa";
+    } else {
+        echo "No se han seleccionado días.";
+    }
+}
+
+
+
 function insert_prest()
 {
     global $conexion;
@@ -194,8 +232,8 @@ function insert_prest()
         $cantDisponible = $row_cantidad['existencia'];
 
         if ($cantDisponible >= $cant) {
-            $consulta = "INSERT INTO prestamos (id_profesor, id_materia, id_material, fecha_slt, fecha_fin, hora_in, hora_fin, cant, status) 
-                VALUES ('$id_profesor', '$id_materia', '$id_material', '$fecha_slt', '$fecha_fin', '$hora_in', '$hora_fin', '$cant', '$status')";
+            $consulta = "INSERT INTO prestamos (id_profesor, id_materia, id_material, fecha_slt, fecha_fin, hora_in, hora_fin, cant, status)
+VALUES ('$id_profesor', '$id_materia', '$id_material', '$fecha_slt', '$fecha_fin', '$hora_in', '$hora_fin', '$cant', '$status')";
 
             $resultado = mysqli_query($conexion, $consulta);
 
@@ -295,8 +333,8 @@ function insert_inv()
     extract($_POST);
     include "db.php";
 
-    $consulta = "INSERT INTO inventario (codigo, descripcion, cantidad, existencia, unidad,id_profesor,id_categoria, status) 
-    VALUES ('$codigo', '$descripcion','$cantidad', '$existencia','$unidad','$id_profesor','$id_categoria','$status')";
+    $consulta = "INSERT INTO inventario (codigo, descripcion, cantidad, existencia, unidad,id_profesor,id_categoria, status)
+VALUES ('$codigo', '$descripcion','$cantidad', '$existencia','$unidad','$id_profesor','$id_categoria','$status')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -321,8 +359,8 @@ function insert_prof()
     extract($_POST);
     include "db.php";
 
-    $consulta = "INSERT INTO profesores (cedula, nombres, apellidos,correo,curp,edad,fecha_na, id_especialidad) 
-    VALUES ('$cedula', '$nombres','$apellidos','$correo','$curp','$edad','$fecha_na', '$id_especialidad')";
+    $consulta = "INSERT INTO profesores (cedula, nombres, apellidos,correo,curp,edad,fecha_na, id_especialidad)
+VALUES ('$cedula', '$nombres','$apellidos','$correo','$curp','$edad','$fecha_na', '$id_especialidad')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -346,8 +384,8 @@ function insert_alumno()
     extract($_POST);
     include "db.php";
 
-    $consulta = "INSERT INTO alumnos (nombre, apellido,correo,telefono,curp,edad,birthdate, id_grado) 
-    VALUES ('$nombre','$apellido','$correo','$telefono', '$curp','$edad','$birthdate', '$id_grado')";
+    $consulta = "INSERT INTO alumnos (nombre, apellido,correo,telefono,curp,edad,birthdate, id_grado)
+VALUES ('$nombre','$apellido','$correo','$telefono', '$curp','$edad','$birthdate', '$id_grado')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -373,7 +411,7 @@ function editar_profe()
 
 
     $consulta = "UPDATE profesores SET cedula = '$cedula', nombres = '$nombres', apellidos = '$apellidos', correo = '$correo',
-    curp = '$curp', edad='$edad', fecha_na = '$fecha_na',id_especialidad = '$id_especialidad' WHERE id = '$id' ";
+curp = '$curp', edad='$edad', fecha_na = '$fecha_na',id_especialidad = '$id_especialidad' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -458,7 +496,7 @@ function editar_inv()
 
 
     $consulta = "UPDATE inventario SET codigo = '$codigo', descripcion = '$descripcion', cantidad = '$cantidad', existencia = '$existencia',
-    unidad = '$unidad', id_profesor = '$id_profesor', id_categoria='$id_categoria', status='$status' WHERE id = '$id' ";
+unidad = '$unidad', id_profesor = '$id_profesor', id_categoria='$id_categoria', status='$status' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -481,7 +519,7 @@ function editar_datos()
 
         // Actualizar la ruta de la imagen en la base de datos
         $consulta = "UPDATE settings SET instituto = '$instituto', direccion = '$direccion', clave = '$clave', tema = '$tema',
-         imagen = '$imagen_ruta' WHERE id = '$id' ";
+imagen = '$imagen_ruta' WHERE id = '$id' ";
     } else {
         // No se ha seleccionado una nueva imagen, actualizar solo los datos sin cambiar la imagen
         $consulta = "UPDATE settings SET instituto = '$instituto', direccion = '$direccion', clave = '$clave', tema = '$tema' WHERE id = '$id' ";
@@ -504,7 +542,7 @@ function editar_alum()
 
 
     $consulta = "UPDATE alumnos SET nombre = '$nombre', apellido = '$apellido', correo = '$correo', telefono = '$telefono',
-    curp = '$curp', edad='$edad', birthdate = '$birthdate',id_grado = '$id_grado' WHERE id = '$id' ";
+curp = '$curp', edad='$edad', birthdate = '$birthdate',id_grado = '$id_grado' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -521,9 +559,9 @@ function editar_prest()
     extract($_POST);
 
 
-    $consulta = "UPDATE prestamos SET fecha_slt = '$fecha_slt', fecha_fin = '$fecha_fin', id_profesor = '$id_profesor', 
-    id_material = '$id_material', id_materia = '$id_materia', hora_in='$hora_in', hora_fin = '$hora_fin',cant = '$cant',
-    status = '$status' WHERE id = '$id' ";
+    $consulta = "UPDATE prestamos SET fecha_slt = '$fecha_slt', fecha_fin = '$fecha_fin', id_profesor = '$id_profesor',
+id_material = '$id_material', id_materia = '$id_materia', hora_in='$hora_in', hora_fin = '$hora_fin',cant = '$cant',
+status = '$status' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -540,8 +578,8 @@ function editar_mat()
     extract($_POST);
 
 
-    $consulta = "UPDATE materias SET materia = '$materia', id_profesor = '$id_profesor', 
-    id_periodo = '$id_periodo',id_grado = '$id_grado' WHERE id = '$id' ";
+    $consulta = "UPDATE materias SET materia = '$materia', id_profesor = '$id_profesor',
+id_periodo = '$id_periodo',id_grado = '$id_grado' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -558,8 +596,8 @@ function editar_per()
     extract($_POST);
 
 
-    $consulta = "UPDATE periodos SET periodo = '$periodo', date_in = '$date_in', 
-    date_fin = '$date_fin' WHERE id = '$id' ";
+    $consulta = "UPDATE periodos SET periodo = '$periodo', date_in = '$date_in',
+date_fin = '$date_fin' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -680,33 +718,33 @@ function change_password()
 
 /*function delete()
 {
-    $id = $_POST['id'];
-    require_once("db.php");
+$id = $_POST['id'];
+require_once("db.php");
 
 
-    $consulta = "DELETE FROM materias WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
+$consulta = "DELETE FROM materias WHERE id = '$id' ";
+$resultado = mysqli_query($conexion, $consulta);
 
-    if ($resultado) {
-        echo 'success';
-    } else {
-        echo 'error';
-    }
+if ($resultado) {
+echo 'success';
+} else {
+echo 'error';
+}
 }
 
 function delete_s()
 {
-    $id = $_POST['id'];
-    require_once("db.php");
+$id = $_POST['id'];
+require_once("db.php");
 
 
-    $consulta = "DELETE FROM grados WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
+$consulta = "DELETE FROM grados WHERE id = '$id' ";
+$resultado = mysqli_query($conexion, $consulta);
 
-    if ($resultado) {
-        echo 'success';
-    } else {
-        echo 'error';
-    }
+if ($resultado) {
+echo 'success';
+} else {
+echo 'error';
+}
 }
 */
