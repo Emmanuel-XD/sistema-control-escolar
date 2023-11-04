@@ -140,6 +140,8 @@ require_once "db.php";
                 </div>
             </li>
 
+
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
@@ -153,6 +155,22 @@ require_once "db.php";
                         <a class="collapse-item" href="../views/prestamos.php">Historial de Prestamos</a>
                         <a class="collapse-item" href="../views/calendario.php">Calendario de Eventos</a>
 
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOtss" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Accesos Administrativos</span>
+                </a>
+                <div id="collapseOtss" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Ver Modulos</h6>
+                        <a class="collapse-item" href="../views/cargos.php">Cargos Escolares</a>
+                        <a class="collapse-item" href="../views/pagos.php">Pagos Escolares</a>
+                        <a class="collapse-item" href="../views/historial.php">Historial de Pagos</a>
                     </div>
                 </div>
             </li>
