@@ -112,8 +112,48 @@ if (isset($_POST['accion'])) {
         case 'change_password':
             change_password();
             break;
+
+        case 'savePago':
+            savePago();
+            break;
     }
 }
+
+function savePago()
+{
+    include "db.php";
+    date_default_timezone_set('America/Mexico_City');
+    $currentDate = date("Y-m-d H:i:s");
+    extract($_POST);
+    $descuento = $_POST['descuento'];
+    $pago = $_POST['pago'];
+
+    if ($id_alumno != "undefined" || $id_grado != "undefined") {
+        $consulta = "INSERT INTO pagos (id_alumno, id_grado, id_cargo, descuento, pago, fecha) 
+        VALUES ('$id_alumno', '$id_grado', '$id_cargo', '$descuento', '$pago', '$currentDate')";
+        $resultado = mysqli_query($conexion, $consulta);
+        $id = $conexion->insert_id;
+        if ($resultado) {
+            $response = array(
+                'status' => 'success',
+                'reportId' => $id
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'message' => 'Ocurrió un error inesperado'
+            );
+        }
+    } else {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+    echo json_encode($response);
+}
+
+
 
 
 function insert_esp()
