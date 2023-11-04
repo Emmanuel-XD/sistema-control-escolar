@@ -57,7 +57,7 @@ class PDF extends FPDF
 
         include "db.php";
         extract($_GET);
-        $consulta = "SELECT p.id, p.descuento, p.pago, p.fecha, a.matricula, a.nombre, a.apellido,a.beca, g.descripcion, c.cargo, c.monto
+        $consulta = "SELECT p.id, p.total, p.pago, p.fecha, p.beca, a.matricula, a.nombre, a.apellido, g.descripcion, c.cargo, c.monto
         FROM pagos p INNER JOIN alumnos a ON p.id_alumno = a.id INNER JOIN grados g ON p.id_grado = g.id INNER JOIN cargos c 
         ON p.id_cargo = c.id WHERE p.id = $id;";
 
@@ -126,7 +126,7 @@ class PDF extends FPDF
         $this->setX(12);
         $this->Cell(60, 0, utf8_decode('NOMBRE Y FIRMA '), 0, 1, 'C');
 
-       
+
         //Otra firma
         $this->SetFont('Helvetica', 'B', 7);
         $this->Ln(20);
@@ -153,7 +153,7 @@ class PDF extends FPDF
 include "db.php";
 $id = $_GET['id'];
 
-$consulta = "SELECT p.id, p.descuento, p.pago, p.fecha, a.matricula, a.nombre, a.apellido,a.beca, g.descripcion, c.cargo, c.monto
+$consulta = "SELECT p.id, p.total, p.pago, p.fecha, p.beca,  a.matricula, a.nombre, a.apellido, g.descripcion, c.cargo, c.monto
 FROM pagos p INNER JOIN alumnos a ON p.id_alumno = a.id INNER JOIN grados g ON p.id_grado = g.id INNER JOIN cargos c 
 ON p.id_cargo = c.id WHERE p.id = $id;";
 $resultado = mysqli_query($conexion, $consulta);

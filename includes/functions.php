@@ -125,12 +125,12 @@ function savePago()
     date_default_timezone_set('America/Mexico_City');
     $currentDate = date("Y-m-d H:i:s");
     extract($_POST);
-    $descuento = $_POST['descuento'];
+
     $pago = $_POST['pago'];
 
     if ($id_alumno != "undefined" || $id_grado != "undefined") {
-        $consulta = "INSERT INTO pagos (id_alumno, id_grado, id_cargo, descuento, pago, fecha) 
-        VALUES ('$id_alumno', '$id_grado', '$id_cargo', '$descuento', '$pago', '$currentDate')";
+        $consulta = "INSERT INTO pagos (id_alumno, id_grado, id_cargo, beca, total, pago, fecha) 
+        VALUES ('$id_alumno', '$id_grado', '$id_cargo', '$beca','$descuento', '$pago', '$currentDate')";
         $resultado = mysqli_query($conexion, $consulta);
         $id = $conexion->insert_id;
         if ($resultado) {
