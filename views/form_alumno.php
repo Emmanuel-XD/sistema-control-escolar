@@ -13,6 +13,24 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
+                                <label for="nombre" class="form-label">Matricula</label>
+                                <input type="text" name="matricula" id="matricula" class="form-control" required>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="password">Descuento o Beca %</label>
+                                <input type="number" step="0" min="0" name="beca" id="beca" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
                                 <input type="text" name="nombre" id="nombre" class="form-control" required>
 
@@ -114,12 +132,13 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
-                        alert('Éxito: Los datos se guardaron correctamente');
+                        alert('Éxito: ' + response.message);
                         window.location = "alumnos.php";
                     } else {
-                        alert('Error: Ocurrió un error inesperado');
+                        alert('Error: ' + response.message);
                     }
                 },
+
                 error: function(xhr, status, error) {
                     alert('Error: Ocurrió un error inesperado');
                 }

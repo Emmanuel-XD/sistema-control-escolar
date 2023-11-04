@@ -13,6 +13,24 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
+                                <label for="nombre" class="form-label">Matricula</label>
+                                <input type="text" name="matricula" id="matricula" class="form-control" value="<?php echo $fila['matricula']; ?>" required>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="password">Descuento o Beca %</label><br>
+                                <input type="text" name="beca" id="beca" class="form-control" value="<?php echo $fila['beca']; ?>" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
                                 <input type="text" name="nombre" id="nombre" class="form-control" value="<?php echo $fila['nombre']; ?>" required>
 
