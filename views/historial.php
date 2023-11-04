@@ -35,7 +35,7 @@
                         <tbody>
                             <?php
                             require_once("../includes/db.php");
-                            $result = mysqli_query($conexion, "SELECT p.id, p.descuento, p.pago, p.fecha, a.matricula, a.nombre, a.apellido,a.beca, g.descripcion, c.cargo, c.monto
+                            $result = mysqli_query($conexion, "SELECT p.id, p.total, p.pago, p.fecha,p.beca, a.matricula, a.nombre, a.apellido, g.descripcion, c.cargo, c.monto
                             FROM pagos p INNER JOIN alumnos a ON p.id_alumno = a.id INNER JOIN grados g ON p.id_grado = g.id INNER JOIN cargos c 
                             ON p.id_cargo = c.id");
                             while ($fila = mysqli_fetch_assoc($result)) :
