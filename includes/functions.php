@@ -379,26 +379,37 @@ function insert_alumno()
 {
     global $conexion;
     extract($_POST);
+
     include "db.php";
 
-    $consulta = "INSERT INTO alumnos (nombre, apellido,correo,telefono,curp,edad,birthdate, id_grado)
-VALUES ('$nombre','$apellido','$correo','$telefono', '$curp','$edad','$birthdate', '$id_grado')";
-    $resultado = mysqli_query($conexion, $consulta);
+    $consult = "SELECT matricula FROM alumnos WHERE matricula = '$matricula'";
+    $result = mysqli_query($conexion, $consult);
 
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
-    } else {
+    if (mysqli_num_rows($result) > 0) {
         $response = array(
             'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
+            'message' => 'La matrícula ya está en uso. Por favor, ingrese otra matrícula.'
         );
+    } else {
+        $consulta = "INSERT INTO alumnos (matricula, nombre, apellido, correo, telefono, curp, edad, birthdate, beca, id_grado) VALUES ('$matricula', '$nombre', '$apellido', '$correo', '$telefono', '$curp', '$edad', '$birthdate', '$beca', '$id_grado')";
+        $resultado = mysqli_query($conexion, $consulta);
+
+        if ($resultado) {
+            $response = array(
+                'status' => 'success',
+                'message' => 'Los datos se guardaron correctamente'
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'message' => 'Ocurrió un error inesperado al insertar los datos'
+            );
+        }
     }
 
     echo json_encode($response);
 }
+
 
 function editar_profe()
 {
@@ -538,8 +549,9 @@ function editar_alum()
     extract($_POST);
 
 
-    $consulta = "UPDATE alumnos SET nombre = '$nombre', apellido = '$apellido', correo = '$correo', telefono = '$telefono',
-curp = '$curp', edad='$edad', birthdate = '$birthdate',id_grado = '$id_grado' WHERE id = '$id' ";
+    $consulta = "UPDATE alumnos SET matricula = '$matricula', nombre = '$nombre', apellido = '$apellido', correo = '$correo', 
+    telefono = '$telefono', curp = '$curp', edad='$edad', birthdate = '$birthdate',
+    beca = '$beca',id_grado = '$id_grado' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
