@@ -27,11 +27,11 @@ $(document).ready(function () {
         $.each(data, function (index, item) {
             $('table tbody').append(`
                 <tr>
-                    <td data-id_alumno="${item.id_alumno}" data-id_grado="${item.id_grado}">${item.matricula}</td>
+                    <td data-beca="${item.beca}" data-id_alumno="${item.id_alumno}" data-id_grado="${item.id_grado}">${item.matricula}</td>
                     <td>${item.nombre}</td>
                     <td>${item.apellido}</td>
                     <td>${item.descripcion}</td>
-                    <td>${item.beca}%</td>
+                    <td >${item.beca}%</td>
                 </tr>
             `);
         });
@@ -139,6 +139,7 @@ $(document).ready(function () {
 
             var id_grado = $("#searchResults>tbody>tr:first>td").data("id_grado");
             var id_alumno = $("#searchResults>tbody>tr:first>td").data("id_alumno");
+            var beca = $("#searchResults>tbody>tr:first>td").data("beca");
             var montoText = $("#monto").text();
             var totalText = $("#total").text();
             var descuento = parseFloat(montoText.replace(/[^\d.-]/g, ''));
@@ -147,6 +148,7 @@ $(document).ready(function () {
             console.log("monto:", descuento);
             console.log("total:", pago);
             console.log("id_cargo:", id_cargo);
+            console.log("beca:", beca);
             console.log("id_grado:", id_grado);
             console.log("id_alumno:", id_alumno);
 
@@ -158,6 +160,7 @@ $(document).ready(function () {
                     data.append('id_grado', id_grado);
                     data.append('id_alumno', id_alumno);
                     data.append('id_cargo', id_cargo);
+                    data.append('beca', beca);
                     data.append('descuento', descuento);
                     data.append('pago', pago);
 
