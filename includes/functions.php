@@ -11,13 +11,16 @@ if (isset($_POST['accion'])) {
             insert_mat();
             break;
 
-
         case 'insert_hor':
             insert_hor();
             break;
 
         case 'insert_grado':
             insert_grado();
+            break;
+
+        case 'insert_cargo':
+            insert_cargo();
             break;
 
         case 'insert_per':
@@ -62,6 +65,10 @@ if (isset($_POST['accion'])) {
 
         case 'editar_grado':
             editar_grado();
+            break;
+
+        case 'editar_cargo':
+            editar_cargo();
             break;
 
         case 'editar_inv':
@@ -307,6 +314,30 @@ function insert_grado()
     include "db.php";
 
     $consulta = "INSERT INTO grados (descripcion, duracion) VALUES ('$descripcion', '$duracion')";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
+    } else {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+
+    echo json_encode($response);
+}
+
+function insert_cargo()
+{
+    global $conexion;
+    extract($_POST);
+    include "db.php";
+
+    $consulta = "INSERT INTO cargos (cargo, monto) VALUES ('$cargo', '$monto')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -625,6 +656,23 @@ function editar_grado()
 
 
     $consulta = "UPDATE grados SET descripcion = '$descripcion',duracion = '$duracion' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_cargo()
+{
+    require_once("db.php");
+
+    extract($_POST);
+
+
+    $consulta = "UPDATE cargos SET cargo = '$cargo', monto = '$monto' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
