@@ -30,7 +30,7 @@ $(document).ready(function () {
                     <td data-beca="${item.beca}" data-id_alumno="${item.id_alumno}" data-id_grado="${item.id_grado}">${item.matricula}</td>
                     <td>${item.nombre}</td>
                     <td>${item.apellido}</td>
-                    <td>${item.descripcion}</td>
+                    <td>${item.descripcion} ${item.grupo}</td>
                     <td >${item.beca}%</td>
                 </tr>
             `);
