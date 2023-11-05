@@ -191,6 +191,17 @@ require_once "db.php";
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Categorias</span></a>
             </li>
+
+
+            <?php if ($_SESSION["type"] == 1) { ?>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="../views/usuarios.php">
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        <span>Usuarios</span></a>
+                </li>
+            <?php }
+            ?>
             <?php
 
             $consulta = mysqli_query($conexion, "SELECT * FROM settings ");
@@ -203,16 +214,6 @@ require_once "db.php";
                         <span>Configuracion</span></a>
                 </li>
             <?php } ?>
-
-            <?php if ($_SESSION["type"] == 1) { ?>
-                <!-- Nav Item - Tables -->
-                <li class="nav-item">
-                    <a class="nav-link" href="../views/usuarios.php">
-                        <i class="fa fa-users" aria-hidden="true"></i>
-                        <span>Usuarios</span></a>
-                </li>
-            <?php }
-            ?>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

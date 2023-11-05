@@ -153,9 +153,9 @@ class PDF extends FPDF
 include "db.php";
 $id = $_GET['id'];
 
-$consulta = "SELECT p.id, p.total, p.pago, p.fecha, p.beca,  a.matricula, a.nombre, a.apellido, g.descripcion, c.cargo, c.monto
-FROM pagos p INNER JOIN alumnos a ON p.id_alumno = a.id INNER JOIN grados g ON p.id_grado = g.id INNER JOIN cargos c 
-ON p.id_cargo = c.id WHERE p.id = $id;";
+$consulta = "SELECT p.id, p.total, p.pago, p.fecha, p.beca,  a.matricula, a.nombre, a.apellido, a.id_grupo, g.descripcion, 
+c.cargo, c.monto, gr.grupo FROM pagos p INNER JOIN alumnos a ON p.id_alumno = a.id INNER JOIN grados g ON p.id_grado = g.id 
+INNER JOIN cargos c ON p.id_cargo = c.id INNER JOIN grupos gr ON a.id_grupo = gr.id WHERE p.id = $id;";
 $resultado = mysqli_query($conexion, $consulta);
 
 $pdf = new PDF();
@@ -163,14 +163,17 @@ $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Arial', '', 0);
+
 //$pdf->SetWidths(array(10, 30, 27, 27, 20, 20, 20, 20, 22));
 while ($row = $resultado->fetch_assoc()) {
 
     $pdf->SetX(12);
+    $descripcion = utf8_decode($row['descripcion']);
+
 
     $pdf->Cell(55, 10,  $row['nombre'] . ' ' . $row['apellido'], 1, 0, 'L', 0);
     $pdf->Cell(45, 10, $row['fecha'], 1, 0, 'L', 0);
-    $pdf->Cell(40, 10, $row['descripcion'], 1, 0, 'L', 0);
+    $pdf->Cell(40, 10, $descripcion . '' . $row['grupo'], 1, 0, 'L', 0);
     $pdf->Cell(20, 10, $row['beca'] . '%', 1, 0, 'L', 0);
     $pdf->Cell(20, 10, '$' . $row['monto'], 1, 1, 'L', 0);
 
