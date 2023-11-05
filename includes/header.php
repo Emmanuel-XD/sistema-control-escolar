@@ -132,6 +132,7 @@ require_once "db.php";
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Ver Modulos</h6>
                         <a class="collapse-item" href="../views/materias.php">Materias</a>
+                        <a class="collapse-item" href="../views/grupos.php">Grupos</a>
                         <a class="collapse-item" href="../views/grados.php">Grados</a>
                         <a class="collapse-item" href="../views/especialidades.php">Especialidades</a>
                         <a class="collapse-item" href="../views/periodos.php">Periodos</a>
