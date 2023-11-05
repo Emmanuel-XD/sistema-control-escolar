@@ -274,7 +274,7 @@ function insert_prest()
             'message' => 'La cantidad que solicitas no puede ser 0 tiene que ser mayor o igual a la existencia en el inventario'
         );
         echo json_encode($response);
-        return; // No continúes con la verificación del inventario
+        return;
     }
 
     $consult = "SELECT existencia FROM inventario WHERE id = $id_material";
@@ -494,7 +494,9 @@ function insert_alumno()
             'message' => 'La matrícula ya está en uso. Por favor, ingrese otra matrícula.'
         );
     } else {
-        $consulta = "INSERT INTO alumnos (matricula, nombre, apellido, correo, telefono, curp, edad, birthdate, beca, id_grado) VALUES ('$matricula', '$nombre', '$apellido', '$correo', '$telefono', '$curp', '$edad', '$birthdate', '$beca', '$id_grado')";
+        $consulta = "INSERT INTO alumnos (matricula, nombre, apellido, correo, telefono, curp, edad, birthdate,
+        beca, id_grado, id_grupo) VALUES ('$matricula', '$nombre', '$apellido', '$correo', '$telefono', '$curp', '$edad', 
+        '$birthdate', '$beca', '$id_grado', '$id_grupo')";
         $resultado = mysqli_query($conexion, $consulta);
 
         if ($resultado) {
@@ -650,11 +652,11 @@ function editar_alum()
     require_once("db.php");
 
     extract($_POST);
-
+    $id_grupo = $_POST['id_grupo'];
 
     $consulta = "UPDATE alumnos SET matricula = '$matricula', nombre = '$nombre', apellido = '$apellido', correo = '$correo', 
     telefono = '$telefono', curp = '$curp', edad='$edad', birthdate = '$birthdate',
-    beca = '$beca',id_grado = '$id_grado' WHERE id = '$id' ";
+    beca = '$beca',id_grado = '$id_grado',id_grupo = '$id_grupo' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
