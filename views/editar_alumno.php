@@ -65,8 +65,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="password">Curp</label><br>
-                                <input type="text" name="curp" id="curp" class="form-control" value="<?php echo $fila['curp']; ?>" required>
+                                <label for="password">Fecha de Nacimiento</label><br>
+                                <input type="date" name="birthdate" id="birthdate" class="form-control" value="<?php echo $fila['birthdate']; ?>" required>
                             </div>
                         </div>
 
