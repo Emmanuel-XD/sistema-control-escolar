@@ -652,7 +652,7 @@ function editar_alum()
     require_once("db.php");
 
     extract($_POST);
-    $id_grupo = $_POST['id_grupo'];
+
 
     $consulta = "UPDATE alumnos SET matricula = '$matricula', nombre = '$nombre', apellido = '$apellido', correo = '$correo', 
     telefono = '$telefono', curp = '$curp', edad='$edad', birthdate = '$birthdate',
