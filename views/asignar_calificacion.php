@@ -22,6 +22,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>Grado & Grupo</th>
                                 <th>Alumno</th>
                                 <th>Acciones</th>
                             </tr>
@@ -32,11 +33,15 @@
                             extract($_GET);
                             $id_grado = $_GET['id'];
                             require_once("../includes/db.php");
-                            $result = mysqli_query($conexion, "SELECT * FROM alumnos WHERE id_grado = '$id_grado' ");
+                            $result = mysqli_query($conexion, "SELECT a.id, a.matricula, a.nombre, a.apellido, a.correo,
+                            a.telefono, a.curp, a.edad, a.birthdate, a.beca, a.id_grado, a.id_grupo, a.fecha, g.descripcion, gru.grupo
+                            FROM alumnos a INNER JOIN grados g ON a.id_grado = g.id INNER JOIN grupos gru ON a.id_grupo = gru.id
+                            WHERE a.id_grado = '$id_grado' ");
                             while ($fila = mysqli_fetch_assoc($result)) :
 
                             ?>
                                 <tr>
+                                    <td><?php echo $fila['descripcion'] . ' ' . $fila['grupo']; ?></td>
                                     <td><?php echo $fila['nombre'] . ' ' . $fila['apellido']; ?></td>
 
                                     <td>
