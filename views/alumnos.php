@@ -31,7 +31,7 @@
                                 <th>Edad</th>
                                 <th>Nacimiento</th>
                                 <th>Beca %</th>
-                                <th>Grado</th>
+                                <th>Grado & Grupo</th>
                                 <th>Fecha_Registro</th>
                                 <th>Acciones.</th>
                             </tr>
@@ -41,8 +41,8 @@
                             <?php
                             require_once("../includes/db.php");
                             $result = mysqli_query($conexion, "SELECT a.id, a.matricula, a.nombre, a.apellido, a.correo,
-                             a.telefono, a.curp, a.edad, a.birthdate, a.beca, a.id_grado, a.fecha, g.descripcion
-                            FROM alumnos a INNER JOIN grados g ON a.id_grado = g.id");
+                            a.telefono, a.curp, a.edad, a.birthdate, a.beca, a.id_grado, a.id_grupo, a.fecha, g.descripcion, gru.grupo
+                            FROM alumnos a INNER JOIN grados g ON a.id_grado = g.id INNER JOIN grupos gru ON a.id_grupo = gru.id");
                             while ($fila = mysqli_fetch_assoc($result)) :
 
                             ?>
@@ -56,7 +56,7 @@
                                     <td><?php echo $fila['edad']; ?></td>
                                     <td><?php echo $fila['birthdate']; ?></td>
                                     <td><?php echo $fila['beca'] . '%'; ?></td>
-                                    <td><?php echo $fila['descripcion']; ?></td>
+                                    <td><?php echo $fila['descripcion'] . '' . $fila['grupo']; ?></td>
                                     <td><?php echo $fila['fecha']; ?></td>
 
                                     <td>

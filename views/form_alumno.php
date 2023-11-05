@@ -65,8 +65,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="password">Curp</label><br>
-                                <input type="text" name="curp" id="curp" class="form-control" required>
+                                <label for="password">Fecha de Nacimiento</label><br>
+                                <input type="date" name="birthdate" id="birthdate" class="form-control" required>
                             </div>
                         </div>
 
@@ -81,14 +81,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="password">Fecha de Nacimiento</label><br>
-                                <input type="date" name="birthdate" id="birthdate" class="form-control" required>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="mb-3">
-                                <label for="password">Grado</label><br>
+                                <label for="password">Grado o Año</label><br>
                                 <select name="id_grado" id="id_grado" class="form-control" required>
                                     <option value="">Selecciona una opcion</option>
                                     <?php
@@ -105,6 +98,31 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="password">Grupo</label><br>
+                                <select name="id_grupo" id="id_grupo" class="form-control" required>
+                                    <option value="">Selecciona una opcion</option>
+                                    <?php
+
+                                    include("db.php");
+
+                                    $sql = "SELECT * FROM grupos ";
+                                    $resultado = mysqli_query($conexion, $sql);
+                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['grupo'] . '</option>';
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Curp</label><br>
+                        <input type="text" name="curp" id="curp" class="form-control" required>
                     </div>
 
                     <br>

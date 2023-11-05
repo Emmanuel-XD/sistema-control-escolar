@@ -81,13 +81,6 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="password">Fecha de Nacimiento</label><br>
-                                <input type="date" name="birthdate" id="birthdate" class="form-control" value="<?php echo $fila['birthdate']; ?>" required>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="mb-3">
                                 <label for="password">Grado</label><br>
                                 <select name="id_grado" id="id_grado" class="form-control" required>
                                     <option <?php echo $fila['id_grado'] === 'id_grado' ? 'selected' : ''; ?> value="<?php echo $fila['id_grado']; ?>"><?php echo $fila['descripcion']; ?></option>
@@ -105,7 +98,33 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="password">Grupo</label><br>
+                                <select name="id_grupo" id="id_grupo" class="form-control" required>
+                                    <option <?php echo $fila['id_grupo'] === 'id_grupo' ? 'selected' : ''; ?> value="<?php echo $fila['id_grupo']; ?>"><?php echo $fila['grupo']; ?></option>
+                                    <?php
+
+                                    include("db.php");
+
+                                    $sql = "SELECT * FROM grupos ";
+                                    $resultado = mysqli_query($conexion, $sql);
+                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['grupo'] . '</option>';
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="password">Curp</label><br>
+                        <input type="text" name="curp" id="curp" class="form-control" value="<?php echo $fila['curp']; ?>" required>
+                    </div>
+
 
                     <br>
                     <input type="hidden" name="accion" value="editar_alum">
