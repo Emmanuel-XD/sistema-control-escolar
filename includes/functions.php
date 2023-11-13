@@ -7,114 +7,52 @@ header('Content-Type: application/json');
 if (isset($_POST['accion'])) {
     switch ($_POST['accion']) {
 
-        case 'insert_mat':
-            insert_mat();
+        case 'insert_serv':
+            insert_serv();
             break;
 
-        case 'insert_hor':
-            insert_hor();
+        case 'insert_falla':
+            insert_falla();
             break;
 
-        case 'insert_grado':
-            insert_grado();
+        case 'insert_clie':
+            insert_clie();
             break;
 
-        case 'insert_grupo':
-            insert_grupo();
+        case 'insert_report':
+            insert_report();
             break;
 
-        case 'insert_cargo':
-            insert_cargo();
-            break;
-
-        case 'insert_per':
-            insert_per();
-            break;
-
-        case 'insert_inv':
-            insert_inv();
-            break;
-
-        case 'insert_esp':
-            insert_esp();
-            break;
-
-        case 'insert_cat':
-            insert_cat();
-            break;
-
-        case 'insert_prof':
-            insert_prof();
-            break;
-
-        case 'insert_prest':
-            insert_prest();
-            break;
-
-        case 'insert_alumno':
-            insert_alumno();
-            break;
-
-        case 'editar_profe':
-            editar_profe();
-            break;
-
-        case 'editar_alum':
-            editar_alum();
-            break;
-
-        case 'editar_mat':
-            editar_mat();
-            break;
-
-        case 'editar_grado':
-            editar_grado();
-            break;
-
-        case 'editar_grupo':
-            editar_grupo();
-            break;
-
-        case 'editar_cargo':
-            editar_cargo();
-            break;
-
-        case 'editar_inv':
-            editar_inv();
-            break;
-
-
-        case 'editar_esp':
-            editar_esp();
-            break;
-
-
-        case 'editar_cat':
-            editar_cat();
-            break;
-
-        case 'editar_per':
-            editar_per();
-            break;
-
-        case 'editar_prest':
-            editar_prest();
+        case 'insert_CC':
+            insert_CC();
             break;
 
         case 'editar_user':
             editar_user();
             break;
 
-        case 'editar_datos':
-            editar_datos();
+        case 'editar_serv':
+            editar_serv();
+            break;
+
+        case 'editar_falla':
+            editar_falla();
+            break;
+
+        case 'editar_cli':
+            editar_cli();
+            break;
+
+        case 'editar_report':
+            editar_report();
             break;
 
         case 'editar_perfil':
             editar_perfil();
             break;
 
-        case 'devolver_cant':
-            devolver_cant();
+        case 'editar_datos_sistema';
+            editar_datos_sistema();
             break;
 
         case 'change_password':
@@ -127,18 +65,43 @@ if (isset($_POST['accion'])) {
     }
 }
 
+function editar_datos_sistema()
+{
+    include "db.php";
+    extract($_POST);
+
+    // Verificar si se ha seleccionado una nueva imagen
+    if (!empty($_FILES['imagen1']['name'])) {
+        $imagen_tmps = $_FILES['imagen1']['tmp_name'];
+        $imagen_ruta2 = '../img/' . $_FILES['imagen1']['name'];
+        move_uploaded_file($imagen_tmps, $imagen_ruta2);
+
+        // Actualizar la ruta de la imagen en la base de datos
+        $consultas = "UPDATE datos SET empresa = '$empresa', telefono = '$telefono', cp = '$cp', calles = '$calles', direccion = '$direccion', 
+    imagen1 = '$imagen_ruta2' WHERE id = '$id'";
+    } else {
+        // No se ha seleccionado una nueva imagen, actualizar solo los datos sin cambiar la imagen
+        $consultas = "UPDATE datos SET empresa = '$empresa', telefono = '$telefono', cp = '$cp', calles = '$calles', direccion = '$direccion' WHERE id = '$id' ";
+    }
+
+    $resultado = mysqli_query($conexion, $consultas);
+    if ($resultado === true) {
+        echo json_encode("change");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+
 function savePago()
 {
+    extract($_POST);
     include "db.php";
     date_default_timezone_set('America/Mexico_City');
     $currentDate = date("Y-m-d H:i:s");
-    extract($_POST);
-
-    $pago = $_POST['pago'];
-
-    if ($id_alumno != "undefined" || $id_grado != "undefined") {
-        $consulta = "INSERT INTO pagos (id_alumno, id_grado, id_cargo, beca, total, pago, fecha) 
-        VALUES ('$id_alumno', '$id_grado', '$id_cargo', '$beca','$descuento', '$pago', '$currentDate')";
+    $contar = date("Y-m-d");
+    if ($id_cliente != "undefined" || $id_servicio != "undefined") {
+        $consulta = "INSERT INTO pagos (id_cliente, id_servicio, pago, contar, fecha) VALUES ('$id_cliente', '$id_servicio', '$pago', '$contar','$currentDate')";
         $resultado = mysqli_query($conexion, $consulta);
         $id = $conexion->insert_id;
         if ($resultado) {
@@ -161,63 +124,13 @@ function savePago()
     echo json_encode($response);
 }
 
-
-
-
-function insert_esp()
-{
-    require_once("db.php");
-    extract($_POST);
-
-    $consulta = "INSERT INTO especialidades (especialidad) VALUES ('$especialidad')";
-
-    $resultado = mysqli_query($conexion, $consulta);
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
-    } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
-        );
-    }
-
-    echo json_encode($response);
-}
-
-function insert_cat()
-{
-    require_once("db.php");
-    extract($_POST);
-
-    $consulta = "INSERT INTO categorias (categoria) VALUES ('$categoria')";
-
-    $resultado = mysqli_query($conexion, $consulta);
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
-    } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
-        );
-    }
-
-    echo json_encode($response);
-}
-
-function insert_mat()
+function insert_serv()
 {
     global $conexion;
     extract($_POST);
     include "db.php";
 
-    $consulta = "INSERT INTO materias (materia,id_profesor, id_periodo ,id_grado) VALUES ('$materia','$id_profesor',
-    '$id_periodo','$id_grado')";
+    $consulta = "INSERT INTO servicios (servicio, precio, estado) VALUES ('$servicio','$precio','$estado')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -235,108 +148,111 @@ function insert_mat()
     echo json_encode($response);
 }
 
-function insert_hor()
-{
-    global $conexion;
-    include "db.php";
-
-    $id_grado = $_POST['id_grado'];
-    if (isset($_POST['selected_days']) && is_array($_POST['selected_days'])) {
-        foreach ($_POST['selected_days'] as $selected_day) {
-            if (isset($_POST['id_materia']) && is_array($_POST['id_materia'])) {
-                foreach ($_POST['id_materia'] as $id_hour => $id_materia) {
-                    $consulta = "INSERT INTO alumno_horario (id_grado, id_materia, id_hour, id_day) VALUES ('$id_grado', '$id_materia', '$id_hour', '$selected_day')";
-                    $resultado = mysqli_query($conexion, $consulta);
-                    if (!$resultado) {
-                        echo "Error en la consulta: " . mysqli_error($conexion);
-                    }
-                }
-            }
-        }
-        echo "Datos insertadosz";
-    } else {
-        echo "No se han seleccionado días.";
-    }
-}
-
-
-
-function insert_prest()
+function insert_falla()
 {
     global $conexion;
     extract($_POST);
-    $hora_fin = $_POST['hora_fin'];
     include "db.php";
 
-    if ($cant == 0) {
+    $consulta = "INSERT INTO fallas (falla) VALUES ('$falla')";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
+    } else {
         $response = array(
             'status' => 'error',
-            'message' => 'La cantidad que solicitas no puede ser 0 tiene que ser mayor o igual a la existencia en el inventario'
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+
+    echo json_encode($response);
+}
+
+function insert_clie()
+{
+    global $conexion;
+    extract($_POST);
+    include "db.php";
+
+    // Verificar si el usuario ya está registrado como cliente
+    $checkQuery = "SELECT * FROM clientes WHERE id_user = '$id_user'";
+    $checkResult = mysqli_query($conexion, $checkQuery);
+
+    if (mysqli_num_rows($checkResult) > 0) {
+        // El usuario ya está registrado como cliente, mostrar una alerta
+        $response = array(
+            'status' => 'user',
+            'message' => 'El usuario seleccionado ya está registrado como cliente.'
         );
         echo json_encode($response);
-        return;
+        return; // Termina la ejecución de la función
     }
 
-    $consult = "SELECT existencia FROM inventario WHERE id = $id_material";
-    $results = mysqli_query($conexion, $consult);
+    // El usuario no está registrado como cliente, proceder con la inserción
+    $folio = mt_rand(100000000, 999999999);
+    $consulta = "INSERT INTO clientes (id_user, folio, nombres, apellidos, edad, telefono, correo, domicilio, id_servicio,
+        status, fecha_pago) VALUES ('$id_user','$folio','$nombres','$apellidos','$edad','$telefono','$correo','$domicilio','$id_servicio',
+        '$status','$fecha_pago')";
+    $resultado = mysqli_query($conexion, $consulta);
 
-    if ($row_cantidad = mysqli_fetch_assoc($results)) {
-        $cantDisponible = $row_cantidad['existencia'];
-
-        if ($cantDisponible >= $cant) {
-            $consulta = "INSERT INTO prestamos (id_profesor, id_materia, id_material, fecha_slt, fecha_fin, hora_in, hora_fin, cant, status)
-VALUES ('$id_profesor', '$id_materia', '$id_material', '$fecha_slt', '$fecha_fin', '$hora_in', '$hora_fin', '$cant', '$status')";
-
-            $resultado = mysqli_query($conexion, $consulta);
-
-            if ($resultado) {
-                // Update al campo cantidad en el inventario
-                $nueva_cantidad = $cantDisponible - $cant;
-                $sql = "UPDATE inventario SET existencia = $nueva_cantidad WHERE id = $id_material";
-                mysqli_query($conexion, $sql);
-                $response = array(
-                    'status' => 'success',
-                    'message' => 'El préstamo se realizó con éxito'
-                );
-            } else {
-                $response = array(
-                    'status' => 'error',
-                    'message' => 'Ocurrió un error al guardar el préstamo'
-                );
-            }
-        } else {
-            if ($cantDisponible == 0) {
-                $response = array(
-                    'status' => 'stock_agotado',
-                    'message' => 'El material que solicitas para el préstamo se encuentra agotado en el inventario'
-                );
-            } else {
-                $response = array(
-                    'status' => 'cantidad_superada',
-                    'message' => 'La cantidad que solicitas es mayor a la existencia en el inventario'
-                );
-            }
-        }
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
     } else {
         $response = array(
             'status' => 'error',
-            'message' => 'Error al verificar la cantidad en el inventario'
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+
+
+    echo json_encode($response);
+}
+
+
+function insert_CC()
+{
+    global $conexion;
+    extract($_POST);
+    include "db.php";
+    $folio = mt_rand(100000000, 999999999);
+    $status = 'Pendiente';
+    $fecha_pago = 'Pendiente';
+    $consulta = "INSERT INTO clientes (folio, id_user, nombres, apellidos, edad, telefono, correo, domicilio, id_servicio,
+    status, fecha_pago) VALUES ('$folio','$id_user','$nombres','$apellidos','$edad','$telefono','$correo','$domicilio','$id_servicio',
+    '$status','$fecha_pago')";
+    $resultado = mysqli_query($conexion, $consulta);
+
+
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
+    } else {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Ocurrió un error inesperado'
         );
     }
 
     echo json_encode($response);
 }
 
-
-
-
-function insert_per()
+function insert_report()
 {
     global $conexion;
     extract($_POST);
     include "db.php";
 
-    $consulta = "INSERT INTO periodos (periodo, date_in, date_fin) VALUES ('$periodo','$date_in','$date_fin')";
+    $consulta = "INSERT INTO reportes (id_cliente, id_servicio, id_falla, observacion, estado, fecha_reporte) 
+    VALUES ('$id_cliente','$id_servicio','$id_falla','$observacion','$estado','$fecha_reporte')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -355,457 +271,6 @@ function insert_per()
 }
 
 
-function insert_grado()
-{
-    global $conexion;
-    extract($_POST);
-    include "db.php";
-
-    $consulta = "INSERT INTO grados (descripcion, duracion) VALUES ('$descripcion', '$duracion')";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
-    } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
-        );
-    }
-
-    echo json_encode($response);
-}
-
-function insert_grupo()
-{
-    global $conexion;
-    extract($_POST);
-    include "db.php";
-
-    $consulta = "INSERT INTO grupos (grupo) VALUES ('$grupo')";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
-    } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
-        );
-    }
-
-    echo json_encode($response);
-}
-
-function insert_cargo()
-{
-    global $conexion;
-    extract($_POST);
-    include "db.php";
-
-    $consulta = "INSERT INTO cargos (cargo, monto) VALUES ('$cargo', '$monto')";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
-    } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
-        );
-    }
-
-    echo json_encode($response);
-}
-
-function insert_inv()
-{
-    global $conexion;
-    extract($_POST);
-    include "db.php";
-
-    $consulta = "INSERT INTO inventario (codigo, descripcion, cantidad, existencia, unidad,id_profesor,id_categoria, status)
-VALUES ('$codigo', '$descripcion','$cantidad', '$existencia','$unidad','$id_profesor','$id_categoria','$status')";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
-    } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
-        );
-    }
-
-    echo json_encode($response);
-}
-
-
-function insert_prof()
-{
-    global $conexion;
-    extract($_POST);
-    include "db.php";
-
-    $consulta = "INSERT INTO profesores (cedula, nombres, apellidos,correo,curp,edad,fecha_na, id_especialidad)
-VALUES ('$cedula', '$nombres','$apellidos','$correo','$curp','$edad','$fecha_na', '$id_especialidad')";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Los datos se guardaron correctamente'
-        );
-    } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Ocurrió un error inesperado'
-        );
-    }
-
-    echo json_encode($response);
-}
-
-function insert_alumno()
-{
-    global $conexion;
-    extract($_POST);
-
-    include "db.php";
-
-    $consult = "SELECT matricula FROM alumnos WHERE matricula = '$matricula'";
-    $result = mysqli_query($conexion, $consult);
-
-    if (mysqli_num_rows($result) > 0) {
-        $response = array(
-            'status' => 'error',
-            'message' => 'La matrícula ya está en uso. Por favor, ingrese otra matrícula.'
-        );
-    } else {
-        $consulta = "INSERT INTO alumnos (matricula, nombre, apellido, correo, telefono, curp, edad, birthdate,
-        beca, id_grado, id_grupo) VALUES ('$matricula', '$nombre', '$apellido', '$correo', '$telefono', '$curp', '$edad', 
-        '$birthdate', '$beca', '$id_grado', '$id_grupo')";
-        $resultado = mysqli_query($conexion, $consulta);
-
-        if ($resultado) {
-            $response = array(
-                'status' => 'success',
-                'message' => 'Los datos se guardaron correctamente'
-            );
-        } else {
-            $response = array(
-                'status' => 'error',
-                'message' => 'Ocurrió un error inesperado al insertar los datos'
-            );
-        }
-    }
-
-    echo json_encode($response);
-}
-
-
-function editar_profe()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE profesores SET cedula = '$cedula', nombres = '$nombres', apellidos = '$apellidos', correo = '$correo',
-curp = '$curp', edad='$edad', fecha_na = '$fecha_na',id_especialidad = '$id_especialidad' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function devolver_cant()
-{
-    require_once("db.php");
-    extract($_POST);
-
-    if (isset($_POST['confirmacion']) && $_POST['confirmacion'] === 'confirmado') {
-
-        $consulta = "SELECT * FROM prestamos WHERE id = $id";
-        $resultado = mysqli_query($conexion, $consulta);
-        $row_prestamo = mysqli_fetch_assoc($resultado);
-
-        $cant_dev = $row_prestamo['cant'];
-        $id_material = $row_prestamo['id_material'];
-
-        $consult = "SELECT existencia FROM inventario WHERE id = $id_material";
-        $result = mysqli_query($conexion, $consult);
-        $row_inventario = mysqli_fetch_assoc($result);
-        $cantDisponible = $row_inventario['existencia'];
-
-
-        if ($cantDisponible >= $cant_dev) {
-
-            mysqli_begin_transaction($conexion);
-
-            $newCantDev = $cantDisponible + $cant_dev;
-            $sql = "UPDATE inventario SET existencia = $newCantDev WHERE id = $id_material";
-            $resultados = mysqli_query($conexion, $sql);
-
-            $SQL = "DELETE FROM prestamos WHERE id = $id";
-            $respuesta = mysqli_query($conexion, $SQL);
-
-            if ($resultados && $respuesta) {
-
-                mysqli_commit($conexion);
-
-                $response = array(
-                    'status' => 'success',
-                    'message' => 'El material fue devuelto y borrado del historial'
-                );
-            } else {
-
-                mysqli_rollback($conexion);
-
-                $response = array(
-                    'status' => 'error',
-                    'message' => 'Ocurrió un error al devolver el material'
-                );
-            }
-        } else {
-            $response = array(
-                'status' => 'error',
-                'message' => 'Error al verificar la cantidad en el inventario'
-            );
-        }
-    } else {
-
-        $response = array(
-            'status' => 'confirmacion',
-            'message' => 'Confirmar la devolución'
-        );
-    }
-
-    echo json_encode($response);
-}
-
-
-
-function editar_inv()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE inventario SET codigo = '$codigo', descripcion = '$descripcion', cantidad = '$cantidad', existencia = '$existencia',
-unidad = '$unidad', id_profesor = '$id_profesor', id_categoria='$id_categoria', status='$status' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function editar_datos()
-{
-    require_once("db.php");
-    extract($_POST);
-
-    // Verificar si se ha seleccionado una nueva imagen
-    if (!empty($_FILES['imagen']['name'])) {
-        $imagen_tmp = $_FILES['imagen']['tmp_name'];
-        $imagen_ruta = 'images/' . $_FILES['imagen']['name'];
-        move_uploaded_file($imagen_tmp, $imagen_ruta);
-
-        // Actualizar la ruta de la imagen en la base de datos
-        $consulta = "UPDATE settings SET instituto = '$instituto', direccion = '$direccion', clave = '$clave', tema = '$tema',
-imagen = '$imagen_ruta' WHERE id = '$id' ";
-    } else {
-        // No se ha seleccionado una nueva imagen, actualizar solo los datos sin cambiar la imagen
-        $consulta = "UPDATE settings SET instituto = '$instituto', direccion = '$direccion', clave = '$clave', tema = '$tema' WHERE id = '$id' ";
-    }
-
-    $resultado = mysqli_query($conexion, $consulta);
-    if ($resultado === true) {
-        echo json_encode("updated");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-
-function editar_alum()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE alumnos SET matricula = '$matricula', nombre = '$nombre', apellido = '$apellido', correo = '$correo', 
-    telefono = '$telefono', curp = '$curp', edad='$edad', birthdate = '$birthdate',
-    beca = '$beca',id_grado = '$id_grado',id_grupo = '$id_grupo' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function editar_prest()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE prestamos SET fecha_slt = '$fecha_slt', fecha_fin = '$fecha_fin', id_profesor = '$id_profesor',
-id_material = '$id_material', id_materia = '$id_materia', hora_in='$hora_in', hora_fin = '$hora_fin',cant = '$cant',
-status = '$status' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function editar_mat()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE materias SET materia = '$materia', id_profesor = '$id_profesor',
-id_periodo = '$id_periodo',id_grado = '$id_grado' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function editar_per()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE periodos SET periodo = '$periodo', date_in = '$date_in',
-date_fin = '$date_fin' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-
-function editar_grado()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE grados SET descripcion = '$descripcion',duracion = '$duracion' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function editar_grupo()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE grupos SET grupo = '$grupo' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function editar_cargo()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE cargos SET cargo = '$cargo', monto = '$monto' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function editar_esp()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE especialidades SET especialidad = '$especialidad' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
-
-function editar_cat()
-{
-    require_once("db.php");
-
-    extract($_POST);
-
-
-    $consulta = "UPDATE categorias SET categoria = '$categoria' WHERE id = '$id' ";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    if ($resultado) {
-        echo json_encode("correcto");
-    } else {
-        echo json_encode("error");
-    }
-}
 
 function editar_user()
 {
@@ -821,27 +286,59 @@ function editar_user()
     }
 }
 
-function editar_perfil()
+function editar_serv()
 {
     require_once("db.php");
     extract($_POST);
-
-    // Verificar si se ha seleccionado una nueva imagen
-    if (!empty($_FILES['imagen']['name'])) {
-        $imagen_tmp = $_FILES['imagen']['tmp_name'];
-        $imagen_ruta = '../views/imagen/' . $_FILES['imagen']['name'];
-        move_uploaded_file($imagen_tmp, $imagen_ruta);
-
-        // Actualizar la ruta de la imagen en la base de datos
-        $consulta = "UPDATE users SET usuario = '$usuario', correo = '$correo', imagen = '$imagen_ruta' WHERE id = '$id' ";
-    } else {
-        // No se ha seleccionado una nueva imagen, actualizar solo los datos sin cambiar la imagen
-        $consulta = "UPDATE users SET usuario = '$usuario', correo = '$correo' WHERE id = '$id' ";
-    }
-
+    $consulta = "UPDATE servicios SET servicio = '$servicio', precio = '$precio', estado = '$estado' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
-    if ($resultado === true) {
-        echo json_encode("updated");
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_falla()
+{
+    require_once("db.php");
+    extract($_POST);
+    $consulta = "UPDATE fallas SET falla = '$falla' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_cli()
+{
+    require_once("db.php");
+    extract($_POST);
+    $consulta = "UPDATE clientes SET nombres = '$nombres', apellidos = '$apellidos', edad = '$edad', telefono = '$telefono', correo = '$correo'
+    , domicilio = '$domicilio', id_servicio = '$id_servicio', status = '$status', fecha_pago = '$fecha_pago' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_report()
+{
+    require_once("db.php");
+    extract($_POST);
+    $consulta = "UPDATE reportes SET id_cliente = '$id_cliente', id_servicio = '$id_servicio', id_falla = '$id_falla', 
+    observacion = '$observacion', estado = '$estado', fecha_reporte = '$fecha_reporte' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
     } else {
         echo json_encode("error");
     }
@@ -863,36 +360,28 @@ function change_password()
     }
 }
 
-
-/*function delete()
+function editar_perfil()
 {
-$id = $_POST['id'];
-require_once("db.php");
+    require_once("db.php");
+    extract($_POST);
 
+    // Verificar si se ha seleccionado una nueva imagen
+    if (!empty($_FILES['imagen']['name'])) {
+        $imagen_tmp = $_FILES['imagen']['tmp_name'];
+        $imagen_ruta = '../img/perfiles/' . $_FILES['imagen']['name'];
+        move_uploaded_file($imagen_tmp, $imagen_ruta);
 
-$consulta = "DELETE FROM materias WHERE id = '$id' ";
-$resultado = mysqli_query($conexion, $consulta);
+        // Actualizar la ruta de la imagen en la base de datos
+        $consulta = "UPDATE users SET usuario = '$usuario', correo = '$correo', imagen = '$imagen_ruta' WHERE id = '$id' ";
+    } else {
+        // No se ha seleccionado una nueva imagen, actualizar solo los datos sin cambiar la imagen
+        $consulta = "UPDATE users SET usuario = '$usuario', correo = '$correo' WHERE id = '$id' ";
+    }
 
-if ($resultado) {
-echo 'success';
-} else {
-echo 'error';
+    $resultado = mysqli_query($conexion, $consulta);
+    if ($resultado === true) {
+        echo json_encode("updated");
+    } else {
+        echo json_encode("error");
+    }
 }
-}
-
-function delete_s()
-{
-$id = $_POST['id'];
-require_once("db.php");
-
-
-$consulta = "DELETE FROM grados WHERE id = '$id' ";
-$resultado = mysqli_query($conexion, $consulta);
-
-if ($resultado) {
-echo 'success';
-} else {
-echo 'error';
-}
-}
-*/
