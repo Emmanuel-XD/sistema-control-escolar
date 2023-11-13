@@ -125,6 +125,23 @@
                         <input type="text" name="curp" id="curp" class="form-control" required>
                     </div>
 
+                    <div class="form-group">
+                        <label for="id_user">Usuario Asociado</label><br>
+                        <select name="id_user" id="id_user" class="form-control" required>
+                            <option value="">Selecciona una opcion</option>
+                            <?php
+
+                            include("db.php");
+
+                            $sql = "SELECT * FROM users WHERE id_rol = 3 ";
+                            $resultado = mysqli_query($conexion, $sql);
+                            while ($consulta = mysqli_fetch_array($resultado)) {
+                                echo '<option value="' . $consulta['id'] . '">' . $consulta['usuario'] . '</option>';
+                            }
+
+                            ?>
+                        </select>
+                    </div>
                     <br>
                     <input type="hidden" name="accion" value="insert_alumno">
                     <div class="modal-footer">
@@ -150,15 +167,39 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
-                        alert('Éxito: ' + response.message);
-                        window.location = "alumnos.php";
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Guardados',
+                            text: 'Los datos se guardaron correctamente'
+                        }).then(function() {
+                            window.location = "alumnos.php";
+                        });
+                    } else if (response.status === 'user') {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Usuario No Disponible',
+                            text: 'El usuario seleccionado ya está registrado como alumno, intente con otro o registre uno nuevo.'
+                        });
+                    } else if (response.status === 'matricula') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Matricula No Disponible',
+                            text: 'La matrícula ya está en uso. Por favor, ingrese otra matrícula.'
+                        });
                     } else {
-                        alert('Error: ' + response.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error inesperado'
+                        });
                     }
                 },
-
                 error: function(xhr, status, error) {
-                    alert('Error: Ocurrió un error inesperado');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error inesperado'
+                    });
                 }
             });
         });
