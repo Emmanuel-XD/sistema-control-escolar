@@ -64,7 +64,7 @@ require_once "db.php";
             <ul class="navbar-nav bg-gradient-<?php echo $fila['tema']; ?> sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../views/index.php">
 
                     <div class=" sidebar-brand-text mx-3"><?php echo $fila['instituto']; ?><sup></sup>
                     </div>
@@ -76,8 +76,8 @@ require_once "db.php";
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="../views/index.php">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Panel</span></a>
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span>Home</span></a>
             </li>
 
             <!-- Divider -->
@@ -87,133 +87,183 @@ require_once "db.php";
             <div class="sidebar-heading">
                 Interface
             </div>
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fa fa-graduation-cap"></i>
-                    <span>Alumnos</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Ver Modulos</h6>
-                        <a class="collapse-item" href="../views/alumnos.php">Ver Alumnos</a>
-                        <a class="collapse-item" href="../views/consultar.php">Ver Calificaciones</a>
-
-                    </div>
-                </div>
-            </li>
-
-
-
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class=" nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <span>Profesores</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Ver Modulos</h6>
-                        <a class="collapse-item" href="../views/profesores.php">Ver Profesores</a>
-                        <a class="collapse-item" href="../views/calificaciones.php">Asignar Calificaciones</a>
-                    </div>
-                </div>
-            </li>
-
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOts" aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Accesos Escolares</span>
-                </a>
-                <div id="collapseOts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Ver Modulos</h6>
-                        <a class="collapse-item" href="../views/materias.php">Materias</a>
-                        <a class="collapse-item" href="../views/grupos.php">Grupos</a>
-                        <a class="collapse-item" href="../views/grados.php">Grados</a>
-                        <a class="collapse-item" href="../views/especialidades.php">Especialidades</a>
-                        <a class="collapse-item" href="../views/periodos.php">Periodos</a>
-                        <a class="collapse-item" href="../views/horarios.php">Horarios</a>
-                    </div>
-                </div>
-            </li>
-
-
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Prestamos & Almacen</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Ver Modulos</h6>
-                        <a class="collapse-item" href="../views/inventario.php">Inventario</a>
-                        <a class="collapse-item" href="../views/prestamos.php">Historial de Prestamos</a>
-                        <a class="collapse-item" href="../views/calendario.php">Calendario de Eventos</a>
-
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOtss" aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Accesos Administrativos</span>
-                </a>
-                <div id="collapseOtss" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Ver Modulos</h6>
-                        <a class="collapse-item" href="../views/cargos.php">Cargos Escolares</a>
-                        <a class="collapse-item" href="../views/pagos.php">Pagos Escolares</a>
-                        <a class="collapse-item" href="../views/historial.php">Historial de Pagos</a>
-                    </div>
-                </div>
-            </li>
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Addons
-            </div>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="../views/categorias.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Categorias</span></a>
-            </li>
-
-
             <?php if ($_SESSION["type"] == 1) { ?>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fa fa-graduation-cap"></i>
+                        <span>Alumnos</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../views/alumnos.php">Ver Alumnos</a>
+                            <a class="collapse-item" href="../views/consultar.php">Ver Calificaciones</a>
+
+                        </div>
+                    </div>
+                </li>
+
+
+
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class=" nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <span>Profesores</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../views/profesores.php">Ver Profesores</a>
+                            <a class="collapse-item" href="../views/calificaciones.php">Asignar Calificaciones</a>
+
+                        </div>
+                    </div>
+                </li>
+
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOts" aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Accesos Escolares</span>
+                    </a>
+                    <div id="collapseOts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../views/materias.php">Materias</a>
+                            <a class="collapse-item" href="../views/grupos.php">Grupos</a>
+                            <a class="collapse-item" href="../views/grados.php">Grados</a>
+                            <a class="collapse-item" href="../views/especialidades.php">Especialidades</a>
+                            <a class="collapse-item" href="../views/periodos.php">Periodos</a>
+
+                        </div>
+                    </div>
+                </li>
+
+
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Prestamos & Almacen</span>
+                    </a>
+                    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../views/inventario.php">Inventario</a>
+                            <a class="collapse-item" href="../views/prestamos.php">Historial de Prestamos</a>
+                            <a class="collapse-item" href="../views/calendario.php">Calendario de Eventos</a>
+
+                        </div>
+                    </div>
+                </li>
+            <?php }
+            ?>
+            <!--Profesores-->
+            <?php if ($_SESSION["type"] == 2) {
+
+            ?>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwos" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        <span>Tu Informacion</span>
+                    </a>
+                    <div id="collapseTwos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../home/consult_teacher.php">Consultar tu informacion</a>
+                            <h6 class="collapse-header">Otras Acciones</h6>
+                            <a class="collapse-item" href="../views/calificaciones.php">Asignar Calificaciones</a>
+                            <a class="collapse-item" href="../views/inventario.php">Consultar Inventario</a>
+                        </div>
+                    </div>
+                </li>
+            <?php } ?>
+            <!--End Profesoores-->
+
+            <!--Alumnos-->
+            <?php if ($_SESSION["type"] == 3) {
+
+            ?>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwos" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        <span>Tu Informacion</span>
+                    </a>
+                    <div id="collapseTwos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../home/consult_student.php">Consultar tu informacion</a>
+
+                            <a class="collapse-item" href="../views/inventario.php">Consultar Inventario</a>
+                        </div>
+                    </div>
+                </li>
+            <?php } ?>
+            <!--End Alumnos-->
+            <?php if ($_SESSION["type"] == 1) { ?>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOtss" aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Accesos Administrativos</span>
+                    </a>
+                    <div id="collapseOtss" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../views/cargos.php">Cargos Escolares</a>
+                            <a class="collapse-item" href="../views/pagos.php">Pagos Escolares</a>
+                            <a class="collapse-item" href="../views/historial.php">Historial de Pagos</a>
+                        </div>
+                    </div>
+                </li>
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Addons
+                </div>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="../views/categorias.php">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Categorias</span></a>
+                </li>
+
+
+
                 <!-- Nav Item - Tables -->
                 <li class="nav-item">
                     <a class="nav-link" href="../views/usuarios.php">
                         <i class="fa fa-users" aria-hidden="true"></i>
                         <span>Usuarios</span></a>
                 </li>
+
+
+                <?php
+
+                $consulta = mysqli_query($conexion, "SELECT * FROM settings ");
+                while ($fila = mysqli_fetch_array($consulta)) {
+                ?>
+                    <!-- Nav Item - Charts -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="../views/settings.php?id=<?php echo $fila['id']; ?>">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Configuracion</span></a>
+                    </li>
+                <?php } ?>
             <?php }
             ?>
-            <?php
-
-            $consulta = mysqli_query($conexion, "SELECT * FROM settings ");
-            while ($fila = mysqli_fetch_array($consulta)) {
-            ?>
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="../views/settings.php?id=<?php echo $fila['id']; ?>">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Configuracion</span></a>
-                </li>
-            <?php } ?>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -265,74 +315,75 @@ require_once "db.php";
                                     </form>
                                 </div>
                             </li>
-                            <!-- Nav Item - Alerts -->
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-bell fa-fw"></i>
-                                    <!-- Counter - Alerts -->
-                                    <span class="badge bg-danger" id="count-label"></span>
-                                </a>
-                                <!-- Dropdown - Alerts -->
-                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                                    <h6 class="dropdown-header">
-                                        CENTRO DE NOTIFICACIONES
-                                    </h6>
-                                    <div id="notificationContent">
-                                        <!-- notificaciones -->
+                            <?php if ($_SESSION["type"] == '2' || $_SESSION["type"] == '1') { ?>
+                                <!-- Nav Item - Alerts -->
+                                <li class="nav-item dropdown no-arrow mx-1">
+                                    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-bell fa-fw"></i>
+                                        <!-- Counter - Alerts -->
+                                        <span class="badge bg-danger" id="count-label"></span>
+                                    </a>
+                                    <!-- Dropdown - Alerts -->
+                                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                                        <h6 class="dropdown-header">
+                                            CENTRO DE NOTIFICACIONES
+                                        </h6>
+                                        <div id="notificationContent">
+                                            <!-- notificaciones -->
+                                        </div>
+                                        <a class="dropdown-item text-center small text-gray-500" href="../views/prestamos.php">Show All Notifications</a>
                                     </div>
-                                    <a class="dropdown-item text-center small text-gray-500" href="../views/prestamos.php">Show All Notifications</a>
-                                </div>
-                            </li>
+                                </li>
 
 
-                            <script>
-                                $(document).ready(function() {
-                                    function loadNotifications() {
-                                        $.ajax({
-                                            url: '../includes/verificar.php',
-                                            method: 'POST',
-                                            success: function(response) {
-                                                $('#notificationContent').html(response);
-                                            }
-                                        });
-                                    }
-
-                                    function updateNotificationCount() {
-                                        $.ajax({
-                                            url: '../includes/contar.php',
-                                            type: 'GET',
-                                            success: function(response) {
-                                                $('#count-label').text(response);
-                                                if (response === '0') {
-                                                    $('#count-label').hide();
-                                                } else {
-                                                    $('#count-label').show();
+                                <script>
+                                    $(document).ready(function() {
+                                        function loadNotifications() {
+                                            $.ajax({
+                                                url: '../includes/verificar.php',
+                                                method: 'POST',
+                                                success: function(response) {
+                                                    $('#notificationContent').html(response);
                                                 }
-                                            },
-                                            error: function() {
-                                                Swal.fire({
-                                                    title: 'Error de conexión',
-                                                    text: 'No se pudo cargar las notificaciones. Por favor, verifica tu conexión a internet.',
-                                                    icon: 'info'
-                                                });
-                                            }
-                                        });
-                                    }
+                                            });
+                                        }
 
-                                    loadNotifications();
-                                    updateNotificationCount();
+                                        function updateNotificationCount() {
+                                            $.ajax({
+                                                url: '../includes/contar.php',
+                                                type: 'GET',
+                                                success: function(response) {
+                                                    $('#count-label').text(response);
+                                                    if (response === '0') {
+                                                        $('#count-label').hide();
+                                                    } else {
+                                                        $('#count-label').show();
+                                                    }
+                                                },
+                                                error: function() {
+                                                    Swal.fire({
+                                                        title: 'Error de conexión',
+                                                        text: 'No se pudo cargar las notificaciones. Por favor, verifica tu conexión a internet.',
+                                                        icon: 'info'
+                                                    });
+                                                }
+                                            });
+                                        }
 
-                                    setInterval(function() {
                                         loadNotifications();
                                         updateNotificationCount();
-                                    }, 5000);
-                                });
-                            </script>
+
+                                        setInterval(function() {
+                                            loadNotifications();
+                                            updateNotificationCount();
+                                        }, 5000);
+                                    });
+                                </script>
 
 
 
-                            <!-- End Notificaciones-->
-
+                                <!-- End Notificaciones-->
+                            <?php } ?>
                             <?php
                             include "db.php";
 
