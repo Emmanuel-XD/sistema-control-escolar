@@ -20,14 +20,16 @@ session_start();
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Lista de Materiales</h6>
                 <br>
-
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#inv">
-                    <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i> </a></button>
-                <!-- Agrega un botón para iniciar la exportación -->
-                <button id="export-btn" class="btn btn-outline-success" type="button">Exportar a Excel</button>
-                <a href="../includes/pdf.php" class="btn btn-outline-danger" target="_blank">Imprimir <i class="fa fa-file" aria-hidden="true"></i></a>
-                <!-- Agrega un elemento de descarga para el archivo Excel -->
-                <a id="download-link" style="display: none"></a>
+                <?php if ($_SESSION["type"] == 1) { ?>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#inv">
+                        <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i> </a></button>
+                    <!-- Agrega un botón para iniciar la exportación -->
+                    <button id="export-btn" class="btn btn-outline-success" type="button">Exportar a Excel</button>
+                    <a href="../includes/pdf.php" class="btn btn-outline-danger" target="_blank">Imprimir <i class="fa fa-file" aria-hidden="true"></i></a>
+                    <!-- Agrega un elemento de descarga para el archivo Excel -->
+                    <a id="download-link" style="display: none"></a>
+                <?php }
+                ?>
             </div>
 
             <div class="card-body">
@@ -44,7 +46,10 @@ session_start();
                                 <th>Categoria</th>
                                 <th>Status</th>
                                 <th>Fecha</th>
-                                <th>Acciones.</th>
+                                <?php if ($_SESSION["type"] == 1) { ?>
+                                    <th>Acciones.</th>
+                                <?php }
+                                ?>
                             </tr>
                         </thead>
 
@@ -67,13 +72,16 @@ session_start();
                                     <td><?php echo $fila['categoria']; ?></td>
                                     <td><?php echo $fila['status']; ?></td>
                                     <td><?php echo $fila['fecha']; ?></td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editar<?php echo $fila['id']; ?>">
-                                            <i class="fa fa-edit "></i>
-                                        </button>
-                                        <a href="../includes/eliminar_inv.php?id=<?php echo $fila['id'] ?>" class="btn btn-danger btn-del">
-                                            <i class="fa fa-trash "></i></a>
-                                    </td>
+                                    <?php if ($_SESSION["type"] == 1) { ?>
+                                        <td>
+                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editar<?php echo $fila['id']; ?>">
+                                                <i class="fa fa-edit "></i>
+                                            </button>
+                                            <a href="../includes/eliminar_inv.php?id=<?php echo $fila['id'] ?>" class="btn btn-danger btn-del">
+                                                <i class="fa fa-trash "></i></a>
+                                        </td>
+                                    <?php }
+                                    ?>
                                 </tr>
                                 <?php include "editar_inv.php"; ?>
                             <?php endwhile; ?>

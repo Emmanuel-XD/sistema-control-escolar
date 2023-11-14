@@ -81,42 +81,24 @@ if ($resultado->num_rows > 0) {
 
                     </div>
 
-                    <div class="form-group">
-                        <label for="">Modalidad</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="4">
-                            <label class="form-check-label" for="exampleRadios1">
-                                Cuatrimestre
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="6">
-                            <label class="form-check-label" for="exampleRadios2">
-                                Semestre
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="12">
-                            <label class="form-check-label" for="exampleRadios2">
-                                Año Completo
-                            </label>
-                        </div>
 
 
-                    </div>
-                    <br>
 
-                    <center>
-                        <div class="form-group">
-                            <button type="button" id="submitedit" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </center>
             </div>
+            <br>
 
-            </form>
-
+            <center>
+                <div class="form-group">
+                    <button type="button" id="submitedit" class="btn btn-primary">Guardar</button>
+                </div>
+            </center>
         </div>
+
+        </form>
+
     </div>
+    </div>
+
     <script>
         $("#submitedit").click(function(e) {
             e.preventDefault();

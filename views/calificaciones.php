@@ -12,8 +12,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Lista de Grados</h6>
                 <br>
 
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#grado">
-                    <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i> </a></button>
+
             </div>
             <?php include "form_grado.php"; ?>
 
