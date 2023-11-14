@@ -583,12 +583,14 @@ function devolver_cant()
         $row_inventario = mysqli_fetch_assoc($result);
         $cantDisponible = $row_inventario['existencia'];
 
-
-        if ($cantDisponible >= $cant_dev) {
-
+        if (true) {
             mysqli_begin_transaction($conexion);
 
             $newCantDev = $cantDisponible + $cant_dev;
+            if ($newCantDev < 0) {
+                $newCantDev = 0;
+            }
+
             $sql = "UPDATE inventario SET existencia = $newCantDev WHERE id = $id_material";
             $resultados = mysqli_query($conexion, $sql);
 
