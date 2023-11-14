@@ -458,9 +458,22 @@ function insert_prof()
     global $conexion;
     extract($_POST);
     include "db.php";
+    // Verificar si el usuario ya está registrado como profesor
+    $checkQuery = "SELECT * FROM profesores WHERE id_usuario = '$id_usuario'";
+    $checkResult = mysqli_query($conexion, $checkQuery);
 
-    $consulta = "INSERT INTO profesores (cedula, nombres, apellidos,correo,curp,edad,fecha_na, id_especialidad)
-VALUES ('$cedula', '$nombres','$apellidos','$correo','$curp','$edad','$fecha_na', '$id_especialidad')";
+    if (mysqli_num_rows($checkResult) > 0) {
+        // El usuario ya está registrado como cliente, mostrar una alerta
+        $response = array(
+            'status' => 'user',
+            'message' => 'El usuario seleccionado ya está registrado como profesor.'
+        );
+        echo json_encode($response);
+        return; // Termina la ejecución de la función
+    }
+
+    $consulta = "INSERT INTO profesores (id_usuario, cedula, nombres, apellidos,correo,curp,edad,fecha_na, id_especialidad)
+VALUES ('$id_usuario','$cedula', '$nombres','$apellidos','$correo','$curp','$edad','$fecha_na', '$id_especialidad')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
