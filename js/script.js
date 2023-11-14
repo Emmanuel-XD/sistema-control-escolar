@@ -20,14 +20,18 @@ document.addEventListener('DOMContentLoaded', function () {
             var fechaInicio = info.start;
             var fechaFin = info.end;
 
-            fechaFin.setDate(fechaFin.getDate() - 1);
-
             var fechaInicioStr = fechaInicio.toISOString().split('T')[0];
             var fechaFinStr = fechaFin.toISOString().split('T')[0];
 
             $('#fecha_slt').val(fechaInicioStr);
+
+            // Ajusta la fecha de fin para que sea un día antes
+            fechaFin.setDate(fechaFin.getDate() - 1);
+            fechaFinStr = fechaFin.toISOString().split('T')[0];
             $('#fecha_fin').val(fechaFinStr);
         },
+
+
         eventClick: function (info) {
             var _details = $('#modal-form');
             var id = info.event.id;
@@ -65,16 +69,22 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!!fila) {
         Object.keys(fila).map(k => {
             var row = fila[k];
+
+            // Ajusta la fecha de fin para que sea un día después
+            var endDate = new Date(row.fecha_fin);
+            endDate.setDate(endDate.getDate() + 1);
+
             events.push({
                 id: row.id,
                 title: row.materia + ' - ' + row.descripcion,
                 start: row.fecha_slt,
-                end: row.fecha_fin,
+                end: endDate.toISOString().split('T')[0],
             });
         });
     }
 
     calendar.addEventSource(events);
+
 
     calendar.render();
 
@@ -131,4 +141,3 @@ $(document).ready(function () {
         });
     });
 });
-
