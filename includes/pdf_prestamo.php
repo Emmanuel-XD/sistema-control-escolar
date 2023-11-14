@@ -1,14 +1,21 @@
 <?php
-
-session_start();
 error_reporting(0);
+session_start();
+$usuario = $_SESSION['usuario'];
+$permiso = $_SESSION['type'];
+if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
+
+    echo "<script language='JavaScript'>
+    alert('Error: Debes iniciar sesion primero ');
+    location.assign('sesion/login.php');
+    </script>";
+
+    die();
+}
 
 date_default_timezone_set('America/Mexico_City');
 $fecha = date("Y-m-d ");
-
 extract($_GET);
-
-
 require('../fpdf/fpdf.php');
 
 class PDF extends FPDF

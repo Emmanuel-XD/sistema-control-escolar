@@ -1,4 +1,17 @@
 <?php
+error_reporting(0);
+session_start();
+$usuario = $_SESSION['usuario'];
+$permiso = $_SESSION['type'];
+if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
+
+    echo "<script language='JavaScript'>
+    alert('Error: Debes iniciar sesion primero ');
+    location.assign('sesion/login.php');
+    </script>";
+
+    die();
+}
 
 require('../fpdf/fpdf.php');
 date_default_timezone_set('America/Mexico_City');
