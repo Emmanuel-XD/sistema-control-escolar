@@ -18,7 +18,7 @@
 </a>
 
 
-
+<script src="../js/xlsx.full.min.js"></script>
 <script src="../js/delete.js"></script>
 
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
