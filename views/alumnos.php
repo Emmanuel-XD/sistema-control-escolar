@@ -14,6 +14,7 @@
 
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#alumno">
                     <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i> </a></button>
+                <button onclick="exportarExcel()" class="btn btn-primary blue">Exportar a Excel <i class="fas fa-download fa-sm text-white-50"></i></button>
             </div>
             <?php include "form_alumno.php"; ?>
 
@@ -29,7 +30,7 @@
                                 <th>Telefono</th>
                                 <th>CURP</th>
                                 <th>Edad</th>
-                                <th>Nacimiento</th>
+                                <th>Fecha Nacimiento</th>
                                 <th>Beca %</th>
                                 <th>Grado & Grupo</th>
                                 <th>Fecha_Registro</th>
@@ -100,7 +101,21 @@
 
 
 </body>
+<script>
+    var tabla = document.querySelector("#dataTable");
+    var dataTable = new DataTable(tabla);
 
+    function exportarExcel() {
+        // Seleccionar la tabla
+        var tabla = document.getElementById("dataTable");
+
+        // Convertir la tabla en un archivo de Excel
+        var libro = XLSX.utils.table_to_book(tabla);
+
+        // Descargar el archivo
+        XLSX.writeFile(libro, "REPORTE_ALUMNOS.xlsx");
+    }
+</script>
 
 <?php include "../includes/footer.php"; ?>
 

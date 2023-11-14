@@ -24,10 +24,10 @@ session_start();
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#inv">
                         <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i> </a></button>
                     <!-- Agrega un botón para iniciar la exportación -->
-                    <button id="export-btn" class="btn btn-outline-success" type="button">Exportar a Excel</button>
-                    <a href="../includes/pdf.php" class="btn btn-outline-danger" target="_blank">Imprimir <i class="fa fa-file" aria-hidden="true"></i></a>
-                    <!-- Agrega un elemento de descarga para el archivo Excel -->
-                    <a id="download-link" style="display: none"></a>
+                    <button onclick="exportarExcel()" class="btn btn-primary blue">Exportar a Excel <i class="fas fa-download fa-sm text-white-50"></i></button>
+                    <!--  <a href="../includes/pdf.php" class="btn btn-outline-danger" target="_blank">Imprimir <i class="fa fa-file" aria-hidden="true"></i></a>
+                 -->
+
                 <?php }
                 ?>
             </div>
@@ -115,49 +115,19 @@ session_start();
 
 </body>
 <script>
-    // Función para exportar la tabla a un archivo Excel
-    function exportTableToExcel() {
+    var tabla = document.querySelector("#dataTable");
+    var dataTable = new DataTable(tabla);
 
-        const table = document.getElementById('dataTable');
+    function exportarExcel() {
+        // Seleccionar la tabla
+        var tabla = document.getElementById("dataTable");
 
-        // Crear una matriz para almacenar los datos de la tabla
-        const data = [];
+        // Convertir la tabla en un archivo de Excel
+        var libro = XLSX.utils.table_to_book(tabla);
 
-        // Obtener todas las filas de la tabla
-        const rows = table.querySelectorAll('tr');
-
-        rows.forEach((row) => {
-            const rowData = [];
-            const cells = row.querySelectorAll('th, td');
-            cells.forEach((cell) => {
-                rowData.push(cell.innerText);
-            });
-            data.push(rowData);
-        });
-
-        // Crear una hoja de cálculo de Excel
-        const workbook = XLSX.utils.book_new();
-        const worksheet = XLSX.utils.aoa_to_sheet(data);
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Tabla');
-
-        const excelBuffer = XLSX.write(workbook, {
-            bookType: 'xlsx',
-            type: 'array'
-        });
-
-        const blob = new Blob([excelBuffer], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        });
-
-        const downloadLink = document.getElementById('download-link');
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = 'recursos.xlsx';
-
-        downloadLink.click();
+        // Descargar el archivo
+        XLSX.writeFile(libro, "REPORTE_INVENTARIO.xlsx");
     }
-
-    const exportButton = document.getElementById('export-btn');
-    exportButton.addEventListener('click', exportTableToExcel);
 </script>
 <?php include "form_inv.php"; ?>
 <?php include "../includes/footer.php"; ?>
