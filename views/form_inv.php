@@ -59,7 +59,7 @@
 
                         <div class="col-sm-6">
                             <div class="mb-3">
-                      
+
                                 <label for="password">Personal Responsable</label><br>
                                 <select name="id_profesor" id="id_profesor" class="form-control" required>
                                     <option value="">Selecciona una opcion</option>
@@ -140,14 +140,27 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
-                        alert('Éxito: Los datos se guardaron correctamente');
-                        window.location = "inventario.php";
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Guardados',
+                            text: 'Los datos se guardaron correctamente'
+                        }).then(function() {
+                            window.location = "inventario.php";
+                        });
                     } else {
-                        alert('Error: Ocurrió un error inesperado');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error inesperado'
+                        });
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('Error: Ocurrió un error inesperado');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error inesperado'
+                    });
                 }
             });
         });

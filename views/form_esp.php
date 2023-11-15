@@ -34,23 +34,36 @@
 <script>
     $(document).ready(function() {
         $('#espForm').submit(function(e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
+            e.preventDefault(); 
+            var formData = $(this).serialize(); 
             $.ajax({
                 url: '../includes/functions.php',
                 type: 'POST',
                 data: formData,
-                dataType: 'json',
+                dataType: 'json', 
                 success: function(response) {
                     if (response.status === 'success') {
-                        alert('Éxito: Los datos se guardaron correctamente');
-                        window.location = "especialidades.php";
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Guardados',
+                            text: 'Los datos se guardaron correctamente'
+                        }).then(function() {
+                            window.location = "especialidades.php"; 
+                        });
                     } else {
-                        alert('Error: Ocurrió un error inesperado');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error inesperado'
+                        });
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('Error: Ocurrió un error inesperado');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error inesperado'
+                    });
                 }
             });
         });

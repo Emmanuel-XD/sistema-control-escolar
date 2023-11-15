@@ -49,16 +49,30 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
-                        alert('Éxito: Los datos se guardaron correctamente');
-                        window.location = "cargos.php";
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Guardados',
+                            text: 'Los datos se guardaron correctamente'
+                        }).then(function() {
+                            window.location = "cargos.php";
+                        });
                     } else {
-                        alert('Error: Ocurrió un error inesperado');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error inesperado'
+                        });
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('Error: Ocurrió un error inesperado');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error inesperado'
+                    });
                 }
             });
         });
     });
+</script>
 </script>
