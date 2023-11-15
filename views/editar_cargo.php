@@ -13,13 +13,13 @@
 
 
                     <div class="form-group">
-                    <label for="nombre" class="form-label">Descripcion del Cargo</label>
+                        <label for="nombre" class="form-label">Descripcion del Cargo</label>
                         <input type="text" id="cargo" name="cargo" class="form-control" value="<?php echo $fila['cargo']; ?>" required>
                     </div>
 
 
                     <div class="form-group">
-                    <label for="nombre" class="form-label">Monto $</label>
+                        <label for="nombre" class="form-label">Monto $</label>
                         <input type="number" id="monto" name="monto" class="form-control" value="<?php echo $fila['monto']; ?>" required>
                     </div>
 
@@ -51,16 +51,42 @@
             dataType: "json",
             success: function(response) {
                 if (response === "correcto") {
-                    alert("El registro se ha actualizado correctamente");
-                    setTimeout(function() {
-                        location.assign('cargos.php');
-                    }, 2000);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Datos Actualizados',
+                        html: 'El registro se ha actualizado correctamente, los datos se estan guardando en <b></b> milliseconds.',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            location.assign('cargos.php');
+                        }
+                    })
                 } else {
-                    alert("Ha ocurrido un error al actualizar el registro");
+                    Swal.fire({
+                        title: "Error",
+                        text: "Ha ocurrido un error al actualizar el registro",
+                        icon: "error"
+                    });
                 }
             },
             error: function() {
-                alert("Error de comunicacion con el servidor");
+                Swal.fire({
+                    title: "Error",
+                    text: "Ha ocurrido un error al comunicarse con el servidor",
+                    icon: "error"
+                });
             }
         });
     }

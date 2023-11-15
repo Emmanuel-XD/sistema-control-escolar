@@ -152,16 +152,42 @@
             dataType: "json",
             success: function(response) {
                 if (response === "correcto") {
-                    alert("El registro se ha actualizado correctamente");
-                    setTimeout(function() {
-                        location.assign('alumnos.php');
-                    }, 2000);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Datos Actualizados',
+                        html: 'El registro se ha actualizado correctamente, los datos se estan guardando en <b></b> milliseconds.',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            location.assign('alumnos.php');
+                        }
+                    })
                 } else {
-                    alert("Ha ocurrido un error al actualizar el registro");
+                    Swal.fire({
+                        title: "Error",
+                        text: "Ha ocurrido un error al actualizar el registro",
+                        icon: "error"
+                    });
                 }
             },
             error: function() {
-                alert("Error de comunicacion con el servidor");
+                Swal.fire({
+                    title: "Error",
+                    text: "Ha ocurrido un error al comunicarse con el servidor",
+                    icon: "error"
+                });
             }
         });
     }

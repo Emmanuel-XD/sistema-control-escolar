@@ -103,7 +103,7 @@
 
                         <div class="col-sm-6">
                             <div class="mb-3">
-                            <label for="password">Status</label><br>
+                                <label for="password">Status</label><br>
                                 <select name="status" id="status" class="form-control">
 
                                     <option <?php echo $fila['status'] === 'Disponible' ? "selected='selected' " : "" ?> value="Disponible">Disponible</option>
@@ -143,16 +143,42 @@
             dataType: "json",
             success: function(response) {
                 if (response === "correcto") {
-                    alert("El registro se ha actualizado correctamente");
-                    setTimeout(function() {
-                        location.assign('inventario.php');
-                    }, 2000);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Datos Actualizados',
+                        html: 'El registro se ha actualizado correctamente, los datos se estan guardando en <b></b> milliseconds.',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            location.assign('inventario.php');
+                        }
+                    })
                 } else {
-                    alert("Ha ocurrido un error al actualizar el registro");
+                    Swal.fire({
+                        title: "Error",
+                        text: "Ha ocurrido un error al actualizar el registro",
+                        icon: "error"
+                    });
                 }
             },
             error: function() {
-                alert("Error de comunicacion con el servidor");
+                Swal.fire({
+                    title: "Error",
+                    text: "Ha ocurrido un error al comunicarse con el servidor",
+                    icon: "error"
+                });
             }
         });
     }
