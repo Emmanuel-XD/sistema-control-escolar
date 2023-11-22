@@ -78,36 +78,24 @@ if ($results->num_rows > 0) {
             <div class="card-body">
                 <div class="table-responsive">
                 <div class="alert alert-info is-completed" role="alert"> Selecciona un periodo y el numero de evaluación. </div>
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Materias</th>
-                                <th>Puntuacion</th>
-
-                            </tr>
-                        </thead>
-
-                        <tbody id="calificaciones-body">
-
-                            <!-- <?php
-                            extract($_GET);
-                            $id_alumno = $_GET['id'];
-                            require_once("../includes/db.php"); 
-                            $result = mysqli_query($conexion, "SELECT m.materia, m.id_profesor, m.id_periodo, m.id_grado, g.descripcion, a.nombre, 
-                            a.apellido FROM materias m INNER JOIN grados g ON m.id_grado = g.id INNER JOIN alumnos a ON a.id_grado = g.id WHERE a.id = '$id_alumno'");
-                            while ($fila = mysqli_fetch_assoc($result)) :
-                                
-                            ?>
-
-                            <?php endwhile; ?> -->
-                            <tr>
-                                    <td><?php echo $fila['materia']; ?></td>
-                                    <td><input type="number" class="form-control" placeholder="0/100pts"></td>
-
-                                </tr>
-                        </tbody>
-      
-                    </table>
+                    <table class="table table-bordered" id="dataTable" class="display"></table>
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Content goes here -->
+        <p id="modalContent"></p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
