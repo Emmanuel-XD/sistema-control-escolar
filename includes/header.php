@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
 session_start();
-$usuario = $_SESSION['usuario'];
+$usuario = $_SESSION['correo'];
 $permiso = $_SESSION['type'];
 if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
 
@@ -389,7 +389,7 @@ require_once "db.php";
 
                             $id = $_GET['id'];
                             $sql = "SELECT  u.id, u.usuario, u.correo, u.password, u.fecha, u.imagen, p.rol FROM users u
-                        LEFT JOIN permisos p ON u.id_rol= p.id  WHERE usuario ='$usuario'";
+                        LEFT JOIN permisos p ON u.id_rol= p.id  WHERE correo ='$usuario'";
                             $usuarios = mysqli_query($conexion, $sql);
                             if ($usuarios->num_rows > 0) {
                                 foreach ($usuarios as $key => $fila) {
@@ -402,7 +402,7 @@ require_once "db.php";
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $_SESSION['usuario']; ?></span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $fila["usuario"]; ?></span>
                                     <img class="img-profile rounded-circle" src="<?php echo $ruta_imagen; ?>">
                                 </a>
                                 <!-- Dropdown - User Information -->

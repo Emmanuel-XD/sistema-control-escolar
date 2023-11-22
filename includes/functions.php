@@ -459,7 +459,7 @@ function insert_prof()
     extract($_POST);
     include "db.php";
     // Verificar si el usuario ya está registrado como profesor
-    $checkQuery = "SELECT * FROM profesores WHERE id_usuario = '$id_usuario'";
+    $checkQuery = "SELECT * FROM profesores WHERE correo = '$correo'";
     $checkResult = mysqli_query($conexion, $checkQuery);
 
     if (mysqli_num_rows($checkResult) > 0) {
@@ -472,8 +472,8 @@ function insert_prof()
         return; // Termina la ejecución de la función
     }
 
-    $consulta = "INSERT INTO profesores (id_usuario, cedula, nombres, apellidos,correo,curp,edad,fecha_na, id_especialidad)
-VALUES ('$id_usuario','$cedula', '$nombres','$apellidos','$correo','$curp','$edad','$fecha_na', '$id_especialidad')";
+    $consulta = "INSERT INTO profesores (cedula, nombres, apellidos,correo,curp,edad,fecha_na, id_especialidad)
+VALUES ('$cedula', '$nombres','$apellidos','$correo','$curp','$edad','$fecha_na', '$id_especialidad')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -509,7 +509,7 @@ function insert_alumno()
         );
     } else {
 
-        $userCheckQuery = "SELECT * FROM alumnos WHERE id_user = '$id_user'";
+        $userCheckQuery = "SELECT * FROM alumnos WHERE correo = '$correo'";
         $userCheckResult = mysqli_query($conexion, $userCheckQuery);
 
         if (mysqli_num_rows($userCheckResult) > 0) {
@@ -522,8 +522,8 @@ function insert_alumno()
             return;
         }
 
-        $insertQuery = "INSERT INTO alumnos (id_user,matricula, nombre, apellido, correo, telefono, curp, edad, 
-        birthdate, beca, id_grado, id_grupo) VALUES ('$id_user', '$matricula', '$nombre', '$apellido', '$correo', '$telefono', 
+        $insertQuery = "INSERT INTO alumnos (matricula, nombre, apellido, correo, telefono, curp, edad, 
+        birthdate, beca, id_grado, id_grupo) VALUES ( '$matricula', '$nombre', '$apellido', '$correo', '$telefono', 
         '$curp', '$edad', '$birthdate', '$beca', '$id_grado', '$id_grupo')";
         $insertResult = mysqli_query($conexion, $insertQuery);
 
