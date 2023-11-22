@@ -4,10 +4,7 @@ session_start();
 
 ?>
 
-
-
 <?php include "../includes/header.php"; ?>
-<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 
 <body id="page-top">
 
@@ -53,9 +50,9 @@ session_start();
                             extract($_GET);
                             require_once("../includes/db.php");
                             $result = mysqli_query($conexion, "SELECT pr.id, pr.id_profesor, pr.id_materia, pr.id_material, pr.fecha_slt, pr.fecha_fin,
-                            pr.hora_in, pr.hora_fin, pr.cant, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, m.materia, i.descripcion, i.unidad 
+                            pr.hora_in, pr.hora_fin, pr.cant, pr.status, pr.fecha_registrado,p.nombres, p.apellidos, p.correo, m.materia, i.descripcion, i.unidad 
                             FROM prestamos pr INNER JOIN profesores p ON pr.id_profesor = p.id INNER JOIN materias m ON pr.id_materia = m.id 
-                            INNER JOIN inventario i ON pr.id_material = i.id  WHERE p.id_usuario = '$id'");
+                            INNER JOIN inventario i ON pr.id_material = i.id  WHERE p.correo = '$usuario'");
                             while ($fila = mysqli_fetch_assoc($result)) :
                             ?>
                                 <tr>

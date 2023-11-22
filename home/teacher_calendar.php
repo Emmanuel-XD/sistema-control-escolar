@@ -129,7 +129,7 @@ if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
 
                                                     include("../includes/db.php");
                                                     //Codigo para mostrar categorias desde otra tabla
-                                                    $sql = "SELECT * FROM profesores WHERE id_usuario = '$id'";
+                                                    $sql = "SELECT * FROM profesores WHERE correo = '$usuario'";
                                                     $resultado = mysqli_query($conexion, $sql);
                                                     while ($consulta = mysqli_fetch_array($resultado)) {
                                                         echo '<option value="' . $consulta['id'] . '">' . $consulta['nombres'] . ' ' . $consulta['apellidos'] . '</option>';

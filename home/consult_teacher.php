@@ -37,8 +37,8 @@ if ($usuarios->num_rows > 0) {
             calificaciones, editar tu perfil de usuario y acceder a otras funciones relacionadas con tus actividades docentes.
             Además, podrás revisar cualquier cambio realizado dentro del sistema, ajustes en tu perfil. También, te brindamos la opción de solicitar préstamos educativos y gestionar otros aspectos importantes para tu labor como educador. </p>
 
-        <a href="teacher_history.php?id=<?php echo $fila['id'] ?>" class="btn btn-primary">Mi Historial <i class="fa fa-archive"></i></a>
-        <a href="teacher_calendar.php?id=<?php echo $fila['id'] ?>" class="btn btn-primary">Prestamos <i class="fa fa-calendar-plus"></i></a>
+        <a href="teacher_history.php" class="btn btn-primary">Mi Historial <i class="fa fa-archive"></i></a>
+        <a href="teacher_calendar.php" class="btn btn-primary">Prestamos <i class="fa fa-calendar-plus"></i></a>
         <br>
         <br>
         <div data-id="<?php echo $_SESSION['correo']; ?>" id="datos"></div>
