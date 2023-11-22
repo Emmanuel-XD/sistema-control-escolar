@@ -18,7 +18,7 @@ btnSub.addEventListener('submit', function (e) {
                 }
             } else {
                 // Muestra la alerta en caso de error
-                var valHtml = `<div class="text-center alert alert-danger" role="alert">Hay un error con tu usuario o contraseña. Inténtalo de nuevo</div>`;
+                var valHtml = `<div class="text-center alert alert-danger" role="alert">Hay un error con tu correo o contraseña. Inténtalo de nuevo</div>`;
                 document.getElementById("alert").innerHTML = valHtml;
                 setTimeout(() => {
                     document.getElementById("alert").innerHTML = ``;
