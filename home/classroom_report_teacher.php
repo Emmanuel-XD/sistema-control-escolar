@@ -1,4 +1,6 @@
-<?php include "../includes/header.php"; ?>
+<?php include "../includes/header.php";
+date_default_timezone_set('America/Mexico_City');
+$fecha_actual = date('Y-m-d'); ?>
 
 
 <body id="page-top">
@@ -9,7 +11,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h4 class="m-0 font-weight-bold text-center text-primary">REPORTES DE AULA</h4>
+                <h4 class="m-0 font-weight-bold text-center text-primary">REPORTES DE AULA <?php echo  $fecha_actual; ?></h4>
                 <br>
 
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#reporte">
