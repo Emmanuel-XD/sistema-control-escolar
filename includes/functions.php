@@ -11,6 +11,10 @@ if (isset($_POST['accion'])) {
             insert_mat();
             break;
 
+        case 'insert_aula':
+            insert_aula();
+            break;
+
         case 'insert_hor':
             insert_hor();
             break;
@@ -55,12 +59,20 @@ if (isset($_POST['accion'])) {
             insert_alumno();
             break;
 
+        case 'insert_report':
+            insert_report();
+            break;
+
         case 'editar_profe':
             editar_profe();
             break;
 
         case 'editar_alum':
             editar_alum();
+            break;
+
+        case 'editar_report':
+            editar_report();
             break;
 
         case 'editar_mat':
@@ -88,9 +100,12 @@ if (isset($_POST['accion'])) {
             editar_esp();
             break;
 
-
         case 'editar_cat':
             editar_cat();
+            break;
+
+        case 'editar_aula':
+            editar_aula();
             break;
 
         case 'editar_per':
@@ -427,6 +442,30 @@ function insert_cargo()
     echo json_encode($response);
 }
 
+function insert_aula()
+{
+    global $conexion;
+    extract($_POST);
+    include "db.php";
+
+    $consulta = "INSERT INTO aulas (aula, estado) VALUES ('$aula', '$estado')";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
+    } else {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+
+    echo json_encode($response);
+}
+
 function insert_inv()
 {
     global $conexion;
@@ -452,6 +491,32 @@ VALUES ('$codigo', '$descripcion','$cantidad', '$existencia','$unidad','$id_prof
     echo json_encode($response);
 }
 
+function insert_report()
+{
+    global $conexion;
+    extract($_POST);
+    include "db.php";
+    date_default_timezone_set('America/Mexico_City');
+    $fecha_actual = date('Y-m-d');
+    $consulta = "INSERT INTO classroom_report (id_profesor, id_aula, hor_ini, num_alum, sillas_disp, status, aula_limpia, 
+    material, hor_fin, observacion, fecha) VALUES ('$id_profesor', '$id_aula','$hor_ini', '$num_alum','$sillas_disp','$status',
+    '$aula_limpia','$material','$hor_fin','$observacion','$fecha_actual')";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        $response = array(
+            'status' => 'success',
+            'message' => 'Los datos se guardaron correctamente'
+        );
+    } else {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Ocurrió un error inesperado'
+        );
+    }
+
+    echo json_encode($response);
+}
 
 function insert_prof()
 {
@@ -651,6 +716,24 @@ unidad = '$unidad', id_profesor = '$id_profesor', id_categoria='$id_categoria', 
     }
 }
 
+function editar_report()
+{
+    require_once("db.php");
+
+    extract($_POST);
+
+
+    $consulta = "UPDATE classroom_report SET id_profesor = '$id_profesor', id_aula = '$id_aula', hor_ini = '$hor_ini', num_alum = '$num_alum',
+sillas_disp = '$sillas_disp', status = '$status', aula_limpia='$material', hor_fin='$hor_fin', observacion='$observacion' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
 function editar_datos()
 {
     require_once("db.php");
@@ -779,6 +862,23 @@ function editar_grupo()
 
 
     $consulta = "UPDATE grupos SET grupo = '$grupo' WHERE id = '$id' ";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado) {
+        echo json_encode("correcto");
+    } else {
+        echo json_encode("error");
+    }
+}
+
+function editar_aula()
+{
+    require_once("db.php");
+
+    extract($_POST);
+
+
+    $consulta = "UPDATE aulas SET aula = '$aula', estado = '$estado' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
