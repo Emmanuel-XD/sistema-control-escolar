@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SISTEMA DE CONTROL ESCOLAR | SOFTCODEPM</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/style.css">
 
@@ -20,7 +20,7 @@
                 <h2 class="text-center">SISTEMA DE CONTROL ESCOLAR</h2>
                 <center><img src="../../img/tec.png" alt="" width="150px" class=""></center>
                 <br>
-                <p class="text-center">Ingrese su usuario y contraseña para iniciar sesión</p>
+                <p class="text-center">Ingrese su correo y contraseña para iniciar sesión</p>
 
 
                 <div id="alert">
@@ -29,12 +29,12 @@
 
 
                     <div class="form-group">
-                        <label for="usuario" class="form-label">Usuario</label>
+                        <label for="usuario" class="form-label"><i class="fa fa-user" aria-hidden="true"></i> Correo</label>
                         <input type="email" id="correo" name="correo" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="password" class="form-label"><i class="fa fa-key" aria-hidden="true"></i> Password</label>
                         <input type="password" id="password" name="password" class="form-control" required>
                     </div>
 

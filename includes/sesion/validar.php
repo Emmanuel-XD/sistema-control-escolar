@@ -5,7 +5,7 @@ if (isset($_POST)) {
     $password = trim($_POST['password']);
     $password2 = trim($_POST['password2']);
 
-    $sql = "SELECT * FROM  users WHERE correo = '$correo'";
+    $sql = "SELECT * FROM users WHERE correo = '$correo'";
     $validuser = mysqli_query($conexion, $sql);
     $rows = mysqli_num_rows($validuser);
     if ($rows >= 1) {
@@ -17,8 +17,8 @@ if (isset($_POST)) {
     } else {
         $password = password_hash($password, PASSWORD_DEFAULT, ['cost' => 5]);
 
-        $consulta = "INSERT INTO users (usuario, correo,  password, id_rol)
-	VALUES ('$usuario', '$correo ', '$password', '$id_rol')";
+        $consulta = "INSERT INTO users (usuario, correo, password, id_rol)
+        VALUES ('$usuario', '$correo', '$password', '$id_rol')";
         $resultado = mysqli_query($conexion, $consulta);
         if ($resultado) {
             echo json_encode('success');
