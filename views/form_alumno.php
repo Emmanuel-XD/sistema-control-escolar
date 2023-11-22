@@ -125,23 +125,24 @@
                         <input type="text" name="curp" id="curp" class="form-control" required>
                     </div>
 
-                    <div class="form-group">
+                    <!--       <div class="form-group">
                         <label for="id_user">Usuario Asociado</label><br>
                         <select name="id_user" id="id_user" class="form-control" required>
                             <option value="">Selecciona una opcion</option>
                             <?php
 
-                            include("db.php");
+                            /* include("db.php");
 
                             $sql = "SELECT * FROM users WHERE id_rol = 3 ";
                             $resultado = mysqli_query($conexion, $sql);
                             while ($consulta = mysqli_fetch_array($resultado)) {
                                 echo '<option value="' . $consulta['id'] . '">' . $consulta['usuario'] . '</option>';
                             }
+                            */
 
                             ?>
                         </select>
-                    </div>
+                    </div>-->
                     <br>
                     <input type="hidden" name="accion" value="insert_alumno">
                     <div class="modal-footer">
@@ -177,8 +178,8 @@
                     } else if (response.status === 'user') {
                         Swal.fire({
                             icon: 'info',
-                            title: 'Usuario No Disponible',
-                            text: 'El usuario seleccionado ya está registrado como alumno, intente con otro o registre uno nuevo.'
+                            title: 'Correo No Disponible',
+                            text: 'El correo ingresado ya está registrado como alumno, intente con otro o registre uno nuevo.'
                         });
                     } else if (response.status === 'matricula') {
                         Swal.fire({

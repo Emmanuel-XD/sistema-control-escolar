@@ -104,8 +104,8 @@
     function confirmation(r) {
         if (r === 'success') {
             Swal.fire({
-                'title': '¡Mensaje!',
-                'text': 'Usuario Registrado',
+                'title': 'Datos Guardados',
+                'text': 'Los datos se guardaron correctamente',
                 'icon': 'success',
                 'showConfirmButton': 'false',
                 'timer': '1500'
@@ -122,9 +122,9 @@
         }
         if (r === 'mail') {
             Swal.fire({
-                'title': 'Error',
-                'text': 'Este usuario ya esta registrado prueba con otro o inicia sesión',
-                'icon': 'error'
+                'title': 'Correo No Disponible',
+                'text': 'Este correo ya esta registrado prueba con otro o inicia sesión',
+                'icon': 'info'
             })
         }
         if (r === 'pass') {

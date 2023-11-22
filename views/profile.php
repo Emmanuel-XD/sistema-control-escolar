@@ -5,7 +5,7 @@ include_once "../includes/db.php";
 <?php
 error_reporting(0);
 session_start();
-$actualsesion = $_SESSION['usuario'];
+$actualsesion = $_SESSION['correo'];
 
 if ($actualsesion == null || $actualsesion == '') {
 }
@@ -14,7 +14,7 @@ if ($actualsesion == null || $actualsesion == '') {
 
 $sql = "SELECT  u.id, u.usuario, u.correo, u.password,
 u.fecha, u.imagen, p.rol FROM users u
-LEFT JOIN permisos p ON u.id_rol= p.id   WHERE usuario ='$actualsesion'";
+LEFT JOIN permisos p ON u.id_rol= p.id   WHERE correo ='$actualsesion'";
 $usuarios = mysqli_query($conexion, $sql);
 if ($usuarios->num_rows > 0) {
     foreach ($usuarios as $key => $fila) {
