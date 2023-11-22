@@ -6,7 +6,7 @@ session_start();
 
 $sql = "SELECT  u.id, u.usuario, u.correo, u.password,
 u.fecha, u.imagen, p.rol FROM users u
-LEFT JOIN permisos p ON u.id_rol= p.id   WHERE usuario ='$actualsesion'";
+LEFT JOIN permisos p ON u.id_rol= p.id  WHERE correo ='$usuario'";
 $usuarios = mysqli_query($conexion, $sql);
 if ($usuarios->num_rows > 0) {
     foreach ($usuarios as $key => $fila) {
@@ -30,18 +30,18 @@ if ($usuarios->num_rows > 0) {
 
 <body>
     <div class="container">
-        <h1 class="text-center">Consulta tu Informacion <?php echo $usuario; ?></h1>
+        <h1 class="text-center">Consulta tu Informacion <?php echo $fila['usuario']; ?></h1>
 
         <br>
         <p style="text-align: justify;">A continuación, los alumnos tienen la posibilidad de consultar el estado de su perfil,
             gestionar calificaciones, y editar su información personal dentro del sistema. Además, podrán revisar cualquier cambio
             realizado en sus calificaciones y ajustes en sus perfiles.</p>
 
-        <a href="student_tickets.php?id=<?php echo $fila['id'] ?>" class="btn btn-primary">Boleta De Califiacion <i class="fa fa-file"></i></a>
-        <a href="student_grades.php?id=<?php echo $fila['id'] ?>" class="btn btn-primary">Mis Calificaciones <i class="fa fa-list-alt" aria-hidden="true"></i></a>
+        <a href="student_tickets.php?id=<?php echo $fila['id']; ?>" class="btn btn-primary">Boleta De Califiacion <i class="fa fa-file"></i></a>
+        <a href="student_grades.php?id=<?php echo $fila['id']; ?>" class="btn btn-primary">Mis Calificaciones <i class="fa fa-list-alt" aria-hidden="true"></i></a>
         <br>
         <br>
-        <div data-id="<?php echo $_SESSION['usuario']; ?>" id="datos"></div>
+        <div data-id="<?php echo $_SESSION['correo']; ?>" id="datos"></div>
 
     </div>
 </body>

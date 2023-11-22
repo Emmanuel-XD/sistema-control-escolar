@@ -8,7 +8,7 @@ if (isset($_POST['buscar'])) {
     $buscador = mysqli_query($conexion, "SELECT a.id, a.matricula, a.nombre, a.apellido, a.correo,
     a.telefono, a.curp, a.edad, a.birthdate, a.beca, a.id_grado, a.id_grupo, a.fecha, g.descripcion, gru.grupo
     FROM alumnos a INNER JOIN grados g ON a.id_grado = g.id INNER JOIN grupos gru ON a.id_grupo = gru.id 
-    INNER JOIN users u ON a.id_user = u.id WHERE u.usuario =  '$usuario'");
+    WHERE a.correo =  '$usuario'");
     $numero = mysqli_num_rows($buscador);
 }
 ?>

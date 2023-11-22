@@ -7,7 +7,7 @@ $typeUser = $_SESSION['type'];
 if ($typeUser === '1' || $typeUser === '2' || $typeUser === '3') {
 
 
-    $varsesion = $_SESSION['usuario'];
+    $varsesion = $_SESSION['correo'];
 
     if ($varsesion == null || $varsesion = '') {
 
