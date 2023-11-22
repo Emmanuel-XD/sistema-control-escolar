@@ -39,6 +39,7 @@ if ($usuarios->num_rows > 0) {
 
         <a href="teacher_history.php" class="btn btn-primary">Mi Historial <i class="fa fa-archive"></i></a>
         <a href="teacher_calendar.php" class="btn btn-primary">Prestamos <i class="fa fa-calendar-plus"></i></a>
+        <a href="classroom_report_teacher.php" class="btn btn-primary">Reportes Aula <i class="fa fa-file-pdf"></i></a>
         <br>
         <br>
         <div data-id="<?php echo $_SESSION['correo']; ?>" id="datos"></div>
