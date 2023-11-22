@@ -9,20 +9,22 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Lista de Grados</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Lista de Aulas</h6>
                 <br>
 
-
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#aula">
+                    <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i> </a></button>
             </div>
-            <?php include "form_grado.php"; ?>
+            <?php include "form_aula.php"; ?>
 
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Grado</th>
-                                <th>Duracion</th>
+                                <th>Aula</th>
+                                <th>Estado</th>
+                                <th>Fecha_registro</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -30,26 +32,27 @@
                         <tbody>
                             <?php
                             require_once("../includes/db.php");
-                            $result = mysqli_query($conexion, "SELECT * FROM grados ");
+                            $result = mysqli_query($conexion, "SELECT * FROM aulas ");
                             while ($fila = mysqli_fetch_assoc($result)) :
 
                             ?>
                                 <tr>
-                                    <td><?php echo $fila['descripcion']; ?></td>
-                                    <td><?php echo $fila['duracion']; ?></td>
+                                    <td><?php echo $fila['aula']; ?></td>
+                                    <td><?php echo $fila['estado']; ?></td>
+                                    <td><?php echo $fila['fecha']; ?></td>
 
                                     <td>
-
-                                        <a href="asignar_calificacion.php?id=<?php echo $fila['id'] ?>" class="btn btn-primary">
-                                            <i class="fa fa-book" aria-hidden="true"></i></a>
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editar<?php echo $fila['id']; ?>">
+                                            <i class="fa fa-edit "></i>
+                                        </button>
+                                        <a href="../includes/eliminar_aula.php?id=<?php echo $fila['id'] ?>" class="btn btn-danger btn-del">
+                                            <i class="fa fa-trash "></i></a>
                                     </td>
                                 </tr>
-
+                                <?php include "editar_aula.php"; ?>
                             <?php endwhile; ?>
                         </tbody>
                     </table>
-
-
 
 
                 </div>
@@ -61,10 +64,6 @@
 
     </div>
     <!-- End of Main Content -->
-
-
-
-
 
 
     </div>

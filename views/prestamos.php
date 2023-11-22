@@ -4,10 +4,8 @@ session_start();
 
 ?>
 
-
-
 <?php include "../includes/header.php"; ?>
-<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
 
 <body id="page-top">
 

@@ -124,14 +124,14 @@
             Swal.fire({
                 'title': 'Correo No Disponible',
                 'text': 'Este correo ya esta registrado prueba con otro o inicia sesión',
-                'icon': 'info'
+                'icon': 'warning'
             })
         }
         if (r === 'pass') {
             Swal.fire({
-                'title': 'Error',
+                'title': 'Password Invalido',
                 'text': 'Las contraseñas no coinciden',
-                'icon': 'error'
+                'icon': 'info'
             })
         }
 

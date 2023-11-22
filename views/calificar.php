@@ -31,45 +31,45 @@ if ($results->num_rows > 0) {
                 <h6 class="m-0 font-weight-bold text-primary">Calificar al Alumno(a) <?php echo $row['nombre'] . ' ' . $row['apellido']; ?></h6>
                 <br>
                 <form action="../includes/saveCalificacion.php" method="POST">
-             
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <label for="id_periodo">Num. de  periodo:</label>
-                                <select name="id_periodo" id="id_periodo" class="control" required>
-                                    <option value="">Selecciona una opcion</option>
-                                    <?php
 
-                                    include("db.php");
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="id_periodo">Num. de periodo:</label>
+                            <select name="id_periodo" id="id_periodo" class="control" required>
+                                <option value="">Selecciona una opcion</option>
+                                <?php
 
-                                    $sql = "SELECT * FROM periodos ";
-                                    $resultado = mysqli_query($conexion, $sql);
-                                    while ($consulta = mysqli_fetch_array($resultado)) {
-                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['periodo'] . ' ( ' . $consulta['date_in'] . ' - ' . $consulta['date_fin'] . ')</option>';
-                                    }
+                                include("db.php");
 
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="id_evaluacion"> Num. de  evaluación:</label>
-                                <select name="id_evaluacion" id="id_evaluacion" class="control" required>
-                                    <option value="">Selecciona una opcion</option>
-                                    <?php
+                                $sql = "SELECT * FROM periodos ";
+                                $resultado = mysqli_query($conexion, $sql);
+                                while ($consulta = mysqli_fetch_array($resultado)) {
+                                    echo '<option value="' . $consulta['id'] . '">' . $consulta['periodo'] . ' ( ' . $consulta['date_in'] . ' - ' . $consulta['date_fin'] . ')</option>';
+                                }
 
-                                    include("db.php");
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="id_evaluacion"> Num. de evaluación:</label>
+                            <select name="id_evaluacion" id="id_evaluacion" class="control" required>
+                                <option value="">Selecciona una opcion</option>
+                                <?php
 
-                                    $sql = "SELECT * FROM evaluacion ";
-                                    $resultado = mysqli_query($conexion, $sql);
-                                    while ($consulta = mysqli_fetch_array($resultado)) {
-                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['evaluacion'] . '</option>';
-                                    }
+                                include("db.php");
 
-                                    ?>
-                                </select>
-                            </div>
-                                <div class="col-sm-3">
-                                     <button type="button" class="btn btn-success" id="save">Guardar <i class="fa fa-check"></i></button>
-                             </div>
+                                $sql = "SELECT * FROM evaluacion ";
+                                $resultado = mysqli_query($conexion, $sql);
+                                while ($consulta = mysqli_fetch_array($resultado)) {
+                                    echo '<option value="' . $consulta['id'] . '">' . $consulta['evaluacion'] . '</option>';
+                                }
+
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success" id="save">Guardar <i class="fa fa-check"></i></button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -77,25 +77,25 @@ if ($results->num_rows > 0) {
 
             <div class="card-body">
                 <div class="table-responsive">
-                <div class="alert alert-info is-completed" role="alert"> Selecciona un periodo y el numero de evaluación. </div>
+                    <div class="alert alert-info is-completed" role="alert"> Selecciona un periodo y el numero de evaluación. </div>
                     <table class="table table-bordered" id="dataTable" class="display"></table>
-<!-- Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit Details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Content goes here -->
-        <p id="modalContent"></p>
-      </div>
-    </div>
-  </div>
-</div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Edit Details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Content goes here -->
+                                    <p id="modalContent"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
