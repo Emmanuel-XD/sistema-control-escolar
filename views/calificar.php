@@ -31,41 +31,53 @@ if ($results->num_rows > 0) {
                 <h6 class="m-0 font-weight-bold text-primary">Calificar al Alumno(a) <?php echo $row['nombre'] . ' ' . $row['apellido']; ?></h6>
                 <br>
                 <form action="../includes/saveCalificacion.php" method="POST">
-                    <select name="id_periodo" id="id_periodo" class="control" required>
-                        <option value="">Selecciona una opcion</option>
-                        <?php
+             
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label for="id_periodo">Num. de  periodo:</label>
+                                <select name="id_periodo" id="id_periodo" class="control" required>
+                                    <option value="">Selecciona una opcion</option>
+                                    <?php
 
-                        include("db.php");
+                                    include("db.php");
 
-                        $sql = "SELECT * FROM periodos ";
-                        $resultado = mysqli_query($conexion, $sql);
-                        while ($consulta = mysqli_fetch_array($resultado)) {
-                            echo '<option value="' . $consulta['id'] . '">' . $consulta['periodo'] . ' ( ' . $consulta['date_in'] . ' - ' . $consulta['date_fin'] . ')</option>';
-                        }
+                                    $sql = "SELECT * FROM periodos ";
+                                    $resultado = mysqli_query($conexion, $sql);
+                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['periodo'] . ' ( ' . $consulta['date_in'] . ' - ' . $consulta['date_fin'] . ')</option>';
+                                    }
 
-                        ?>
-                    </select>
-                    <select name="id_evaluacion" id="id_evaluacion" class="control" required>
-                        <option value="">Selecciona una opcion</option>
-                        <?php
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="id_evaluacion"> Num. de  evaluación:</label>
+                                <select name="id_evaluacion" id="id_evaluacion" class="control" required>
+                                    <option value="">Selecciona una opcion</option>
+                                    <?php
 
-                        include("db.php");
+                                    include("db.php");
 
-                        $sql = "SELECT * FROM evaluacion ";
-                        $resultado = mysqli_query($conexion, $sql);
-                        while ($consulta = mysqli_fetch_array($resultado)) {
-                            echo '<option value="' . $consulta['id'] . '">' . $consulta['evaluacion'] . '</option>';
-                        }
+                                    $sql = "SELECT * FROM evaluacion ";
+                                    $resultado = mysqli_query($conexion, $sql);
+                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['evaluacion'] . '</option>';
+                                    }
 
-                        ?>
-                    </select>
-                    <button type="button" class="btn btn-success" id="save">Guardar <i class="fa fa-check"></i></button>
+                                    ?>
+                                </select>
+                            </div>
+                                <div class="col-sm-3">
+                                     <button type="button" class="btn btn-success" id="save">Guardar <i class="fa fa-check"></i></button>
+                             </div>
+                    </div>
                 </form>
             </div>
 
 
             <div class="card-body">
                 <div class="table-responsive">
+                <div class="alert alert-info is-completed" role="alert"> Selecciona un periodo y el numero de evaluación. </div>
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
@@ -77,46 +89,26 @@ if ($results->num_rows > 0) {
 
                         <tbody id="calificaciones-body">
 
-                            <?php
+                            <!-- <?php
                             extract($_GET);
                             $id_alumno = $_GET['id'];
-                            require_once("../includes/db.php");
+                            require_once("../includes/db.php"); 
                             $result = mysqli_query($conexion, "SELECT m.materia, m.id_profesor, m.id_periodo, m.id_grado, g.descripcion, a.nombre, 
                             a.apellido FROM materias m INNER JOIN grados g ON m.id_grado = g.id INNER JOIN alumnos a ON a.id_grado = g.id WHERE a.id = '$id_alumno'");
                             while ($fila = mysqli_fetch_assoc($result)) :
-
+                                
                             ?>
-                                <tr>
+
+                            <?php endwhile; ?> -->
+                            <tr>
                                     <td><?php echo $fila['materia']; ?></td>
                                     <td><input type="number" class="form-control" placeholder="0/100pts"></td>
 
                                 </tr>
-                            <?php endwhile; ?>
                         </tbody>
+      
                     </table>
 
-                    <script>
-                        $(document).ready(function() {
-                            $('#id_evaluacion').change(function() {
-                                var idEvaluacion = $(this).val();
-                                $.ajax({
-                                    url: 'obtener_calificacion.php',
-                                    type: 'POST',
-                                    data: {
-                                        idEvaluacion: idEvaluacion,
-                                        idAlumno: <?php echo $id_alumno; ?>
-                                    },
-                                    dataType: 'html',
-                                    success: function(data) {
-                                        $('#calificaciones-body').html(data);
-                                    },
-                                    error: function(xhr, status, error) {
-                                        alert('Error: Ocurrió un error inesperado');
-                                    }
-                                });
-                            });
-                        });
-                    </script>
 
 
 

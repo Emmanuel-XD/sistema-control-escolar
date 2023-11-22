@@ -42,11 +42,9 @@
                                 <tr>
                                     <td><?php echo $fila['descripcion'] . ' ' . $fila['grupo']; ?></td>
                                     <td><?php echo $fila['nombre'] . ' ' . $fila['apellido']; ?></td>
-
                                     <td>
-
                                         <a href="calificar.php?id=<?php echo $fila['id'] ?>" class="btn btn-success">
-                                            <i class="fa fa-check-circle"></i>
+                                            <i class="fa fa-check-circle"> Asignar</i>
                                     </td>
                                 </tr>
 

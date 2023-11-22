@@ -41,7 +41,7 @@
                                     <td>
 
                                         <a href="asignar_calificacion.php?id=<?php echo $fila['id'] ?>" class="btn btn-primary">
-                                            <i class="fa fa-book" aria-hidden="true"></i></a>
+                                            <i class="fa fa-book" aria-hidden="true"></i> Calificar </a>
                                     </td>
                                 </tr>
 
