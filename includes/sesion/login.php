@@ -30,7 +30,7 @@
 
                     <div class="form-group">
                         <label for="usuario" class="form-label">Usuario</label>
-                        <input type="text" id="usuario" name="usuario" class="form-control" required>
+                        <input type="email" id="correo" name="correo" class="form-control" required>
                     </div>
 
                     <div class="form-group">

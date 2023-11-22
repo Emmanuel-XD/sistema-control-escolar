@@ -5,7 +5,7 @@ if (isset($_POST)) {
     $password = trim($_POST['password']);
     $password2 = trim($_POST['password2']);
 
-    $sql = "SELECT * FROM  users WHERE usuario = '$usuario'";
+    $sql = "SELECT * FROM  users WHERE correo = '$correo'";
     $validuser = mysqli_query($conexion, $sql);
     $rows = mysqli_num_rows($validuser);
     if ($rows >= 1) {
