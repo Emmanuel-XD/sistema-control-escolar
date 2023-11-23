@@ -41,8 +41,23 @@ function updatetable() {
       gradesAssign(periodEval, numEval);
   }
 }
+// Function to show a loading SweetAlert with animation
+function showLoadingAlert() {
+  Swal.fire({
+    title: 'Cargando datos...',
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    html: '<div class="spinner-border" role="status"><span class="visually-hidden"></span></div>',
+    onBeforeOpen: () => {
+      // You can customize the loading animation style further if needed
+    },
+  });
+}
+function hideLoadingAlert() {
+  Swal.close();
+}
 function gradesAssign(periodEval, numEval){
-
+  showLoadingAlert();
   
   var idStudent = urlParams.get('id') 
 
@@ -53,9 +68,9 @@ function gradesAssign(periodEval, numEval){
 
   fetch('obtener_calificacion.php', {
       method: 'POST',
-      body: data, // Include the FormData object as the request body
+      body: data, 
     }).then(response => response.json()).then(data => {
-      
+      hideLoadingAlert();
         console.log('Response data: ', data);
         dataTable.clear().draw();
         if (Array.isArray(data)) {
@@ -65,8 +80,7 @@ function gradesAssign(periodEval, numEval){
                   item.materia,
                   item.grade,
                   '<button type="button" class="btn btn-dark edit-btn" data-id="' + item.id + '">Editar / asignar calificación</button>'
-                  // Add more data fields as needed
-              ]).draw(true); // 'false' to append rows without redrawing the table
+              ]).draw(true);
           });
       } else {
           console.error('Error: Data is not an array');
@@ -74,6 +88,7 @@ function gradesAssign(periodEval, numEval){
       })
       .catch(error => {
         console.error('Error:', error);
+        hideLoadingAlert();
       });
 
 }
@@ -85,15 +100,12 @@ $("#id_periodo, #id_evaluacion").change(function (e) {
 
 $('#dataTable').on('click', '.edit-btn', function () {
   var rowId = $(this).data('id');
-    
-    // Get the data of the clicked row
+
     var rowData = dataTable.row($(this).closest('tr')).data();
 
-    // Extract the value of the second column (index 1)
     var firstColumnValue = rowData[0];
     var secondColumnValue = rowData[1];
 
-    // Print the value and add an input field
     $('#modalContent').html(`
         <p>Seleccionada la materia:<b> ${firstColumnValue} </b></p>
         <p>Calificación actual: ${secondColumnValue}</p>
@@ -131,14 +143,13 @@ data.append("newcalif", newValue);
 data.append("idmateria",rowId);
   fetch('updatecalif.php', {
     method: 'POST',
-    body: data, // Include the FormData object as the request body
+    body: data, 
   }).then(response => response.json()).then(data => {
     if (data.status === 'success') {
-        // The update was successful, you can show a success message
+
         updatetable();
         $('#editModal').modal('hide');
     } else {
-        // The update failed, you can show an error message
         console.error(data.message);
     }
 })

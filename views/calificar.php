@@ -19,7 +19,11 @@ if ($results->num_rows > 0) {
     }
 }
 ?>
-
+<style>
+  .swal2-html-container{
+    overflow: hidden;
+  }
+</style>
 <body id="page-top">
 
     <!-- Begin Page Content -->
