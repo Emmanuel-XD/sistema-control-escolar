@@ -498,9 +498,9 @@ function insert_report()
     include "db.php";
     date_default_timezone_set('America/Mexico_City');
     $fecha_actual = date('Y-m-d');
-    $consulta = "INSERT INTO classroom_report (id_profesor, id_aula, hor_ini, num_alum, sillas_disp, status, aula_limpia, 
-    material, hor_fin, observacion, fecha) VALUES ('$id_profesor', '$id_aula','$hor_ini', '$num_alum','$sillas_disp','$status',
-    '$aula_limpia','$material','$hor_fin','$observacion','$fecha_actual')";
+    $consulta = "INSERT INTO classroom_report (id_materia, id_grado, id_grupo, id_profesor, id_aula, hor_ini, num_alum, sillas_disp, status, aula_limpia, 
+    material, hor_fin,fecha) VALUES ('$id_materia','$id_grado','$id_grupo','$id_profesor', '$id_aula','$hor_ini', '$num_alum','$sillas_disp','$status',
+    '$aula_limpia','$material','$hor_fin','$fecha_actual')";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {
@@ -722,9 +722,9 @@ function editar_report()
 
     extract($_POST);
 
-
-    $consulta = "UPDATE classroom_report SET id_profesor = '$id_profesor', id_aula = '$id_aula', hor_ini = '$hor_ini', num_alum = '$num_alum',
-sillas_disp = '$sillas_disp', status = '$status', aula_limpia='$material', hor_fin='$hor_fin', observacion='$observacion' WHERE id = '$id' ";
+    $consulta = "UPDATE classroom_report SET id_materia = '$id_materia', id_grado = '$id_grado', id_grupo = '$id_grupo',
+    id_profesor = '$id_profesor', id_aula = '$id_aula', hor_ini = '$hor_ini', num_alum = '$num_alum', 
+    sillas_disp = '$sillas_disp', status = '$status', aula_limpia='$material', hor_fin='$hor_fin' WHERE id = '$id' ";
     $resultado = mysqli_query($conexion, $consulta);
 
     if ($resultado) {

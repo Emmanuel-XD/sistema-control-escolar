@@ -3,6 +3,7 @@
 error_reporting(0);
 require('../fpdf/fpdf.php');
 include "fecha.php";
+
 class PDF extends FPDF
 {
     // Cabecera de página
@@ -20,7 +21,7 @@ class PDF extends FPDF
         $this->setY(15);
         $this->setX(110);
 
-        $this->Cell(70, 10, utf8_decode('REPORTE INFIVIDUAL DE AULAS '), 0, 1, 'C');
+        $this->Cell(70, 10, utf8_decode('REPORTE GENERAL DE AULAS '), 0, 1, 'C');
 
         include "db.php";
         $consulta = "SELECT * FROM settings";
@@ -52,9 +53,10 @@ class PDF extends FPDF
         include "db.php";
 
         $consulta = "SELECT c.id,c.id_profesor,c.id_aula,c.hor_ini,c.num_alum,
-        c.sillas_disp,c.status,c.aula_limpia,c.material,c.hor_fin,c.observacion,c.fecha,c.fecha2, 
-        p.nombres, p.apellidos, a.aula FROM classroom_report c INNER JOIN profesores p 
-        ON c.id_profesor = p.id INNER JOIN aulas a ON c.id_aula = a.id ";
+        c.sillas_disp,c.status,c.aula_limpia,c.material,c.hor_fin, c.fecha,c.fecha2, 
+        p.nombres, p.apellidos, a.aula, m.materia, g.descripcion, gr.grupo FROM classroom_report c INNER JOIN profesores p 
+        ON c.id_profesor = p.id INNER JOIN aulas a ON c.id_aula = a.id INNER JOIN materias m ON c.id_materia = m.id
+        INNER JOIN grados g ON c.id_grado = g.id INNER JOIN grupos gr ON c.id_grupo = gr.id ";
 
         $sql = mysqli_query($conexion, $consulta);
         if ($sql->num_rows > 0) {
@@ -64,9 +66,8 @@ class PDF extends FPDF
 
         $this->SetFont('Arial', '', 10);
         $this->SetY(45);
-        $this->SetX(12.5);
-        $this->Cell(60, 4, 'Nombre del Profesor(a): ' . utf8_decode($filas['nombres'] . ' ' . $filas['apellidos']), 0, 1, 'L');
-
+        $this->SetX(7);
+        $this->Cell(60, 4, 'Fecha de Reporte: ' . utf8_decode($filas['fecha']), 0, 1, 'L');
 
         $this->SetFont('Arial', '', 10);
         $this->SetY(30);
@@ -80,19 +81,21 @@ class PDF extends FPDF
 
 
         $this->Ln();
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->SetY(65);
-        $this->SetX(14);
+        $this->SetX(8);
 
-        $this->Cell(32, 10, 'Aula', 1, 0, 'C', 0);
-        $this->Cell(23, 10, 'Hora Entrada', 1, 0, 'C', 0,);
-        $this->Cell(25, 10, 'Num Alum.', 1, 0, 'C', 0);
-        $this->Cell(20, 10, 'Sillas Disp.', 1, 0, 'C', 0);
-        $this->Cell(30, 10, 'Status Silla,Etc.', 1, 0, 'C', 0);
-        $this->Cell(22, 10, 'Status Aula', 1, 0, 'C', 0);
-        $this->Cell(22, 10, 'Mat Compl.', 1, 0, 'C', 0);
-        $this->Cell(22, 10, 'Hora Salida', 1, 0, 'C', 0);
-        $this->Cell(60, 10, 'Observaciones', 1, 1, 'C', 0);
+        $this->Cell(44, 10, 'Profesor', 1, 0, 'C', 0);
+        $this->Cell(30, 10, 'Aula', 1, 0, 'C', 0);
+        $this->Cell(33, 10, 'Materia', 1, 0, 'C', 0);
+        $this->Cell(22, 10, 'Grado & Grupo', 1, 0, 'C', 0);
+        $this->Cell(20, 10, 'Hora Entrada', 1, 0, 'C', 0,);
+        $this->Cell(18, 10, 'Num Alum.', 1, 0, 'C', 0);
+        $this->Cell(17, 10, 'Sillas Disp.', 1, 0, 'C', 0);
+        $this->Cell(22, 10, 'Status Material', 1, 0, 'C', 0);
+        $this->Cell(18, 10, 'Status Aula', 1, 0, 'C', 0);
+        $this->Cell(20, 10, 'Mat Compl.', 1, 0, 'C', 0);
+        $this->Cell(20, 10, 'Hora Salida', 1, 1, 'C', 0);
     }
 
     // Pie de página
@@ -140,7 +143,7 @@ class PDF extends FPDF
         $this->Ln(20);
         $this->setY(-9);
         $this->setX(20);
-        $this->Cell(60, 0, utf8_decode('SISTEMA ESCOLAr'), 0, 1, 'C');
+        $this->Cell(60, 0, utf8_decode('SISTEMA ESCOLAR'), 0, 1, 'C');
 
 
 
@@ -168,11 +171,13 @@ class PDF extends FPDF
 }
 
 include "db.php";
-
+date_default_timezone_set('America/Mexico_City');
+$fecha_actual = date('Y-m-d');
 $consulta = "SELECT c.id,c.id_profesor,c.id_aula,c.hor_ini,c.num_alum,
-c.sillas_disp,c.status,c.aula_limpia,c.material,c.hor_fin,c.observacion,c.fecha,c.fecha2, 
-p.nombres, p.apellidos, a.aula FROM classroom_report c INNER JOIN profesores p 
-ON c.id_profesor = p.id INNER JOIN aulas a ON c.id_aula = a.id ";
+c.sillas_disp,c.status,c.aula_limpia,c.material,c.hor_fin, c.fecha,c.fecha2, 
+p.nombres, p.apellidos, a.aula, m.materia, g.descripcion, gr.grupo FROM classroom_report c INNER JOIN profesores p 
+ON c.id_profesor = p.id INNER JOIN aulas a ON c.id_aula = a.id INNER JOIN materias m ON c.id_materia = m.id
+INNER JOIN grados g ON c.id_grado = g.id INNER JOIN grupos gr ON c.id_grupo = gr.id WHERE c.fecha = '$fecha_actual'";
 $resultado = mysqli_query($conexion, $consulta);
 
 $pdf = new PDF();
@@ -184,17 +189,18 @@ $pdf->SetFont('Arial', '', 0);
 //$pdf->SetWidths(array(10, 30, 27, 27, 20, 20, 20, 20, 22));
 while ($row = $resultado->fetch_assoc()) {
 
-    $pdf->SetX(14);
-
-    $pdf->Cell(32, 10, utf8_decode($row['aula']), 1, 0, 'L', 0);
-    $pdf->Cell(23, 10, utf8_decode($row['hor_ini']), 1, 0, 'L', 0);
-    $pdf->Cell(25, 10, utf8_decode($row['num_alum']), 1, 0, 'L', 0);
-    $pdf->Cell(20, 10, utf8_decode($row['sillas_disp']), 1, 0, 'L', 0);
-    $pdf->Cell(30, 10, utf8_decode($row['status']), 1, 0, 'L', 0);
-    $pdf->Cell(22, 10, utf8_decode($row['aula_limpia']), 1, 0, 'L', 0);
-    $pdf->Cell(22, 10, utf8_decode($row['material']), 1, 0, 'L', 0);
-    $pdf->Cell(22, 10, utf8_decode($row['hor_fin']), 1, 0, 'L', 0);
-    $pdf->Cell(60, 10, utf8_decode($row['observacion']), 1, 1, 'L', 0);
+    $pdf->SetX(8);
+    $pdf->Cell(44, 10, utf8_decode($row['nombres'] . ' ' . $row['apellidos']), 1, 0, 'L', 0);
+    $pdf->Cell(30, 10, utf8_decode($row['aula']), 1, 0, 'L', 0);
+    $pdf->Cell(33, 10, utf8_decode($row['materia']), 1, 0, 'L', 0);
+    $pdf->Cell(22, 10, utf8_decode($row['descripcion'] . ' ' . $row['grupo']), 1, 0, 'L', 0);
+    $pdf->Cell(20, 10, utf8_decode($row['hor_ini']), 1, 0, 'L', 0);
+    $pdf->Cell(18, 10, utf8_decode($row['num_alum']), 1, 0, 'L', 0);
+    $pdf->Cell(17, 10, utf8_decode($row['sillas_disp']), 1, 0, 'L', 0);
+    $pdf->Cell(22, 10, utf8_decode($row['status']), 1, 0, 'L', 0);
+    $pdf->Cell(18, 10, utf8_decode($row['aula_limpia']), 1, 0, 'L', 0);
+    $pdf->Cell(20, 10, utf8_decode($row['material']), 1, 0, 'L', 0);
+    $pdf->Cell(20, 10, utf8_decode($row['hor_fin']), 1, 1, 'L', 0);
 }
 
 
