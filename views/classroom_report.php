@@ -32,6 +32,9 @@
                     <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i>
                 </button>
 
+                <a href="../includes/reporte_day.php" target="_blank" class="btn btn-danger ">
+                    Reporte HOY <i class="fa fa-file-pdf"></i></a>
+
                 <a href="../includes/reporte_general.php" target="_blank" class="btn btn-danger ">
                     Reporte General <i class="fa fa-file-pdf"></i></a>
                 <br>
@@ -51,7 +54,7 @@
                             ?>
                         </select>
 
-                        <button type="submit" class="btn btn-outline-danger" name="generar" id="generar" style="margin-left: 10px;">
+                        <button type="submit" class="btn btn-primary" name="generar" id="generar" style="margin-left: 10px;">
                             Generar <i class="fa fa-file-pdf"></i>
                         </button>
 
