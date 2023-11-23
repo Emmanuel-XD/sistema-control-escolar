@@ -17,9 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdo = new PDO($dsn, $user, $password);
         try{
 
-            // Your existing code to get the last id_calificacion from calificacion table
-$checkMateriaSql = "SELECT COALESCE(MAX(calificacion.id), 0) AS last_calificacion_id FROM calificacion";
+$checkMateriaSql = "SELECT COALESCE(MAX(calificacion.id), 0) AS last_calificacion_id
+FROM calificacion
+JOIN calificacion_eval ON calificacion.id = calificacion_eval.id_calificacion
+WHERE calificacion_eval.id_periodo = :paramPeriod AND calificacion_eval.id_evaluacion = :paramEva AND calificacion_eval.id_alumno = :paramAlum;";
 $checkMateriaStmt = $pdo->prepare($checkMateriaSql);
+$checkMateriaStmt->bindParam(':paramAlum', $idProfile);
+$checkMateriaStmt->bindParam(':paramEva', $evalNum);
+$checkMateriaStmt->bindParam(':paramPeriod', $evalPer);
 $checkMateriaStmt->execute();
 $materiaResult = $checkMateriaStmt->fetch(PDO::FETCH_ASSOC);
 $lastCalificacionId = $materiaResult['last_calificacion_id'];
@@ -32,13 +37,10 @@ $countCalificacionEvalStmt->bindParam(':paramCalif', $lastCalificacionId);
 $countCalificacionEvalStmt->execute();
 $countResult = $countCalificacionEvalStmt->fetch(PDO::FETCH_ASSOC);
 $countCalificacionEval = $countResult['count_calificacion_eval'];
-if ($countResult > 0 && $countResult < 11 ) {
+// Validate $countResult
+if ($countResult['count_calificacion_eval'] > 0 && $countResult['count_calificacion_eval'] <= 10) {
     $idCalif = $materiaResult['last_calificacion_id'];
-
-
-
-}
-if($countResult == 0 || $countResult >11){
+} elseif ($countResult['count_calificacion_eval'] === 0 || $countResult['count_calificacion_eval'] < 11) {
     $checkMateriaSql = "SELECT COALESCE(MAX(calificacion.id), 0) + 1 AS next_calificacion_id
     FROM calificacion";
 
@@ -46,8 +48,10 @@ if($countResult == 0 || $countResult >11){
     $checkMateriaStmt->execute();
     $materiaResult = $checkMateriaStmt->fetch(PDO::FETCH_ASSOC);
     $idCalif = $materiaResult['next_calificacion_id'];
+} else {
+    // Handle other cases or provide appropriate error messages
+    echo "Invalid count: " . $countResult['count_calificacion_eval'];
 }
-           
 
 
 $insertMateriaSql = "INSERT INTO calificacion_eval (id_alumno, id_calificacion, id_evaluacion, id_periodo, id_materia, grade) 
@@ -69,8 +73,7 @@ COALESCE(calificacion_eval.grade, 000) AS calificacion
                    AND calificacion_eval.id_materia = materias.id 
                    AND calificacion_eval.id_periodo = :paramPeriod 
                    AND calificacion_eval.id_evaluacion = :paramEval 
-                   AND calificacion_eval.id_calificacion = :paramCalif)
- LIMIT 10";
+                   AND calificacion_eval.id_calificacion = :paramCalif)";
 $insertMateriaStmt = $pdo->prepare($insertMateriaSql);
 // Bind parameters for default values
 $insertMateriaStmt->bindParam(':paramAlum', $idProfile);
