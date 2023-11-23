@@ -27,34 +27,36 @@
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Lista de Reportes</h6>
                 <br>
+
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#reporte">
+                    <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i>
+                </button>
+
+                <a href="../includes/reporte_general.php" target="_blank" class="btn btn-danger ">
+                    Reporte General <i class="fa fa-file-pdf"></i></a>
+                <br>
+                <br>
+
                 <form action="../includes/report_aula.php" method="POST" accept-charset="utf-8" id="filtro-form" target="_blank">
+                    <div class="row">
+                        <select name="id_aula" id="id_aula" class="control" required style="margin-left: 10px;">
+                            <option value="0">Selecciona una opcion</option>
+                            <?php
+                            include("../includes/db.php");
+                            $sql = "SELECT * FROM aulas ";
+                            $resultado = mysqli_query($conexion, $sql);
+                            while ($consulta = mysqli_fetch_array($resultado)) {
+                                echo '<option value="' . $consulta['id'] . '">' . $consulta['aula'] . '</option>';
+                            }
+                            ?>
+                        </select>
 
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#reporte">
-                        <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i>
-                    </button>
+                        <button type="submit" class="btn btn-outline-danger" name="generar" id="generar" style="margin-left: 10px;">
+                            Generar <i class="fa fa-file-pdf"></i>
+                        </button>
 
-                    <a href="../includes/reporte_general.php" target="_blank" class="btn btn-danger ">
-                        Reporte General <i class="fa fa-file-pdf"></i></a>
-
-                    <select name="id_aula" id="id_aula" class="control" required style="margin-left: 10px;">
-                        <option value="0">Selecciona una opcion</option>
-                        <?php
-                        include("../includes/db.php");
-                        $sql = "SELECT * FROM aulas ";
-                        $resultado = mysqli_query($conexion, $sql);
-                        while ($consulta = mysqli_fetch_array($resultado)) {
-                            echo '<option value="' . $consulta['id'] . '">' . $consulta['aula'] . '</option>';
-                        }
-                        ?>
-                    </select>
-
-                    <button type="submit" class="btn btn-danger" name="generar" id="generar" style="margin-left: 10px;">
-                        Generar <i class="fa fa-file-pdf"></i>
-                    </button>
-
-
+                    </div>
                 </form>
-
 
             </div>
             <?php include "form_report.php"; ?>
@@ -66,16 +68,17 @@
                         <thead>
                             <tr>
                                 <th>Profesor</th>
+                                <th>Materia</th>
+                                <th>Grado & Grupo</th>
                                 <th>Aula</th>
                                 <th>Hora Inicio</th>
                                 <th>Num Alumnos</th>
                                 <th>Sillas Disp.</th>
-                                <th>Estado Silla,Etc</th>
+                                <th>Estado Mater.</th>
                                 <th>Estado Aula</th>
                                 <th>Mat Compl.</th>
                                 <th>Hora Salida</th>
-                                <th>Observacion</th>
-                                <th>Fecha_registro</th>
+                                <th>Fecha</th>
                                 <th>Acciones.</th>
                             </tr>
                         </thead>
@@ -83,15 +86,18 @@
                         <tbody>
                             <?php
                             require_once("../includes/db.php");
-                            $result = mysqli_query($conexion, "SELECT c.id,c.id_profesor,c.id_aula,c.hor_ini,c.num_alum,
-                            c.sillas_disp,c.status,c.aula_limpia,c.material,c.hor_fin,c.observacion,c.fecha,c.fecha2, 
-                            p.nombres, p.apellidos, a.aula FROM classroom_report c INNER JOIN profesores p 
-                            ON c.id_profesor = p.id INNER JOIN aulas a ON c.id_aula = a.id");
+                            $result = mysqli_query($conexion, "SELECT c.id,c.id_profesor, c.id_materia, c.id_grado, c.id_grupo, c.id_aula,c.hor_ini,c.num_alum,
+                            c.sillas_disp,c.status,c.aula_limpia,c.material,c.hor_fin, c.fecha,c.fecha2, 
+                            p.nombres, p.apellidos, a.aula, m.materia, g.descripcion, gr.grupo FROM classroom_report c INNER JOIN profesores p 
+                            ON c.id_profesor = p.id INNER JOIN aulas a ON c.id_aula = a.id INNER JOIN materias m ON c.id_materia = m.id
+                            INNER JOIN grados g ON c.id_grado = g.id INNER JOIN grupos gr ON c.id_grupo = gr.id");
                             while ($fila = mysqli_fetch_assoc($result)) :
 
                             ?>
                                 <tr>
                                     <td><?php echo $fila['nombres'] . ' ' . $fila['apellidos']; ?></td>
+                                    <td><?php echo $fila['materia']; ?></td>
+                                    <td><?php echo $fila['descripcion'] . ' ' . $fila['grupo']; ?></td>
                                     <td><?php echo $fila['aula']; ?></td>
                                     <td><?php echo $fila['hor_ini']; ?></td>
                                     <td><?php echo $fila['num_alum']; ?></td>
@@ -100,7 +106,6 @@
                                     <td><?php echo $fila['aula_limpia']; ?></td>
                                     <td><?php echo $fila['material']; ?></td>
                                     <td><?php echo $fila['hor_fin']; ?></td>
-                                    <td><?php echo $fila['observacion']; ?></td>
                                     <td><?php echo $fila['fecha2']; ?></td>
 
                                     <td>
