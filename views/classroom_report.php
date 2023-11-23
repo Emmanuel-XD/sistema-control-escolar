@@ -1,5 +1,21 @@
 <?php include "../includes/header.php"; ?>
+<style>
+    .control {
 
+        /* width: 100%; */
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #6e707e;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #d1d3e2;
+        border-radius: 0.35rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+</style>
 
 <body id="page-top">
 
@@ -11,11 +27,38 @@
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Lista de Reportes</h6>
                 <br>
+                <form action="../includes/report_aula.php" method="POST" accept-charset="utf-8" id="filtro-form" target="_blank">
 
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#reporte">
-                    <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i> </a></button>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#reporte">
+                        <span class="glyphicon glyphicon-plus"></span> Agregar <i class="fa fa-plus"></i>
+                    </button>
+
+                    <a href="../includes/reporte_general.php" target="_blank" class="btn btn-danger ">
+                        Reporte General <i class="fa fa-file-pdf"></i></a>
+
+                    <select name="id_aula" id="id_aula" class="control" required style="margin-left: 10px;">
+                        <option value="0">Selecciona una opcion</option>
+                        <?php
+                        include("../includes/db.php");
+                        $sql = "SELECT * FROM aulas ";
+                        $resultado = mysqli_query($conexion, $sql);
+                        while ($consulta = mysqli_fetch_array($resultado)) {
+                            echo '<option value="' . $consulta['id'] . '">' . $consulta['aula'] . '</option>';
+                        }
+                        ?>
+                    </select>
+
+                    <button type="submit" class="btn btn-danger" name="generar" id="generar" style="margin-left: 10px;">
+                        Generar <i class="fa fa-file-pdf"></i>
+                    </button>
+
+
+                </form>
+
+
             </div>
             <?php include "form_report.php"; ?>
+
 
             <div class="card-body">
                 <div class="table-responsive">
@@ -26,7 +69,7 @@
                                 <th>Aula</th>
                                 <th>Hora Inicio</th>
                                 <th>Num Alumnos</th>
-                                <th>Sillas Disp.</th>´
+                                <th>Sillas Disp.</th>
                                 <th>Estado Silla,Etc</th>
                                 <th>Estado Aula</th>
                                 <th>Mat Compl.</th>
@@ -91,7 +134,44 @@
     </div>
     <!-- End of Page Wrapper -->
 
+    <script>
+        $(document).ready(function() {
+            $('#id_aula').change(function() {
+                var idAula = $(this).val();
+                buscarMaquina(idAula);
+            });
+            $('#generar').click(function(event) {
+                var idAula = $('#id_aula').val();
 
+                if (idAula === '0') {
+                    Swal.fire({
+                        title: 'Aula Invalida',
+                        text: 'Por favor, seleccione una aula antes de generar el reporte pdf.',
+                        icon: 'warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    event.preventDefault();
+                }
+            });
+
+            function buscarMaquina(idAula) {
+                $.ajax({
+                    url: 'obtener_aula.php',
+                    method: 'POST',
+                    data: {
+                        id_aula: idAula
+                    },
+                    success: function(data) {
+
+                        $('#dataTable tbody').html(data);
+                    },
+                    error: function() {
+                        alert('Error al cargar los registros de la máquina.');
+                    }
+                });
+            }
+        });
+    </script>
 
 
 </body>
