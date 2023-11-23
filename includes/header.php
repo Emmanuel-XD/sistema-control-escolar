@@ -133,6 +133,7 @@ require_once "db.php";
                     <div id="collapseOts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../views/aulas.php">Aulas</a>
                             <a class="collapse-item" href="../views/materias.php">Materias</a>
                             <a class="collapse-item" href="../views/grupos.php">Grupos</a>
                             <a class="collapse-item" href="../views/grados.php">Grados</a>
@@ -155,6 +156,7 @@ require_once "db.php";
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Ver Modulos</h6>
                             <a class="collapse-item" href="../views/inventario.php">Inventario</a>
+                            <a class="collapse-item" href="../views/categorias.php">Categorias</a>
                             <a class="collapse-item" href="../views/prestamos.php">Historial de Prestamos</a>
                             <a class="collapse-item" href="../views/calendario.php">Calendario de Eventos</a>
 
@@ -233,14 +235,20 @@ require_once "db.php";
                     Addons
                 </div>
 
-                <!-- Nav Item - Charts -->
+                <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
-                    <a class="nav-link" href="../views/categorias.php">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Categorias</span></a>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOtxs" aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-fw fa-file-pdf"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <div id="collapseOtxs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Ver Modulos</h6>
+                            <a class="collapse-item" href="../views/classroom_report.php">Reporte de Aula</a>
+
+                        </div>
+                    </div>
                 </li>
-
-
 
                 <!-- Nav Item - Tables -->
                 <li class="nav-item">
