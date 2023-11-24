@@ -54,7 +54,7 @@ if ($results->num_rows > 0) {
                                 ?>
                             </select>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <label for="id_evaluacion"> Num. de evaluación:</label>
                             <select name="id_evaluacion" id="id_evaluacion" class="control" required>
                                 <option value="">Selecciona una opcion</option>
@@ -72,7 +72,7 @@ if ($results->num_rows > 0) {
                             </select>
                         </div>
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" id="save">Guardar <i class="fa fa-check"></i></button>
+                            <button type="button" class="btn btn-danger" id="save">Boleta <i class="far fa-file-pdf"></i></button>
                         </div>
                     </div>
                 </form>

@@ -100,7 +100,9 @@ $("#id_periodo, #id_evaluacion").change(function (e) {
 
 $('#dataTable').on('click', '.edit-btn', function () {
   var rowId = $(this).data('id');
-
+      var table = $('#dataTable').DataTable();
+  var periodEval = $("#id_periodo").val()
+  var numEval = $("#id_evaluacion").val()
     var rowData = dataTable.row($(this).closest('tr')).data();
 
     var firstColumnValue = rowData[0];
@@ -138,6 +140,8 @@ $('#editModal').modal('show');
   console.log('New Value:', newValue);
  var idStudent = urlParams.get('id');
 var data =  new FormData();
+data.append('perEval', periodEval)
+data.append('numEval', numEval)
 data.append('idStudent', idStudent);
 data.append("newcalif", newValue);
 data.append("idmateria",rowId);
