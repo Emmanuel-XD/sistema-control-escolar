@@ -2,7 +2,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const url = window.location.href;
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  // Initialize DataTable
+  var pdf = document.getElementById("genCalif")
+  pdf.disabled = true;
+  pdf.classList.add('btn-secondary');
+  pdf.classList.remove('btn-danger');
   var dataTable = $('#dataTable').DataTable({
       columns: [
         { title: 'Materia' }, // Assuming the 'id' property is the unique identifier
@@ -15,33 +18,40 @@ function updatetable() {
   var table = $('#dataTable').DataTable();
   var periodEval = $("#id_periodo").val()
   var numEval = $("#id_evaluacion").val()
-
+  var pdf = document.getElementById("genCalif")
   if(periodEval === "" && numEval === "" ){
       $(".is-completed").show()
       $(".is-completed").html("Selecciona un periodo y el numero de evaluación.")
       table.clear().draw();
-      console.log("1")
+      pdf.disabled = true;
+      pdf.classList.add('btn-secondary');
+      pdf.classList.remove('btn-danger');
   }
   if(periodEval === "" && numEval >= 1 ){
       $(".is-completed").show()
       $(".is-completed").html("Selecciona un periodo.")
-      console.log("2")
       table.clear().draw();
+      pdf.disabled = true;
+      pdf.classList.add('btn-secondary');
+      pdf.classList.remove('btn-danger');
   }
   if(periodEval >= 1 && numEval === "" ){
       $(".is-completed").show()
       $(".is-completed").html("Selecciona un numero de evaluación.")
-      console.log("3")
       table.clear().draw();
+      pdf.disabled = true;
+      pdf.classList.add('btn-secondary');
+      pdf.classList.remove('btn-danger');
   }
   if(periodEval >= 1 && numEval >= 1 ){
       $(".is-completed").hide()
       $(".is-completed").html("")
-      console.log("4")
+      pdf.disabled = false;
+      pdf.classList.remove('btn-secondary');
+      pdf.classList.add('btn-danger');
       gradesAssign(periodEval, numEval);
   }
 }
-// Function to show a loading SweetAlert with animation
 function showLoadingAlert() {
   Swal.fire({
     title: 'Cargando datos...',
@@ -97,7 +107,6 @@ $("#id_periodo, #id_evaluacion").change(function (e) {
     updatetable();
        
 });
-
 $('#dataTable').on('click', '.edit-btn', function () {
   var rowId = $(this).data('id');
       var table = $('#dataTable').DataTable();
@@ -137,7 +146,6 @@ $('#editModal').modal('show');
       });
       return; // Stop further execution if the input is empty
   }
-  console.log('New Value:', newValue);
  var idStudent = urlParams.get('id');
 var data =  new FormData();
 data.append('perEval', periodEval)
@@ -154,7 +162,6 @@ data.append("idmateria",rowId);
         updatetable();
         $('#editModal').modal('hide');
     } else {
-        console.error(data.message);
     }
 })
 .catch((error) => {
@@ -164,10 +171,54 @@ data.append("idmateria",rowId);
 
 });
 });
-
 $('#dataTable').on('click', '.delete-btn', function () {
   var rowId = $(this).data('id');
   // Handle delete action for the row with ID = rowId
   console.log('Delete clicked for row ID:', rowId);
 });
+$("#genCalif").click(function (e) {
+  e.preventDefault();
+  showLoadingAlert()
+  
+  var periodEval = $("#id_periodo").val();
+  var idStudent = urlParams.get('id');
+  
+  const data = new FormData();
+  data.append('perEval', periodEval);
+  data.append('idStudent', idStudent);
+
+  fetch('../includes/boleta.php', {
+    method: 'POST',
+    body: data,
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.blob();
+    })
+    .then(blob => {
+      console.log('PDF fetched successfully');
+
+      // Create a Blob URL for the PDF
+      const url = URL.createObjectURL(blob);
+
+      // Open the PDF in a new window
+      const newWindow = window.open('', '_blank');
+      newWindow.document.write('<iframe width="100%" height="100%" src="' + url + '"></iframe>');
+      hideLoadingAlert()
+    })
+    .catch(error => {
+      hideLoadingAlert()
+      console.error('Error fetching or displaying the PDF:', error);
+
+      // Handle specific error scenarios if needed
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted');
+      } else {
+        console.log('Other error occurred');
+      }
+    });
+});
+
 });

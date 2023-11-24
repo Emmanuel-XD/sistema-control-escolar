@@ -72,7 +72,7 @@ if ($results->num_rows > 0) {
                             </select>
                         </div>
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-danger" id="save">Boleta <i class="far fa-file-pdf"></i></button>
+                            <button type="button" id="genCalif" class="btn btn-danger" id="save">Boleta <i class="far fa-file-pdf"></i></button>
                         </div>
                     </div>
                 </form>
