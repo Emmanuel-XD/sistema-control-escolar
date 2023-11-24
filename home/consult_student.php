@@ -4,15 +4,15 @@ include_once "../includes/db.php";
 error_reporting(0);
 session_start();
 
-$sql = "SELECT  u.id, u.usuario, u.correo, u.password,
-u.fecha, u.imagen, p.rol FROM users u
-LEFT JOIN permisos p ON u.id_rol= p.id  WHERE correo ='$usuario'";
+$sql = "SELECT u.id, u.usuario, u.correo, u.password, u.fecha, p.rol,a.id AS id_alumno, a.nombre, a.apellido, a.correo, g.descripcion 
+FROM users u LEFT JOIN permisos p ON u.id_rol= p.id INNER JOIN alumnos a ON a.correo = u.correo INNER JOIN grados g 
+ON a.id_grado = g.id WHERE u.correo = '$usuario'";
 $usuarios = mysqli_query($conexion, $sql);
 if ($usuarios->num_rows > 0) {
-    foreach ($usuarios as $key => $fila) {
+    foreach ($usuarios as $key => $row) {
+        $id_alumno = $row["id_alumno"];
     }
 }
-
 ?>
 
 
@@ -37,8 +37,8 @@ if ($usuarios->num_rows > 0) {
             gestionar calificaciones, y editar su información personal dentro del sistema. Además, podrán revisar cualquier cambio
             realizado en sus calificaciones y ajustes en sus perfiles.</p>
 
-        <a href="student_tickets.php?id=<?php echo $fila['id']; ?>" class="btn btn-primary">Boleta De Califiacion <i class="fa fa-file"></i></a>
-        <a href="student_grades.php?id=<?php echo $fila['id']; ?>" class="btn btn-primary">Mis Calificaciones <i class="fa fa-list-alt" aria-hidden="true"></i></a>
+        <a href="grades_history.php?id=<?php echo $id_alumno; ?>" class="btn btn-primary">Historial de Calificaciones <i class="fa fa-list-alt"></i></a>
+        <a href="student_grades.php?id=<?php echo $id_alumno; ?>" class="btn btn-primary">Mis Calificaciones <i class="fa fa-file"></i></a>
         <br>
         <br>
         <div data-id="<?php echo $_SESSION['correo']; ?>" id="datos"></div>
