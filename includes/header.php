@@ -201,9 +201,10 @@ require_once "db.php";
                     <div id="collapseTwos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Ver Modulos</h6>
-                            <a class="collapse-item" href="../home/consult_student.php">Consultar tu informacion</a>
-
                             <a class="collapse-item" href="../views/inventario.php">Consultar Inventario</a>
+                            <a class="collapse-item" href="../home/consult_student.php">Consultar tu informacion</a>
+      
+
                         </div>
                     </div>
                 </li>
