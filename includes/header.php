@@ -76,7 +76,9 @@ require_once "db.php";
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="../views/index.php">
+                <a class="nav-link" href="<?php if ($_SESSION["type"] == '2' || $_SESSION["type"] == '1') { ?>../views/index.php
+                    <?php } ?> ">
+
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span>Home</span></a>
             </li>
