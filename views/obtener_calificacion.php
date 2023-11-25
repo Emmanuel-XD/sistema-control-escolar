@@ -1,13 +1,10 @@
 
 <?php
+session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // foreach ($_POST as $key => $value) {
-    //     echo "POST parameter name: " . $key . " <br> ";
-    //     echo "POST parameter value: " . $value . " <br> ";
-    //     echo "<br>";
-    // }
+
     if (isset($_POST['idStudent']) && isset($_POST['perEval']) && isset($_POST['numEval'])) {
-        session_start();
+
         $idProfile = $_POST['idStudent'];
         $evalPer = $_POST['perEval'];
         $evalNum = $_POST['numEval'];
@@ -100,7 +97,8 @@ $insertMateriaStmt->execute();
             JOIN materias ON materias.id = calificacion_eval.id_materia 
             WHERE calificacion_eval.id_alumno = :param
               AND calificacion_eval.id_evaluacion = :param2
-              AND calificacion_eval.id_periodo = :param3;
+              AND calificacion_eval.id_periodo = :param3
+              AND  calificacion_eval.is_history = 0;
             ";
             $stmt = $pdo->prepare($sql);
             

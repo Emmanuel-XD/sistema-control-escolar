@@ -768,7 +768,27 @@ function editar_alum()
 
     extract($_POST);
 
+    $checkOld = "SELECT * FROM alumnos WHERE id = $id";
+    $check = mysqli_query($conexion, $checkOld);
+    if ($check) {
 
+        if (mysqli_num_rows($check) > 0) {
+            $row = mysqli_fetch_assoc($check);
+
+
+            $idGrade = $row['id_grado'];
+
+            if($idGrade !== $id_grado){
+                $changeGrado = "UPDATE calificacion_eval SET calificacion_eval.is_history = 1 WHERE id_alumno = $id;";
+                $updateGrado = mysqli_query($conexion, $changeGrado);
+            }
+        } else {
+            echo "No matching records found.";
+        }
+    } else {
+        // Handle the query error
+        echo "Error: " . mysqli_error($conexion);
+    }
     $consulta = "UPDATE alumnos SET matricula = '$matricula', nombre = '$nombre', apellido = '$apellido', correo = '$correo', 
     telefono = '$telefono', curp = '$curp', edad='$edad', birthdate = '$birthdate',
     beca = '$beca',id_grado = '$id_grado',id_grupo = '$id_grupo' WHERE id = '$id' ";
@@ -779,7 +799,9 @@ function editar_alum()
     } else {
         echo json_encode("error");
     }
+   
 }
+
 
 function editar_prest()
 {
