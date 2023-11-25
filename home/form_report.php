@@ -46,6 +46,49 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
+                                <label for="nombre" class="form-label">Grado</label>
+                                <select name="id_grado" id="id_grado" class="form-control" required>
+                                    <option value="">Selecciona una opcion</option>
+                                    <?php
+
+                                    include("db.php");
+
+                                    $sql = "SELECT * FROM grados ";
+                                    $resultado = mysqli_query($conexion, $sql);
+                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['descripcion'] . '</option>';
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="password">Grupo</label><br>
+                                <select name="id_grupo" id="id_grupo" class="form-control" required>
+                                    <option value="">Selecciona una opcion</option>
+                                    <?php
+
+                                    include("db.php");
+
+                                    $sql = "SELECT * FROM grupos ";
+                                    $resultado = mysqli_query($conexion, $sql);
+                                    while ($consulta = mysqli_fetch_array($resultado)) {
+                                        echo '<option value="' . $consulta['id'] . '">' . $consulta['grupo'] . '</option>';
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
                                 <label for="nombre" class="form-label">Aula</label>
                                 <select name="id_aula" id="id_aula" class="form-control" required>
                                     <option value="">Selecciona una opcion</option>
@@ -76,7 +119,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="password">Numero de Alumno</label><br>
+                                <label for="password">Numero de Alumnos</label><br>
                                 <input type="number" step="0" min="1" name="num_alum" id="num_alum" class="form-control" required>
                             </div>
                         </div>
@@ -138,10 +181,22 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Observaciones</label><br>
-                        <input type="text" name="observacion" id="observacion" placeholder="Ejemplo: Problemas tecnicos,etc..." class="form-control" required>
-                    </div>
+                        <label for="password">Materia</label><br>
+                        <select name="id_materia" id="id_materia" class="form-control" required>
+                            <option value="">Selecciona una opcion</option>
+                            <?php
 
+                            include("db.php");
+
+                            $sql = "SELECT * FROM materias ";
+                            $resultado = mysqli_query($conexion, $sql);
+                            while ($consulta = mysqli_fetch_array($resultado)) {
+                                echo '<option value="' . $consulta['id'] . '">' . $consulta['materia'] . '</option>';
+                            }
+
+                            ?>
+                        </select>
+                    </div>
 
                     <br>
                     <input type="hidden" name="accion" value="insert_report">

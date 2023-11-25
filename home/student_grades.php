@@ -1,6 +1,4 @@
-<?php
-require_once("../includes/header.php");
-
+<?php include "../includes/header.php";
 extract($_GET);
 $id_alumno = $_GET['id'];
 require_once("../includes/db.php");
@@ -12,25 +10,25 @@ INNER JOIN users u ON a.correo = u.correo WHERE a.id = '$id_alumno' AND u.correo
 $results = mysqli_query($conexion, $sql);
 
 if ($results === false) {
-
+    // La consulta SQL es incorrecta, redirigir al inicio
     echo "<script language='JavaScript'>
     alert('Error en la consulta SQL');
     window.location.href = '../includes/sesion/login.php';
     </script>";
-    die();
+    die(); // Detener la ejecución del código
 }
 
 if ($results->num_rows > 0) {
     foreach ($results as $key => $row) {
-
+        // Resto de tu código...
     }
 } else {
-
+    // No se encontraron resultados, redirigir al inicio
     echo "<script language='JavaScript'>
     alert('No esta permitido alterar la URL');
     window.location.href = 'consult_student.php';
     </script>";
-    die();
+    die(); // Detener la ejecución del código
 }
 ?>
 <link rel="stylesheet" href="../css/style.css">
@@ -48,7 +46,7 @@ if ($results->num_rows > 0) {
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Consultar tu Califacion <?php echo $row['nombre'] . ' ' . $row['apellido']; ?></h6>
+            <h6 class="m-0 font-weight-bold text-primary">Consultar tu Califacion <?php echo $row['nombre'] . ' ' . $row['apellido']; ?></h6>
                 <br>
                 <form action="../includes/saveCalificacion.php" method="POST">
 

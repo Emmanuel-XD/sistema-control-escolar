@@ -87,14 +87,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: data,
             }).then(response => response.json()).then(data => {
                 hideLoadingAlert();
-                console.log('Response data: ', data);
                 dataTable.clear().draw();
                 if (Array.isArray(data)) {
                     // Add rows to the DataTable
                     data.forEach(item => {
                         dataTable.row.add([
                             item.materia,
-                            item.grade
+                            item.grade,
+                            '<button type="button" class="btn btn-dark edit-btn" data-id="' + item.id + '">Editar / asignar calificación</button>'
                         ]).draw(true);
                     });
                 } else {
