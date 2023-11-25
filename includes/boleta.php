@@ -14,6 +14,7 @@ if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
 }
 
 require('../fpdf/fpdf.php');
+include "fecha.php";
 // include "fecha.php";
 date_default_timezone_set('America/Mexico_City');
 $fecha = date("Y-m-d ");
@@ -73,7 +74,7 @@ class PDF extends FPDF
 
         include "db.php";
         //Aqui deberian llegar los id xd
-        
+
         $id_alumno = $_POST['idStudent'];
         $id_periodo = $_POST['perEval'];
         $consulta = "SELECT ce.id, ce.grade, c.promedio, m.materia, a.matricula, a.id AS id_alumno, a.nombre, a.apellido, a.correo, e.evaluacion,
@@ -107,10 +108,10 @@ class PDF extends FPDF
         $this->SetX(12.5);
         $this->Cell(60, 4, 'Grado & Grupo: ' . utf8_decode($filas['descripcion'] . ' ' . $filas['grupo']), 0, 1, 'L');
 
-        // $this->SetFont('Arial', '', 10);
-        // $this->SetY(75);
-        // $this->SetX(12.5);
-        // $this->Cell(60, 4, 'Fecha de Impresion: ' . utf8_decode(fecha()), 0, 1, 'L');
+        $this->SetFont('Arial', '', 10);
+        $this->SetY(75);
+        $this->SetX(12.5);
+        $this->Cell(60, 4, 'Fecha de Impresion: ' . utf8_decode(fecha()), 0, 1, 'L');
 
 
 
