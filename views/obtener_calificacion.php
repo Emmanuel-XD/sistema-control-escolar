@@ -7,10 +7,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //     echo "<br>";
     // }
     if (isset($_POST['idStudent']) && isset($_POST['perEval']) && isset($_POST['numEval'])) {
+        session_start();
         $idProfile = $_POST['idStudent'];
         $evalPer = $_POST['perEval'];
         $evalNum = $_POST['numEval'];
-
+        $grado = $_SESSION['grado'];
         $dsn = "mysql:host=czu.h.filess.io;port=3305;dbname=controlEscolar_valuableif";
         $user = "controlEscolar_valuableif";
         $password = "72659f651655f158ad383189884879d156b523bf";
@@ -56,28 +57,32 @@ if ($countResult['count_calificacion_eval'] > 0 && $countResult['count_calificac
 
 $insertMateriaSql = "INSERT INTO calificacion_eval (id_alumno, id_calificacion, id_evaluacion, id_periodo, id_materia, grade) 
 SELECT 
-:paramAlum AS id_alumno, 
-:paramCalif AS id_calificacion, 
-:paramEval AS id_evaluacion, 
-:paramPeriod AS id_periodo, 
-materias.id AS id_materia, 
-COALESCE(calificacion_eval.grade, 000) AS calificacion
- FROM materias 
- LEFT JOIN calificacion_eval ON materias.id = calificacion_eval.id_materia 
+    :paramAlum AS id_alumno, 
+    :paramCalif AS id_calificacion, 
+    :paramEval AS id_evaluacion, 
+    :paramPeriod AS id_periodo, 
+    materias.id AS id_materia, 
+    COALESCE(calificacion_eval.grade, 0) AS grade  -- Move COALESCE outside the SELECT clause
+FROM materias 
+LEFT JOIN calificacion_eval ON materias.id = calificacion_eval.id_materia 
                           AND calificacion_eval.id_alumno = :paramAlum
                           AND calificacion_eval.id_periodo = :paramPeriod 
                           AND calificacion_eval.id_evaluacion = :paramEval 
                           AND calificacion_eval.id_calificacion = :paramCalif
- WHERE NOT EXISTS (SELECT 1 FROM calificacion_eval  
-                   WHERE calificacion_eval.id_alumno = :paramAlum 
-                   AND calificacion_eval.id_materia = materias.id 
-                   AND calificacion_eval.id_periodo = :paramPeriod 
-                   AND calificacion_eval.id_evaluacion = :paramEval 
-                   AND calificacion_eval.id_calificacion = :paramCalif)";
+WHERE materias.id_periodo = :paramPeriod AND materias.id_grado = :paramGrado
+AND NOT EXISTS (
+    SELECT 1 FROM calificacion_eval  
+    WHERE calificacion_eval.id_alumno = :paramAlum 
+    AND calificacion_eval.id_materia = materias.id 
+    AND calificacion_eval.id_periodo = :paramPeriod 
+    AND calificacion_eval.id_evaluacion = :paramEval 
+    AND calificacion_eval.id_calificacion = :paramCalif
+);";
 $insertMateriaStmt = $pdo->prepare($insertMateriaSql);
 // Bind parameters for default values
 $insertMateriaStmt->bindParam(':paramAlum', $idProfile);
 $insertMateriaStmt->bindParam(':paramCalif', $idCalif);
+$insertMateriaStmt->bindParam(':paramGrado', $grado);
 $insertMateriaStmt->bindParam(':paramPeriod', $evalPer);
 $insertMateriaStmt->bindParam(':paramEval', $evalNum);
 // Bind other default values as needed

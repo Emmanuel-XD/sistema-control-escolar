@@ -81,7 +81,6 @@ function gradesAssign(periodEval, numEval){
       body: data, 
     }).then(response => response.json()).then(data => {
       hideLoadingAlert();
-        console.log('Response data: ', data);
         dataTable.clear().draw();
         if (Array.isArray(data)) {
           // Add rows to the DataTable
