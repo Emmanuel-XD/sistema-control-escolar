@@ -77,11 +77,12 @@ class PDF extends FPDF
 
         $id_alumno = $_POST['idStudent'];
         $id_periodo = $_POST['perEval'];
+        $is_history = 0;
         $consulta = "SELECT ce.id, ce.grade, c.promedio, m.materia, a.matricula, a.id AS id_alumno, a.nombre, a.apellido, a.correo, e.evaluacion,
         p.periodo,p.date_in, p. date_fin, gr.grupo, g.descripcion FROM calificacion_eval ce INNER JOIN calificacion c ON ce.id_calificacion = c.id INNER JOIN 
         alumnos a ON ce.id_alumno = a.id INNER JOIN materias m ON ce.id_materia = m.id INNER JOIN evaluacion e 
         ON ce.id_evaluacion = e.id INNER JOIN periodos p ON ce.id_periodo = p.id INNER JOIN grupos gr ON a.id_grupo = gr.id 
-        INNER JOIN grados g ON a.id_grado = g.id WHERE id_alumno = '$id_alumno' AND ce.id_periodo = '$id_periodo' ";
+        INNER JOIN grados g ON a.id_grado = g.id WHERE id_alumno = '$id_alumno' AND ce.id_periodo = '$id_periodo' AND ce.is_history = '$is_history'";
 
         $sql = mysqli_query($conexion, $consulta);
         if ($sql->num_rows > 0) {
@@ -188,14 +189,17 @@ class PDF extends FPDF
 }
 
 include "db.php";
-
-$consulta = "SELECT m.materia,MAX(CASE WHEN ce.id_evaluacion = 1 THEN ce.grade END) AS calificacion_1,
-MAX(CASE WHEN ce.id_evaluacion = 2 THEN ce.grade END) AS calificacion_2,MAX(CASE WHEN ce.id_evaluacion = 3 THEN ce.grade END) AS calificacion_3,
-AVG(ce.grade) AS promedio_materia FROM calificacion_eval ce INNER JOIN alumnos a ON ce.id_alumno = a.id INNER JOIN materias m ON ce.id_materia = m.id
-INNER JOIN evaluacion e ON ce.id_evaluacion = e.id INNER JOIN periodos p ON ce.id_periodo = p.id INNER JOIN grupos gr ON a.id_grupo = gr.id
-INNER JOIN grados g ON a.id_grado = g.id GROUP BY m.materia;
-SELECT AVG(promedio_materia) AS promedio_general FROM (SELECT AVG(ce.grade) AS promedio_materia FROM calificacion_eval ce
-GROUP BY ce.id_alumno) AS promedios_alumnos;";
+$id_alumno = $_POST['idStudent'];
+$id_periodo = $_POST['perEval'];
+$is_history = 0;
+$consulta = "SELECT m.materia,MAX(CASE WHEN ce.id_evaluacion = 1 THEN ce.grade END) AS calificacion_1,MAX(CASE WHEN ce.id_evaluacion = 2 THEN ce.grade END) AS calificacion_2,
+MAX(CASE WHEN ce.id_evaluacion = 3 THEN ce.grade END) AS calificacion_3, AVG(ce.grade) AS promedio_materia FROM calificacion_eval ce
+INNER JOIN alumnos a ON ce.id_alumno = a.id INNER JOIN materias m ON ce.id_materia = m.id INNER JOIN evaluacion e ON ce.id_evaluacion = e.id
+INNER JOIN periodos p ON ce.id_periodo = p.id INNER JOIN grupos gr ON a.id_grupo = gr.id INNER JOIN grados g ON a.id_grado = g.id
+WHERE ce.id_alumno = '$id_alumno' AND ce.id_periodo = '$id_periodo' AND ce.is_history = '$is_history' GROUP BY m.materia;
+SELECT AVG(promedio_materia) AS promedio_general FROM (SELECT AVG(ce.grade) AS promedio_materia FROM calificacion_eval ce 
+WHERE ce.id_alumno = '$id_alumno' AND ce.id_periodo = '$id_periodo' AND ce.is_history = '$is_history' GROUP BY 
+ce.id_alumno) AS promedios_alumnos;";
 
 $resultado = mysqli_multi_query($conexion, $consulta);
 
