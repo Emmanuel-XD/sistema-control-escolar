@@ -64,7 +64,8 @@ require_once "db.php";
             <ul class="navbar-nav bg-gradient-<?php echo $fila['tema']; ?> sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../views/index.php">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php if ($_SESSION["type"] == '2' || $_SESSION["type"] == '1') { ?>../views/index.php
+                    <?php } ?> ">
 
                     <div class=" sidebar-brand-text mx-3"><?php echo $fila['instituto']; ?><sup></sup>
                     </div>
@@ -203,7 +204,7 @@ require_once "db.php";
                             <h6 class="collapse-header">Ver Modulos</h6>
                             <a class="collapse-item" href="../views/inventario.php">Consultar Inventario</a>
                             <a class="collapse-item" href="../home/consult_student.php">Consultar tu informacion</a>
-      
+
 
                         </div>
                     </div>
