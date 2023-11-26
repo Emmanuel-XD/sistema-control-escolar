@@ -1,29 +1,43 @@
-<?php include "../includes/header.php"; ?>
-<link rel="stylesheet" href="../css/style.css">
-
-<?php
-
+<?php include "../includes/header.php";
 extract($_GET);
 $id_alumno = $_GET['id'];
 require_once("../includes/db.php");
-$sql = "SELECT m.materia, m.id_profesor, m.id_periodo, m.id_grado, g.descripcion, a.nombre, 
-a.apellido FROM materias m INNER JOIN grados g ON m.id_grado = g.id INNER JOIN alumnos a ON a.id_grado = g.id WHERE a.id = '$id_alumno'";
+
+$sql = "SELECT m.materia, m.id_profesor, m.id_periodo, m.id_grado, g.descripcion, a.nombre, a.apellido, a.correo 
+FROM materias m INNER JOIN grados g ON m.id_grado = g.id INNER JOIN alumnos a ON a.id_grado = g.id 
+INNER JOIN users u ON a.correo = u.correo WHERE a.id = '$id_alumno' AND u.correo = '$usuario'";
+
 $results = mysqli_query($conexion, $sql);
+
+if ($results === false) {
+    // La consulta SQL es incorrecta, redirigir al inicio
+    echo "<script language='JavaScript'>
+    alert('Error en la consulta SQL');
+    window.location.href = '../includes/sesion/login.php';
+    </script>";
+    die(); // Detener la ejecución del código
+}
+
 if ($results->num_rows > 0) {
     foreach ($results as $key => $row) {
-
-
-?>
-
-<?php
+        // Resto de tu código...
     }
+} else {
+    // No se encontraron resultados, redirigir al inicio
+    echo "<script language='JavaScript'>
+    alert('No esta permitido alterar la URL');
+    window.location.href = 'consult_student.php';
+    </script>";
+    die(); // Detener la ejecución del código
 }
 ?>
+<link rel="stylesheet" href="../css/style.css">
 <style>
-  .swal2-html-container{
-    overflow: hidden;
-  }
+    .swal2-html-container {
+        overflow: hidden;
+    }
 </style>
+
 <body id="page-top">
 
     <!-- Begin Page Content -->
