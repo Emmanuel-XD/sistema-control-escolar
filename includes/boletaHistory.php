@@ -269,4 +269,4 @@ if ($row_general = mysqli_fetch_assoc($resultado_general)) {
 }
 
 
-$pdf->Output('_BOLETA.pdf', 'i');
+$pdf->Output('_BOLETA_HISTORIAL.pdf', 'i');

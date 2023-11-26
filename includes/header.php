@@ -3,18 +3,16 @@ error_reporting(0);
 session_start();
 $usuario = $_SESSION['correo'];
 $permiso = $_SESSION['type'];
+require_once "db.php";
 if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
 
-    echo "<script language='JavaScript'>
-    alert('Error: Debes iniciar sesion primero ');
-    location.assign('../includes/sesion/login.php');
-    </script>";
-
-    die();
-}
-require_once "db.php";
 ?>
-
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/validacion.js"></script>
+    <script src="../package/dist/sweetalert2.all.js"></script>
+    <script src="../package/dist/sweetalert2.all.min.js"></script>
+<?php die();
+} ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,7 +74,7 @@ require_once "db.php";
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="<?php if ($_SESSION["type"] == '2' || $_SESSION["type"] == '1') { ?>../views/index.php
+                <a class="nav-link" href="<?php if ($_SESSION["type"] == '4' || $_SESSION["type"] == '2' || $_SESSION["type"] == '1') { ?>../views/index.php
                     <?php } ?> ">
 
                     <i class="fa fa-home" aria-hidden="true"></i>
@@ -90,7 +88,7 @@ require_once "db.php";
             <div class="sidebar-heading">
                 Interface
             </div>
-            <?php if ($_SESSION["type"] == 1) { ?>
+            <?php if ($_SESSION["type"] == '1' || $_SESSION["type"] == '4') { ?>
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -101,7 +99,7 @@ require_once "db.php";
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Ver Modulos</h6>
                             <a class="collapse-item" href="../views/alumnos.php">Ver Alumnos</a>
-                            <a class="collapse-item" href="../views/consultar.php">Ver Calificaciones</a>
+                            <!--     <a class="collapse-item" href="../views/consultar.php">Ver Calificaciones</a>-->
 
                         </div>
                     </div>
@@ -213,7 +211,7 @@ require_once "db.php";
                 </li>
             <?php } ?>
             <!--End Alumnos-->
-            <?php if ($_SESSION["type"] == 1) { ?>
+            <?php if ($_SESSION["type"] == '1' || $_SESSION["type"] == '4') { ?>
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOtss" aria-expanded="true" aria-controls="collapsePages">
@@ -327,7 +325,7 @@ require_once "db.php";
                                     </form>
                                 </div>
                             </li>
-                            <?php if ($_SESSION["type"] == '2' || $_SESSION["type"] == '1') { ?>
+                            <?php if ($_SESSION["type"] == '1' || $_SESSION["type"] == '2' || $_SESSION["type"] == '4') { ?>
                                 <!-- Nav Item - Alerts -->
                                 <li class="nav-item dropdown no-arrow mx-1">
                                     <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
 session_start();
-$usuario = $_SESSION['usuario'];
+$usuario = $_SESSION['correo'];
 $permiso = $_SESSION['type'];
 if ($usuario == null || $usuario == ''  && $permiso == null || $permiso == '') {
 
