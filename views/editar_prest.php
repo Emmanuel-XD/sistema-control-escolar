@@ -107,7 +107,7 @@
                                 <select name="status" id="status" class="form-control" required>
                                     <option <?php echo $fila['status'] === 'Solicitar' ? "selected='selected' " : "" ?> value="Solicitar">Solicitar</option>
 
-                                    <?php if ($_SESSION["type"] == 1) { ?>
+                                    <?php if ($_SESSION["type"] == '1' || $_SESSION["type"] == '4') { ?>
 
                                         <option <?php echo $fila['status'] === 'Aprobado' ? "selected='selected' " : "" ?> value="Aprobado">Aprobado</option>
                                         <option <?php echo $fila['status'] === 'Pendiente' ? "selected='selected' " : "" ?> value="Pendiente">Pendiente</option>
