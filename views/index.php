@@ -108,7 +108,7 @@ include "../includes/header.php";
                                 <?php
                                 include "../includes/db.php";
 
-                                $SQL = "SELECT id FROM users ORDER BY id";
+                                $SQL = "SELECT id FROM users WHERE id_rol <> 4 ORDER BY id";
                                 $dato = mysqli_query($conexion, $SQL);
                                 $fila = mysqli_num_rows($dato);
 
